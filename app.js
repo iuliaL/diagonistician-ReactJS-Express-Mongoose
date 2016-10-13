@@ -2,14 +2,14 @@
 
 var express = require('express');
 var app = express();
-//middleware here:
+// middleware here:
 var jsonParser = require('body-parser').json;
 var logger = require("morgan");
 
-//other modules:
+// other modules:
 var routes = require('./routes'); //  or ./routes.js
 var errorHandler = require("./errorHandler").handleError;
-var database = require("./database");
+require("./database"); // need this line otherwise app won't know about the database module
 
 var serverPort = process.env.PORT || 3000;
 
@@ -23,6 +23,18 @@ app.use(logger("dev"));
 //	console.log('req.body is ',req.body);
 //	next();
 //});
+
+app.use(function (req,res,next) {
+	res.header('Access-Control-Allow-Origin', "*"); // req accepted from any domain
+	res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Accept, Content-Type");
+	if (request.method === "OPTIONS") {
+		response.header({
+			"Access-Control-Allow-Methods": "PUT,POST,DELETE"
+		});
+		return response.status(200).json({});
+	}
+	next();
+});
 
 app.use('/questions',routes);
 

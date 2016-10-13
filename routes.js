@@ -10,7 +10,11 @@ router.get('/',function(req,res,next){
 	query.sort({ createdAt: - 1});
 	query.exec()
 		.then(function(questions){
-			res.status(200).json(questions)})
+			questions = questions.map(function(q){
+				return q.publicFormat();
+			});
+			res.status(200).json(questions);
+		})
 		.catch(function(err){
 			return next(err);
 		});
@@ -48,6 +52,7 @@ router.param('aId', function(req,res,next){
 });
 
 router.get('/:qId',function(req,res, next){
+	console.log('getting question');
 	res.status(200).json(req.questionFound.publicFormat());
 });
 
