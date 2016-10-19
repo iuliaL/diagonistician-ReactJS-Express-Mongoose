@@ -1,0 +1,26 @@
+@import "variables"
+@import "circle/core"
+@import "circle/components"
+
+.name 
+  color: #2690c6
+
+.logo
+  width: 28px
+  height: 28px
+  display: inline-block
+  box-shadow: 0 0 0 4px #fff inset
+  border-radius: 50px
+  position: relative
+  +transition(box-shadow .2s)
+  &:hover
+    box-shadow: 0 0 0 15px #fff inset
+
+.circle--header
+  [class^="icon-"],
+  [class*=" icon-"]
+    color: rgba(#fff,.5)
+  .icon-paper
+    margin: 0 10px 0 0
+    position: relative
+    top: 2px

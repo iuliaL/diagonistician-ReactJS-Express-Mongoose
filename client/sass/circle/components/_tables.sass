@@ -1,0 +1,26 @@
+.circle
+  &--table
+    width: 100%
+    #{$headers}
+      margin: 0
+    p
+      margin: 10px 0 0 0
+    th,
+    td
+      line-height: 1
+    th
+      padding: 0 0 15px 0
+    td
+      padding: 25px 0
+
+.clickable-row
+  td
+    cursor: pointer
+    color: lighten($link, 10%)
+  #{$headers}
+    color: $link
+  &:hover
+    td
+      color: darken($link, 10%)
+
+

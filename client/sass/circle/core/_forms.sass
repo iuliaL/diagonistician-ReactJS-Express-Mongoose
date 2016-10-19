@@ -1,0 +1,116 @@
+// Forms
+////////////////////////////////////////////////////
+
+textarea
+  padding: 15px
+  border: 1px solid lighten($link, 30%)
+  box-shadow: none
+  box-sizing: border-box
+  min-height: 120px
+  width: 100%
+  font-size: 1.6rem
+  line-height: 1.8
+  border-radius: 8px
+  -webkit-appearance: none
+  -moz-appearance: none
+  appearance: none
+  outline: none
+  &:focus
+    border-color: $link
+
+// Removes awkward default styles on some inputs for iOS
+
+input
+  &[type="email"],
+  &[type="number"],
+  &[type="search"],
+  &[type="text"],
+  &[type="tel"],
+  &[type="url"],
+  &[type="password"]
+    background: #fff
+    width: 100%
+    color: $body-color
+    border-radius: 8px
+    border: 1px solid lighten($link, 30%)
+    padding: 15px
+    margin-bottom: 15px
+    outline: none
+    box-sizing: border-box
+    font-size: 1.6rem
+    font-family: $display-font
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+    +transition(.2s)
+    +placeholder
+      font-weight: normal
+    &:focus
+      border-color: $link
+
+select
+  @extend input[type="text"]
+  height: 50px
+  padding: 15px
+  color: $display-color
+  font-weight: bold
+  -webkit-appearance: menulist
+  -moz-appearance: menulist
+  appearance: menulist
+  &:focus
+    border-color: $link
+  .circle--select &
+    padding: 10px 15px
+    font-size: 1.6rem
+    font-weight: bold
+    border: 0
+    background: transparent
+    outline: none
+    box-sizing: border-box
+    height: 48px
+    margin: 0
+    -webkit-appearance: none
+    -none-appearance: none
+
+.circle
+  &--select
+    position: relative
+    width: 100%
+    border-sizing: border-box
+    border: 1px solid lighten($link, 30%)
+    height: 50px
+    border-radius: 8px
+    box-sizing: border-box
+    &:after
+      content: $icon-chevron-down
+      font-size: 18px
+      font-family: $icon-font
+      color: $link
+      position: absolute
+      right: 15px
+      top: 50%
+      margin-top: -14px
+    &.focus
+      border-color: $link
+
+
+label,
+legend
+  display: block
+  margin-bottom: .5rem
+  color: $display-color
+  font-family: $display-font
+
+fieldset
+  padding: 0
+  border-width: 0
+
+input
+  &[type="checkbox"],
+  &[type="radio"]
+    display: inline
+
+label > .label-body
+  display: inline-block
+  margin-left: .5rem
+  font-weight: normal

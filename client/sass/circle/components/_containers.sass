@@ -1,0 +1,99 @@
+.circle
+  &--fluid
+    display: table
+    width: 100%
+    &--cell
+      display: table-cell
+      padding: 0 15px
+      vertical-align: middle
+      box-sizing: border-box
+      input
+        margin: 0
+      .button
+        margin: 0
+      ul
+        white-space: nowrap
+    &--primary
+      width: 100%
+      ul
+        white-space: wrap
+    &--secondary
+      text-align: right
+
+  &--secondary
+    &--module
+      margin-bottom: 50px
+      +clearfix
+      >
+        #{$headers}
+          font-family: $body-font
+          color: rgba(#222, .3)
+          font-size: 1.4rem
+          font-weight: normal
+          a
+            color: lighten($link, 20%)
+      p
+        font-size: 1.4rem
+        color: lighten($body-color, 20%)
+      .circle--clone--list
+        li
+          margin-bottom: 30px
+      textarea,
+      input,
+      select
+        font-size: 1.4rem
+      .circle--textarea--input
+        height: 48px
+
+  &--page
+    margin-bottom: 100px
+    +clearfix
+
+  &--article
+    padding-top: 30px
+    &--body
+      line-height: 1.8
+      margin-bottom: 50px
+
+  &--actions
+    &--bar
+      margin: -30px 0 30px
+      background: #f9f9f9
+      padding: 20px 0
+      +clearfix
+      .button
+        margin-bottom: 0
+
+  &--primary
+    &--avatar
+      width: 100%
+      border-radius: 8px
+      background: #f9f9f9
+      overflow: hidden
+      text-align: center
+      box-sizing: border-box
+      position: relative
+      +aspect-ratio(1, 1)
+      .button
+        position: absolute
+        left: 50%
+        top: 50%
+        +transform(translate(-50%, -50%))
+
+  &--section
+    > p
+      font-size: 1.8rem
+      font-family: $display-font
+      line-height: 2
+
+  &--avatar
+    background-repeat: no-repeat
+    background-size: cover
+    width: 54px
+    height: 54px
+    overflow: hidden
+    border-radius: 8px
+    a:hover &
+      box-shadow: 0 0 0 4px $link inset
+    img
+      width: 100%

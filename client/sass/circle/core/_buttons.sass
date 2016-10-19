@@ -1,0 +1,129 @@
+// Buttons
+////////////////////////////////////////////////////
+
+.button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"]
+  font-family: $display-font
+  font-size: 1.6rem
+  padding: 18px 30px
+  border: 0
+  margin-right: 10px
+  border-radius: 8px
+  font-weight: bold
+  display: inline-block
+  white-space: nowrap
+  box-sizing: border-box
+  line-height: 1
+  text-decoration: none
+  color: $button-color
+  background: none
+  box-shadow: 0 0 0 2px $button-color inset
+  position: relative
+  +transition(.2s)
+  &:focus
+    outline: none
+  &:hover
+    box-shadow: 0 0 0 2px darken($button-color, 10%) inset
+    color: darken($button-color, 10%)
+    outline: 0
+    [class^="icon-"],
+    [class*=" icon-"]
+      color: darken($button-color, 10%)
+
+  [class^="icon-"],
+  [class*=" icon-"]
+    color: $button-color
+    font-size: 20px
+    position: relative
+    top: 3px
+    line-height: 0
+
+  &.position-icon-left
+    [class^="icon-"],
+    [class*=" icon-"]
+      left: -5px
+  &.position-icon-right
+    [class^="icon-"],
+    [class*=" icon-"]
+      right: -5px
+
+// File Input Button
+.button
+  cursor: pointer
+  input[type="file"]
+    opacity: 0
+    padding: 0
+    margin: 0
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    width: 100%
+    cursor: pointer
+
+// Primary Buttons
+
+.button.button-primary,
+button.button-primary
+  color: #fff
+  background-color: $button-color
+  [class^="icon-"],
+  [class*=" icon-"]
+    color: #fff
+  &:hover,
+  &:focus
+    background-color: darken($button-color, 10%)
+
+input[type="submit"].button-primary,
+input[type="reset"].button-primary,
+input[type="button"].button-primary
+  @extend .button.button-primary
+  &:hover,
+  &:focus
+    @extend .button.button-primary:hover
+
+// Inactive Buttons
+
+.button.button-inactive,
+button.button-inactive
+  color: #fff
+  background-color: lighten($color-inactive, 20%)
+  box-shadow: none
+  [class^="icon-"],
+  [class*=" icon-"]
+    color: #fff
+  &:hover,
+  &:focus
+    @extend .button.button-inactive
+
+input[type="submit"].button-inactive,
+input[type="reset"].button-inactive,
+input[type="button"].button-inactive
+  @extend .button.button-inactive
+  &:hover,
+  &:focus
+    @extend .button.button-inactive
+
+// Text Only Buttons
+
+.button.button-text,
+button.button-text
+  background-color: none
+  box-shadow: none
+  padding: 18px 15px
+  color: lighten($button-color, 20%)
+  &:hover,
+  &:focus
+    color: $button-color
+
+input[type="submit"].button-text,
+input[type="reset"].button-text,
+input[type="button"].button-text
+  @extend .button.button-text
+  &:hover,
+  &:focus
+    @extend .button.button-text

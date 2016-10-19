@@ -1,0 +1,67 @@
+// Typography
+////////////////////////////////////////////////////
+
+#{$headers}
+  margin-top: 0
+  margin-bottom: 2rem
+  font-weight: bold
+  font-family: $display-font
+  color: $display-color
+
+h1
+  font-size: $h1
+
+h2
+  font-size: $h2
+
+h3
+  font-size: $h3
+
+h4
+  font-size: $h4
+
+h5
+  font-size: $h5
+
+h6
+  font-size: $h6
+  font-weight: normal
+  color: #999
+
+// Larger than phablet
+@media (min-width: 550px)
+  h1
+    font-size: $h1
+
+  h2
+    font-size: $h2
+
+  h3
+    font-size: $h3
+
+  h4
+    font-size: $h4
+
+  h5
+    font-size: $h5
+
+  h6
+    font-size: $h6
+
+p
+  margin-top: 0
+  font-size: 1.6rem
+
+em
+  color: $display-color
+  font-weight: bold
+  font-style: normal
+
+// Links
+////////////////////////////////////////////////////
+
+a
+  color: $link
+  +transition(color .2s)
+  &:hover
+    color: $link-hover

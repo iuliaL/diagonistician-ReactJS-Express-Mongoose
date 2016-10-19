@@ -18,8 +18,6 @@ var serverPort = process.env.PORT || 3000;
 app.use(jsonParser());
 app.use(logger("dev"));
 
-app.use('/static', express.static(__dirname + '/client'));
-
 //app.use(function(req,res,next){
 //	// here i can see the req payload with every request (example of most basic middleware)
 //	console.log('req.body is ',req.body);

@@ -1,0 +1,53 @@
+// Question & Voting Component
+////////////////////////////////////////////////////
+
+
+.question
+	p
+		margin-bottom: .85rem
+	a 
+		text-decoration: none
+	small
+		color: initial
+	img
+		display: block
+		@media screen and (max-width: $mobile-breakpoint)
+			margin: 0 auto 2rem
+
+	&-form
+		margin-bottom: 6rem
+
+	&:first-of-type
+		padding-top: 1.75rem
+	&:last-of-type
+		margin-bottom: 3.5rem
+	&-heading
+		line-height: 1.45
+		margin: 3rem 0 3.5rem
+
+	padding: 3.5rem 0 3rem
+	border-bottom: 1px solid #E1E1E1
+
+.answer-voting
+	@media screen and (max-width: $mobile-breakpoint)
+		margin-bottom: 2rem
+
+	[class^="icon-"], 
+	.vote-count
+		@media screen and (max-width: $mobile-breakpoint)
+			font-size: 2.2rem
+
+		display: block
+		font-size: 1.8rem
+		text-align: center
+
+	.vote-count
+		padding: 18px 3px 14px
+		line-height: 0
+		color: $primary
+		width: 60%
+		margin: 5px auto
+		background: #f5f5f5
+		border-radius: .2rem
+
+

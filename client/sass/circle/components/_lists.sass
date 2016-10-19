@@ -1,0 +1,214 @@
+.circle
+  &--list--inline
+    font-family: $display-font
+    margin: 0
+    font-size: 0
+    white-space: nowrap
+    a
+      display: block
+      text-decoration: none
+    > li
+      display: inline-block
+      padding: 0 15px
+      &:first-child
+        padding-left: 0
+      &:last-child
+        padding-right: 0
+
+  &--link
+    &--list
+      list-style-type: none
+      a
+        text-decoration: none
+
+  &--filter
+    &--list
+      list-style-type: none
+      a
+        text-decoration: none
+        color: rgba(#222, .5)
+        text-decoration: none
+        &:hover
+          color: lighten($link, 20%)
+        &.selected
+          color: #222
+          font-weight: bold
+
+  &--group
+    &--list
+      border-top: 1px solid $border-color
+      list-style: none
+      li
+        border-bottom: 1px solid $border-color
+        padding: 2rem 0 2rem 0
+        &:before
+          content: ''
+          float: left
+          margin: 10px 0 0 -30px
+          width: 5px
+          height: 5px
+          border: 1px solid #999
+          border-radius: 10px
+          display: block
+
+  &--clone
+    &--list
+      list-style-type: none
+      a
+        text-decoration: none
+        font-family: $display-font
+        font-weight: bold
+    &--add,
+    &--remove
+      cursor: pointer
+    &--remove
+      float: right
+      color: lighten($link, 20%)
+      &:hover
+        color: $link-hover
+      li:only-child &
+        display: none
+
+  &--pill
+    &--list
+      margin: 0
+      white-space: nowrap
+      padding: 0 15px
+      li
+        display: inline-block
+        margin: 0 15px 0 0
+      a
+        padding: 12px 20px
+        font-family: $display-font
+        font-size: 1.6rem
+        display: inline-block
+        color: $display-color
+        font-weight: bold
+        border-radius: 50px
+        line-height: 1
+        text-decoration: none
+        +transition(all .2s)
+        &:hover
+          background: #eee
+        &:active
+          background: #444
+      a:active,
+      .selected,
+      .selected:hover
+        background: #444
+        color: #fff
+
+  &--message
+    list-style: none
+    .circle--avatar
+      position: absolute
+      bottom: 0
+      margin: 0
+
+    &--list
+      > li
+        margin-bottom: 20px
+
+    &--text
+      background-color: $secondary
+      color: #fff
+      padding: 8px 15px
+      border-radius: 20px
+      margin: 0 0 8px
+      text-align: left
+      display: inline-block
+      position: relative
+      font-family: $display-font
+      &:after
+        content: $icon-message-tail-left
+        font-family: $icon-font
+        display: block
+        position: absolute
+        left: -7px
+        bottom: -10px
+        color: $secondary
+        font-size: 24px
+
+    &--timestamp
+      font-size: 1.2rem
+      color: $color-inactive
+      margin: 0
+      line-height: 1
+
+  &--message
+    padding-left: 70px
+    position: relative
+    .circle--avatar
+      left: 0
+    &--author
+      padding-right: 70px
+      text-align: right
+      position: relative
+      .circle--avatar
+        right: 0
+        left: auto
+      .circle--message--text
+        background: $primary
+        &:after
+          content: $icon-message-tail-right
+          color: $primary
+          left: auto
+          right: -16px
+
+  // Dropdowns
+  &--dropdown
+    list-style: none
+    position: relative
+    display: inline-block
+    padding: 0 15px 1rem !important
+    margin: 0
+    font-family: $display-font
+    &--trigger,
+    &--trigger:hover
+      font-weight: bold
+      color: $display-color
+      cursor: pointer
+      line-height: 1
+      &:after
+        content: $icon-chevron-down
+        color: $display-color
+        font-family: $icon-font
+        font-size: 18px
+        position: relative
+        top: 2px
+        margin-left: 5px
+    &--list
+      position: absolute
+      z-index: 2
+      left: 0px
+      top: 90%
+      opacity: 0
+      visibility: hidden
+      background: #fff
+      border-radius: 8px
+      padding: 0
+      margin: 0
+      box-shadow: 0 0 0 1px rgba(#000, .2)
+      min-width: 200px
+      overflow: hidden
+      +transition(top .2s, opacity .2s)
+      li
+        list-style: none
+        margin: 0
+        color: $link
+        white-space: nowrap
+        display: block
+      a
+        padding: 10px 15px
+        display: block
+        &:hover
+          background: lighten($link, 45%)
+
+    // Hover state
+    &:hover
+      .circle--dropdown--list
+        opacity: 1
+        top: 100%
+        visibility: visible
+      .circle--dropdown--trigger:after
+        content: $icon-chevron-up

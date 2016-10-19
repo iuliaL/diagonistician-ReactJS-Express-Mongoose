@@ -1,0 +1,83 @@
+.circle
+  &--input--group
+    position: relative
+    input
+      transition: none
+    input[type="submit"]
+      position: absolute
+      right: 0
+      top: 0
+      line-height: .95
+      border-top-left-radius: 0
+      border-bottom-left-radius: 0
+
+  &--search
+    position: relative
+    input
+      margin: 0
+      padding-right: 50px
+    button
+      position: absolute
+      right: 15px
+      top: 50%
+      padding: 0
+      margin: 0
+      box-shadow: none
+      color: $link
+      font-size: 20px
+      +transform(translateY(-50%))
+
+  &--textarea
+    &--input
+      height: 50px
+      min-height: 0
+      padding: 11px 15px // Adjustments are to make autogrow work with being the same height as inputs
+
+  &--input
+    @each $header in ($headers)
+      &--#{$header}
+        font-weight: bold
+        color: $display-color
+        font-family: $display-font
+        +placeholder
+          font-weight: bold
+    &--h1
+      font-size: $h1
+    &--h2
+      font-size: $h2
+    &--h3
+      font-size: $h3
+    &--h4
+      font-size: $h4
+    &--h5
+      font-size: $h5
+    &--h6
+      font-size: $h6
+      font-weight: normal
+      color: #999
+
+input
+  &[type="email"],
+  &[type="number"],
+  &[type="search"],
+  &[type="text"],
+  &[type="tel"],
+  &[type="url"],
+  &[type="password"]
+    &.circle--input
+      @each $header in ($headers)
+        &--#{$header}
+          @extend .circle--input--h1
+
+        &--h2
+          font-size: $h2
+        &--h3
+          font-size: $h3
+        &--h4
+          font-size: $h4
+        &--h5
+          font-size: $h5
+        &--h6
+          font-size: $h6
+          font-weight: normal
+          color: #999

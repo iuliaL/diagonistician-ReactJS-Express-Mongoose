@@ -1,0 +1,43 @@
+$column-padding: $gutter-width / 2
+$columns: 5, 10, 15, 20, 25, 30, 33.333, 35, 40, 45, 50, 55, 60, 65, 66.666, 70, 75, 80, 90, 95, 100
+
+
+// Grid
+.bounds
+  max-width: $layout-bounds
+  margin: 0 auto
+
+.grid
+  float: left
+  box-sizing: border-box
+  position: relative
+
+  @each $proportion in $columns
+    &-#{floor(nth($proportion, 1))}
+      width: percentage($proportion/100)
+      padding: 0 $column-padding
+
+    // Pull
+    &-pull
+      &-#{floor(nth($proportion, 1))}
+        left: -#{percentage($proportion/100)}
+
+    // Push
+    &-push
+      &-#{floor(nth($proportion, 1))}
+        left: #{percentage($proportion/100)}
+
+    // Grid Breakpoint
+    &-#{floor(nth($proportion, 1))}
+      @extend .grid
+      @media screen and (max-width: $mobile-breakpoint)
+        width: 100%
+        left: 0
+
+  &-parent
+    margin: 0
+    margin-right: -$column-padding
+    margin-left: -$column-padding
+    +clearfix
+
+
