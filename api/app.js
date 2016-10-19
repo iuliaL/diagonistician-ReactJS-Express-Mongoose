@@ -18,6 +18,8 @@ var serverPort = process.env.PORT || 3000;
 app.use(jsonParser());
 app.use(logger("dev"));
 
+app.use('/static', express.static(__dirname + '/client'));
+
 //app.use(function(req,res,next){
 //	// here i can see the req payload with every request (example of most basic middleware)
 //	console.log('req.body is ',req.body);
@@ -27,12 +29,12 @@ app.use(logger("dev"));
 app.use(function (req,res,next) {
 	res.header('Access-Control-Allow-Origin', "*"); // req accepted from any domain
 	res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Accept, Content-Type");
-	if (request.method === "OPTIONS") {
-		response.header({
+	if (req.method === "OPTIONS") {
+		res.header({
 			"Access-Control-Allow-Methods": "PUT,POST,DELETE"
 		});
-		return response.status(200).json({});
-	}
+		return res.status(200).json({});
+	 }
 	next();
 });
 
