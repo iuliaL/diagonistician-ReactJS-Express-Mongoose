@@ -1,2 +1,3 @@
-# qa-restAPI
-Question - Answers REST API with Express &amp; Mongoose
+# Questions & answers mini app
+Front-End: React JS
+Back-end : REST API with Express &amp; Mongoose
