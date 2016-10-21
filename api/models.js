@@ -16,7 +16,11 @@ var sortAnswersDesc = function(answer1, answer2){
 
 
 var answerSchema = mongoose.Schema({
-	text: String,
+	text: {
+		type: String,
+		required: true,
+		min: [10, 'Answer must be at least 10 characters long']
+	},
 	createdAt	: { type: Date, default: Date.now()},
 	updatedAt	: { type: Date, default: Date.now()},
 	votes	 	: { type: Number, default: 0 }
@@ -33,7 +37,11 @@ answerSchema.methods.vote = function(vote){
 };
 
 var questionSchema = mongoose.Schema({
-	text		: String,
+	text: {
+		type: String,
+		required: true,
+		min: 10
+	},
 	createdAt	: { type: Date, default: Date.now()},
 	answers		: [ answerSchema ]
 });
@@ -46,7 +54,6 @@ questionSchema.methods.publicFormat = function() {
 };
 
 questionSchema.pre("save", function(next){
-	console.log("here 1");
 	if (this.answers){
 		this.answers.sort(sortAnswersDesc);
 	}

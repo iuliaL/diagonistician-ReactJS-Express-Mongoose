@@ -68,6 +68,15 @@ router.post('/',function(req,res,next){
 	});
 });
 
+//DELETE /questions/:qId
+router.delete("/:qId", function (req,res,next) {
+	req.questionFound.remove().then(function () {
+		res.status(200).send("Question deleted successfully.")
+	}).catch(function(err){
+		next(err);
+	})
+});
+
 //POST /questions/:qId/answers
 router.post('/:qId/answers',function(req, res, next){
 	var questionFound = req.questionFound;

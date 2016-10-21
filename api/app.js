@@ -3,7 +3,7 @@
 var express = require('express');
 var app = express();
 // middleware here:
-var jsonParser = require('body-parser').json;
+var bodyParser = require('body-parser');
 var logger = require("morgan");
 
 // other modules:
@@ -15,14 +15,15 @@ var serverPort = process.env.PORT || 3000;
 
 // app.use is handling Middleware in express
 // We use logger(morgan) to log requests in the console and body-parser to parse req.body
-app.use(jsonParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true})); // man this line is important :)
 app.use(logger("dev"));
 
-//app.use(function(req,res,next){
-//	// here i can see the req payload with every request (example of most basic middleware)
-//	console.log('req.body is ',req.body);
-//	next();
-//});
+// app.use(function(req,res,next){
+// 	// here i can see the req payload with every request (example of most basic middleware)
+// 	console.log('req.body is ',req.body);
+// 	next();
+// });
 
 app.use(function (req,res,next) {
 	res.header('Access-Control-Allow-Origin', "*"); // req accepted from any domain
