@@ -273,15 +273,26 @@
 				this.setState({ newAnswer: "" }); // reset textArea
 			}.bind(this));
 		},
+		refreshVoteCount: function refreshVoteCount(arg, answerId) {
+			console.log("refreshing state?", arg, answerId);
+			// arg will be either "up" or "down"
+			var url = encodeURI(this.props.baseUrl + this.props.params.qId.trim() + '/answers/' + answerId + '/vote-');
+			$.post('' + url + arg, function () {
+				console.log("Voted", arg);
+				this.getAnswersFromServer();
+			}.bind(this));
+		},
 		render: function render() {
-			var answers = this.state.question.answers.map(function (a) {
+			var answers = this.state.question.answers.map(function (a, index) {
 				return _react2.default.createElement(Answer, { key: a._id,
 					id: a._id,
 					text: a.text,
 					votes: a.votes,
 					createdAt: moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A"),
-					updatedAt: moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") });
-			}); // and then no need to bind this
+					updatedAt: moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A"),
+					questionNamespace: this.props.baseUrl + this.props.params.qId.trim() + '/answers/',
+					onVoteCountChanged: this.refreshVoteCount });
+			}.bind(this)); // and then no need to bind this
 			return _react2.default.createElement(
 				'div',
 				{ className: 'grid-100' },
@@ -309,73 +320,86 @@
 		}
 	});
 
-	function Answer(props) {
+	function Votes(props) {
 		return _react2.default.createElement(
 			'div',
-			{ className: 'grid-parent answer-container' },
+			{ className: 'answer-voting' },
 			_react2.default.createElement(
-				'div',
-				{ className: 'grid-10' },
-				_react2.default.createElement(
-					'div',
-					{ className: 'answer-voting' },
-					_react2.default.createElement(
-						'span',
-						{ className: 'icon-chevron-up', onClick: this.onVoteUp },
-						' '
-					),
-					_react2.default.createElement(
-						'strong',
-						{ className: 'vote-count' },
-						props.votes
-					),
-					_react2.default.createElement(
-						'span',
-						{ className: 'icon-chevron-down', onClick: this.onVoteDown },
-						' '
-					)
-				)
+				'span',
+				{ className: 'icon-chevron-up', onClick: function onClick() {
+						props.onVote('up');
+					} },
+				' '
 			),
 			_react2.default.createElement(
-				'div',
-				{ className: 'grid-90' },
-				_react2.default.createElement(
-					'a',
-					{ href: '#' },
-					_react2.default.createElement(
-						'p',
-						null,
-						props.text
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'align-right' },
-					_react2.default.createElement(
-						'small',
-						null,
-						'Answered ',
-						_react2.default.createElement(
-							'strong',
-							null,
-							props.createdAt
-						),
-						' | '
-					),
-					_react2.default.createElement(
-						'small',
-						null,
-						'Modified ',
-						_react2.default.createElement(
-							'strong',
-							null,
-							props.updatedAt
-						)
-					)
-				)
+				'strong',
+				{ className: 'vote-count' },
+				props.votes
+			),
+			_react2.default.createElement(
+				'span',
+				{ className: 'icon-chevron-down', onClick: function onClick() {
+						props.onVote('down');
+					} },
+				' '
 			)
 		);
 	}
+
+	var Answer = _react2.default.createClass({
+		displayName: 'Answer',
+
+		onVoteChange: function onVoteChange(arg) {
+			console.log("on vote ", arg);
+			this.props.onVoteCountChanged(arg, this.props.id);
+		},
+		render: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'grid-parent answer-container' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'grid-10' },
+					_react2.default.createElement(Votes, { votes: this.props.votes, onVote: this.onVoteChange })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'grid-90' },
+					_react2.default.createElement(
+						'p',
+						{ style: { 'color': 'black', 'fontWeight': 600 } },
+						this.props.text
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'align-right' },
+						_react2.default.createElement(
+							'small',
+							null,
+							'Answered ',
+							_react2.default.createElement(
+								'strong',
+								null,
+								this.props.createdAt
+							),
+							' | '
+						),
+						_react2.default.createElement(
+							'small',
+							null,
+							'Modified ',
+							_react2.default.createElement(
+								'strong',
+								null,
+								this.props.updatedAt
+							)
+						)
+					)
+				)
+			);
+		}
+	});
+
 	var Application = _react2.default.createClass({
 		displayName: 'Application',
 

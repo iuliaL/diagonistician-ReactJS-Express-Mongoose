@@ -187,17 +187,28 @@ var Question_view = React.createClass({
 		}.bind(this));
 		
 	},
+	refreshVoteCount : function (arg, answerId) {
+		console.log("refreshing state?", arg, answerId);
+		// arg will be either "up" or "down"
+		let url = encodeURI(this.props.baseUrl + this.props.params.qId.trim() + '/answers/'+ answerId +'/vote-');
+		$.post(`${url}${arg}`, function(){
+			console.log("Voted", arg);
+			this.getAnswersFromServer();
+		}.bind(this));
+	},
 	render: function () {
-		var answers = this.state.question.answers.map(function(a) {
+		var answers = this.state.question.answers.map(function(a,index) {
 			return (
 				<Answer key={a._id}
 				        id={a._id}
 				        text={a.text}
 				        votes={a.votes}
 				        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
-				        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }/>
+				        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
+						questionNamespace={this.props.baseUrl + this.props.params.qId.trim() + '/answers/'}
+						onVoteCountChanged={this.refreshVoteCount}/>
 			)
-		}); // and then no need to bind this
+		}.bind(this)); // and then no need to bind this
 		return (
 			<div className="grid-100">
 				<h2 className="question-heading">{this.state.question.text}</h2>
@@ -216,28 +227,41 @@ var Question_view = React.createClass({
 	}
 });
 
-function Answer(props) {
+function Votes (props) {
 	return (
-	<div className="grid-parent answer-container">
-		<div className="grid-10">
-			<div className="answer-voting">
-				<span className="icon-chevron-up" onClick={this.onVoteUp}> </span>
-				<strong className="vote-count">{props.votes}</strong>
-				<span className="icon-chevron-down" onClick={this.onVoteDown}> </span>
-			</div>
+		<div className="answer-voting">
+			<span className="icon-chevron-up" onClick={ function(){ props.onVote('up') } }> </span>
+			<strong className="vote-count">{props.votes}</strong>
+			<span className="icon-chevron-down" onClick={ function() { props.onVote('down')} }> </span>
 		</div>
-		<div className="grid-90">
-			<a href="#">
-				<p>{props.text}</p>
-			</a>
-			<div className="align-right">
-				<small>Answered <strong>{props.createdAt}</strong> | </small>
-				<small>Modified <strong>{props.updatedAt}</strong></small>
-			</div>
-		</div>
-	</div>
 	)
+
 }
+
+var Answer = React.createClass({
+	onVoteChange: function (arg) {
+		console.log("on vote ", arg);
+		this.props.onVoteCountChanged(arg,this.props.id);
+	},
+	render: function () {
+		return (
+			<div className="grid-parent answer-container">
+				<div className="grid-10">
+					<Votes votes={this.props.votes} onVote={this.onVoteChange}/>
+				</div>
+				<div className="grid-90">
+					<p style={{'color': 'black', 'fontWeight': 600}}>{this.props.text}</p>
+					
+					<div className="align-right">
+						<small>Answered <strong>{this.props.createdAt}</strong> | </small>
+						<small>Modified <strong>{this.props.updatedAt}</strong></small>
+					</div>
+				</div>
+			</div>
+		)
+	}
+});
+	
 var Application = React.createClass({
 	render:  function () {
 		return (
