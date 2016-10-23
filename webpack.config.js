@@ -9,6 +9,8 @@ module.exports = {
 	output : {
 		path: path.join(__dirname,'/client/build'),
 		filename: "bundle.js"
+		//publicPath: path.join(__dirname,'/client/build')
+		
 	},
 	module: {
 		loaders : [

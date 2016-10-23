@@ -37,7 +37,9 @@ var NewQuestionForm = React.createClass({
 			<form className="question-form" onSubmit={this.onSubmit}>
 				<div className="grid-parent">
 					<div className="grid-100 circle--input--group">
-						<input type="text" placeholder="What's your question?" id="question" value={this.state.text} onChange={this.onQuestionChange}/>
+						<input type="text" placeholder="What's your question?" id="question"
+						       value={this.state.text}
+						       onChange={this.onQuestionChange}/>
 						<input className="button-primary question" type="submit" value="Ask"/>
 					</div>
 				</div>
@@ -82,7 +84,7 @@ var Questions_list = React.createClass({
 		}
 	},
 	getQuestionsFromServer : function() {
-		this.serverRequest = $.get(this.props.url)
+		$.get(this.props.url)
 			.then(function(result) {
 				console.log("ajax result", result);
 				this.setState({ questions: result });
@@ -112,7 +114,11 @@ var Questions_list = React.createClass({
 		var questions = this.state.questions.map(function(q, index) {
 			return (
 				<LinkContainer key={q._id} to={`/question/${q._id} `}>
-					<Button><Question id={q._id} text={q.text} createdAt={q.createdAt}/></Button>
+					<Button>
+						<Question id={q._id}
+						          text={q.text}
+						          createdAt={q.createdAt}/>
+					</Button>
 				</LinkContainer>
 			)
 		}); // and then no need to bind this
@@ -144,11 +150,13 @@ var Question_view = React.createClass({
 			question : {
 				text: '',
 				answers: []
-			}
+				
+			},
+			newAnswer: ''
 		}
 	},
 	getAnswersFromServer : function() {
-		this.serverRequest = $.get(this.props.baseUrl + this.props.params.qId) // taking question id from url params
+		$.get(this.props.baseUrl + this.props.params.qId) // taking question id from url params
 			.then(function(result) {
 				console.log("ajax result", result);
 				this.setState({ question: result });
@@ -163,10 +171,31 @@ var Question_view = React.createClass({
 	componentDidMount: function () {
 		this.getAnswersFromServer();
 	},
+	onNewAnswerInput : function (event) {
+		this.setState({ newAnswer : event.target.value });
+	},
+	onNewAnswerSubmit : function (event) {
+		event.preventDefault();
+		// post new answer and refresh answer list
+		let url = encodeURI(this.props.baseUrl + this.props.params.qId.trim() + '/answers');
+		// needed to trim the param don't know why i had a whitespace :(
+		let data = { text: this.state.newAnswer };
+		$.post(url, data, function(result){
+			console.log("posted new answer", result);
+			this.getAnswersFromServer(); // refresh results
+			this.setState({ newAnswer : ""} ); // reset textArea
+		}.bind(this));
+		
+	},
 	render: function () {
-		var answers = this.state.question.answers.map(function(a, index) {
+		var answers = this.state.question.answers.map(function(a) {
 			return (
-				<Answer key={a._id} id={a._id} text={a.text} votes={a.votes} createdAt={a.createdAt} updatedAt={a.updatedAt}/>
+				<Answer key={a._id}
+				        id={a._id}
+				        text={a.text}
+				        votes={a.votes}
+				        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
+				        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }/>
 			)
 		}); // and then no need to bind this
 		return (
@@ -175,9 +204,10 @@ var Question_view = React.createClass({
 				<hr/>
 				<h3>Add an Answer</h3>
 				{answers}
-				<form>
-					<textarea className="full-width" placeholder="Your answer..." id="message">
-						
+				<form onSubmit={this.onNewAnswerSubmit}>
+					<textarea className="full-width" placeholder="Your answer..." id="message"
+					          value={this.state.newAnswer}
+					          onChange={this.onNewAnswerInput}>
 					</textarea>
 					<input className="button-primary answer" type="submit" value="Post answer"/>
 				</form>
@@ -191,9 +221,9 @@ function Answer(props) {
 	<div className="grid-parent answer-container">
 		<div className="grid-10">
 			<div className="answer-voting">
-				<span className="icon-chevron-up"> </span>
+				<span className="icon-chevron-up" onClick={this.onVoteUp}> </span>
 				<strong className="vote-count">{props.votes}</strong>
-				<span className="icon-chevron-down"> </span>
+				<span className="icon-chevron-down" onClick={this.onVoteDown}> </span>
 			</div>
 		</div>
 		<div className="grid-90">

@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/Users/iulia/Desktop/qa-restAPI/client/build";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -97,7 +97,9 @@
 					_react2.default.createElement(
 						'div',
 						{ className: 'grid-100 circle--input--group' },
-						_react2.default.createElement('input', { type: 'text', placeholder: 'What\'s your question?', id: 'question', value: this.state.text, onChange: this.onQuestionChange }),
+						_react2.default.createElement('input', { type: 'text', placeholder: 'What\'s your question?', id: 'question',
+							value: this.state.text,
+							onChange: this.onQuestionChange }),
 						_react2.default.createElement('input', { className: 'button-primary question', type: 'submit', value: 'Ask' })
 					)
 				)
@@ -160,7 +162,7 @@
 			};
 		},
 		getQuestionsFromServer: function getQuestionsFromServer() {
-			this.serverRequest = $.get(this.props.url).then(function (result) {
+			$.get(this.props.url).then(function (result) {
 				console.log("ajax result", result);
 				this.setState({ questions: result });
 			}.bind(this)).catch(function (err) {
@@ -191,7 +193,9 @@
 					_react2.default.createElement(
 						_reactBootstrap.Button,
 						null,
-						_react2.default.createElement(Question, { id: q._id, text: q.text, createdAt: q.createdAt })
+						_react2.default.createElement(Question, { id: q._id,
+							text: q.text,
+							createdAt: q.createdAt })
 					)
 				);
 			}); // and then no need to bind this
@@ -235,11 +239,13 @@
 				question: {
 					text: '',
 					answers: []
-				}
+
+				},
+				newAnswer: ''
 			};
 		},
 		getAnswersFromServer: function getAnswersFromServer() {
-			this.serverRequest = $.get(this.props.baseUrl + this.props.params.qId) // taking question id from url params
+			$.get(this.props.baseUrl + this.props.params.qId) // taking question id from url params
 			.then(function (result) {
 				console.log("ajax result", result);
 				this.setState({ question: result });
@@ -252,9 +258,29 @@
 		componentDidMount: function componentDidMount() {
 			this.getAnswersFromServer();
 		},
+		onNewAnswerInput: function onNewAnswerInput(event) {
+			this.setState({ newAnswer: event.target.value });
+		},
+		onNewAnswerSubmit: function onNewAnswerSubmit(event) {
+			event.preventDefault();
+			// post new answer and refresh answer list
+			var url = encodeURI(this.props.baseUrl + this.props.params.qId.trim() + '/answers');
+			// needed to trim the param don't know why i had a whitespace :(
+			var data = { text: this.state.newAnswer };
+			$.post(url, data, function (result) {
+				console.log("posted new answer", result);
+				this.getAnswersFromServer(); // refresh results
+				this.setState({ newAnswer: "" }); // reset textArea
+			}.bind(this));
+		},
 		render: function render() {
-			var answers = this.state.question.answers.map(function (a, index) {
-				return _react2.default.createElement(Answer, { key: a._id, id: a._id, text: a.text, votes: a.votes, createdAt: a.createdAt, updatedAt: a.updatedAt });
+			var answers = this.state.question.answers.map(function (a) {
+				return _react2.default.createElement(Answer, { key: a._id,
+					id: a._id,
+					text: a.text,
+					votes: a.votes,
+					createdAt: moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A"),
+					updatedAt: moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") });
 			}); // and then no need to bind this
 			return _react2.default.createElement(
 				'div',
@@ -273,8 +299,10 @@
 				answers,
 				_react2.default.createElement(
 					'form',
-					null,
-					_react2.default.createElement('textarea', { className: 'full-width', placeholder: 'Your answer...', id: 'message' }),
+					{ onSubmit: this.onNewAnswerSubmit },
+					_react2.default.createElement('textarea', { className: 'full-width', placeholder: 'Your answer...', id: 'message',
+						value: this.state.newAnswer,
+						onChange: this.onNewAnswerInput }),
 					_react2.default.createElement('input', { className: 'button-primary answer', type: 'submit', value: 'Post answer' })
 				)
 			);
@@ -293,7 +321,7 @@
 					{ className: 'answer-voting' },
 					_react2.default.createElement(
 						'span',
-						{ className: 'icon-chevron-up' },
+						{ className: 'icon-chevron-up', onClick: this.onVoteUp },
 						' '
 					),
 					_react2.default.createElement(
@@ -303,7 +331,7 @@
 					),
 					_react2.default.createElement(
 						'span',
-						{ className: 'icon-chevron-down' },
+						{ className: 'icon-chevron-down', onClick: this.onVoteDown },
 						' '
 					)
 				)
