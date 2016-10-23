@@ -2010,3 +2010,6 @@ input[type="email"].circle--input--h6, input[type="number"].circle--input--h6, i
   top: 2px; }
 
 /*# sourceMappingURL=global.css.map */
+.answer-container {
+  margin-bottom: 30px;
+}

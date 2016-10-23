@@ -18,25 +18,30 @@
 
 	<!-- CSS
 	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	<link rel="stylesheet" href="css/global.css">
+	<link rel="stylesheet" href="/css/global.css">
 
 </head>
 <body>
 <header class="circle--header">
-	<a href="index.html"><img class="main-logo" src="images/logo-1.svg" alt="logo"></a>
+	<a href="index.html"><img class="main-logo" src="/images/logo-1.svg" alt="logo"></a>
 </header>
 
-<div id="container" class="bounds">
+<div id="container">
 
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
-<script src="./vendor/babel-browser.min.js"></script>
-<script src="./vendor/moment.js"></script>
+<!--no need for these scripts since i installed and configured webpack-->
 
-<script type="text/babel" src="js/app.jsx"></script>
+<!--<script src="../../vendor/react.js"></script>-->
+<!--<script src="../../vendor/react-dom.js"></script>-->
+<!--<script src="../../vendor/babel-browser.min.js"></script>-->
+
+<script src="/build/bundle.js"></script>
+
+<script src="/vendor/moment.js"></script>
+
+<script type="text/babel" src="js/app.js"></script>
 </body>
 </html>
