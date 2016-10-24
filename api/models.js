@@ -21,10 +21,14 @@ var answerSchema = mongoose.Schema({
 		required: true,
 		min: [10, 'Answer must be at least 10 characters long']
 	},
-	createdAt	: { type: Date, default: Date.now()},
-	updatedAt	: { type: Date, default: Date.now()},
 	votes	 	: { type: Number, default: 0 }
-});
+},
+	{ timestamps: {
+		createdAt	: "createdAt",
+		updatedAt	: "updatedAt"
+		}
+	}
+);
 
 answerSchema.methods.update = function(updates){
 	Object.assign(this, updates, { updatedAt: new Date() });
@@ -42,9 +46,13 @@ var questionSchema = mongoose.Schema({
 		required: true,
 		min: 10
 	},
-	createdAt	: { type: Date, default: Date.now()},
 	answers		: [ answerSchema ]
-});
+},
+	{ timestamps: {
+		createdAt	: "createdAt"
+		}
+	}
+);
 
 questionSchema.methods.publicFormat = function() {
 	var result = this.toJSON();
