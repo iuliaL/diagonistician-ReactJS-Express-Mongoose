@@ -6,8 +6,7 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 // Components
 import QuestionList  from './components/QuestionList'
 
-
-var Question_view = React.createClass({
+var QuestionView = React.createClass({
 	getDefaultProps: function(){
 		return {
 			baseUrl : "http://localhost:3000/questions/",
@@ -107,46 +106,44 @@ function Votes (props) {
 
 }
 
-var Answer = React.createClass({
-	onVoteChange: function (arg) {
+const Answer = (props) => {
+	console.log('DEBUGS');
+	onVoteChange = arg => {
 		console.log("on vote ", arg);
-		this.props.onVoteCountChanged(arg,this.props.id);
-	},
-	render: function () {
-		return (
-			<div className="grid-parent answer-container">
-				<div className="grid-10">
-					<Votes votes={this.props.votes} onVote={this.onVoteChange}/>
-				</div>
-				<div className="grid-90">
-					<p style={{'color': 'black', 'fontWeight': 600}}>{this.props.text}</p>
-					
-					<div className="align-right">
-						<small>Answered <strong>{this.props.createdAt}</strong> | </small>
-						<small>Modified <strong>{this.props.updatedAt}</strong></small>
-					</div>
+		props.onVoteCountChanged(arg, props.id);
+	};
+	return (
+		<div className="grid-parent answer-container">
+			<div className="grid-10">
+				<Votes votes={props.votes} onVote={onVoteChange}/>
+			</div>
+			<div className="grid-90">
+				<p style={{'color': 'black', 'fontWeight': 600}}>{this.props.text}</p>
+				
+				<div className="align-right">
+					<small>Answered <strong>{props.createdAt}</strong> | </small>
+					<small>Modified <strong>{props.updatedAt}</strong></small>
 				</div>
 			</div>
-		)
-	}
-});
+		</div>
+	)
+
+};
 	
-var Application = React.createClass({
-	render:  function () {
-		return (
-			<div className="bounds">
-				{/*here are the routes*/}
-				{this.props.children}
-			</div>
-		)
-	}
-});
+function Application(props){
+	return (
+		<div className="bounds">
+			{/*here are the routes*/}
+			{props.children}
+		</div>
+	)
+}
 
 render((
 	<Router history={browserHistory}>
 		<Route component={Application}>
 			<Route path="/" component={QuestionList}/>
-			<Route path="question/:qId" component={Question_view}/>
+			<Route path="question/:qId" component={QuestionView}/>
 		</Route>
 	</Router>
 	),document.getElementById('container'));

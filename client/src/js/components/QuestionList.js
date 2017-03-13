@@ -10,11 +10,11 @@ export default class QuestionsList extends Component{
 		pollInterval : 120000,
 		url: "http://localhost:3000/questions"
 	};
-	state =  { questions: []};
+	state = { questions: []};
 	getQuestionsFromServer = () => {
 		$.get(this.defaultProps.url)
 			.then((result)=> {
-				console.log("ajax result", result);
+				console.log("Promise result", result);
 				this.setState({ questions: result });
 			})
 			.catch((err)=> {
@@ -25,7 +25,7 @@ export default class QuestionsList extends Component{
 			});
 	};
 	postNewQuestion = (newQuestion) => {
-		$.post(this.props.url, newQuestion, function(result){
+		$.post(this.defaultProps.url, newQuestion, function(result){
 			console.log("posted question with id:", result);
 			this.getQuestionsFromServer(); // refresh results
 		}.bind(this));

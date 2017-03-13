@@ -4,13 +4,11 @@ module.exports = {
 	watch: true,
 	colors: true,
 	progress: true,
-	
 	entry: "./client/src/js/app.js",
 	output : {
-		path: path.join(__dirname,'/client/dist/build'),
+		path: path.join(__dirname,'/client/dist/build/'), // absolute path
+		publicPath:	'/build/', // Relative to server root, in my case client/dist, that's the content base
 		filename: "bundle.js"
-		//publicPath: path.join(__dirname,'/client/dist/build')
-		
 	},
 	module: {
 		loaders : [
