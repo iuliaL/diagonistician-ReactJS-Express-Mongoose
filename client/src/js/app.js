@@ -2,141 +2,10 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, Link, browserHistory } from 'react-router';
-import { Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
 
+// Components
+import QuestionList  from './components/QuestionList'
 
-
-var NewQuestionForm = React.createClass({
-	// don't think these propTypes are necessary
-	propTypes : {
-		onAdd: React.PropTypes.func.isRequired
-	},
-	getInitialState :  function () {
-		return {
-			text: ""
-		}
-	},
-	onQuestionChange:  function (event) {
-		//console.log('typing new question... ', event.target.value);
-		this.setState({
-			text: event.target.value
-		})
-	},
-	onSubmit: function (event) {
-		event.preventDefault();
-		var questionText = this.state.text.trim();
-		if (!questionText) {
-			return;
-		}
-		this.props.onAdd({ text: questionText} ); // onAdd is a callback prop, it passes the question = { text: questionText} back up to Application parent
-		this.setState({text: ""}); // reset input value on form submit
-	},
-	render: function () {
-		return (
-			<form className="question-form" onSubmit={this.onSubmit}>
-				<div className="grid-parent">
-					<div className="grid-100 circle--input--group">
-						<input type="text" placeholder="What's your question?" id="question"
-						       value={this.state.text}
-						       onChange={this.onQuestionChange}/>
-						<input className="button-primary question" type="submit" value="Ask"/>
-					</div>
-				</div>
-			</form>
-		)
-	}
-});
-
-
-
-function Question (props) {
-	var createdAt = moment(props.createdAt).format("MMMM Do YYYY, h:mm:ss A");
-	return (
-		<div className="grid-parent question">
-			<div className="grid-10">
-				<img className="avatar" src="images/avatar.png" alt="avatar"/>
-			</div>
-			<div className="grid-90">
-				<p>{props.text}</p>
-				<small className="align-right block">Asked <strong>{createdAt}</strong></small>
-			</div>
-		</div>
-	)
-}
-
-Question.propTypes = {
-	id: React.PropTypes.string.isRequired,
-	text: React.PropTypes.string.isRequired,
-	createdAt: React.PropTypes.string
-};
-
-var Questions_list = React.createClass({
-	getDefaultProps : function() { // initializing props here, these can be overridden
-		return {
-			pollInterval : 120000,
-			url: "http://localhost:3000/questions"
-		}
-	},
-	getInitialState: function () {
-		return {
-			questions: []
-		}
-	},
-	getQuestionsFromServer : function() {
-		$.get(this.props.url)
-			.then(function(result) {
-				console.log("ajax result", result);
-				this.setState({ questions: result });
-			}.bind(this))
-			.catch(function(err) {
-				console.log("error", err)
-			}.bind(this))
-			.always(function() {
-				console.log("finally");
-			}.bind(this));
-	},
-	postNewQuestion: function (newQuestion) {
-		$.post(this.props.url, newQuestion, function(result){
-			console.log("posted question with id:", result);
-			this.getQuestionsFromServer(); // refresh results
-		}.bind(this));
-	},
-	componentDidMount: function () {
-		this.getQuestionsFromServer();
-		// optionally poll for new questions every min:
-		// setInterval(this.getQuestionsFromServer, this.props.pollInterval )
-	},
-	onNewQuestion: function (newQuestion) {
-		this.postNewQuestion(newQuestion);
-	},
-	render: function () {
-		var questions = this.state.questions.map(function(q, index) {
-			return (
-				<LinkContainer key={q._id} to={`/question/${q._id} `}>
-					<Button>
-						<Question id={q._id}
-						          text={q.text}
-						          createdAt={q.createdAt}/>
-					</Button>
-				</LinkContainer>
-			)
-		}); // and then no need to bind this
-		
-		return (
-			<div className="grid-100">
-				<h1 className="name align-center">Code Q&amp;A</h1>
-				<NewQuestionForm onAdd={this.onNewQuestion}/>
-				<h2>Questions</h2>
-				<hr/>
-				<div className="questions">
-					{questions}
-				</div>
-			</div>
-		)
-	}
-	
-});
 
 var Question_view = React.createClass({
 	getDefaultProps: function(){
@@ -276,7 +145,7 @@ var Application = React.createClass({
 render((
 	<Router history={browserHistory}>
 		<Route component={Application}>
-			<Route path="/" component={Questions_list}/>
+			<Route path="/" component={QuestionList}/>
 			<Route path="question/:qId" component={Question_view}/>
 		</Route>
 	</Router>

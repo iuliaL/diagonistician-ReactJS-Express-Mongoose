@@ -54,177 +54,13 @@
 
 	var _reactRouter = __webpack_require__(178);
 
-	var _reactBootstrap = __webpack_require__(241);
+	var _QuestionList = __webpack_require__(497);
 
-	var _reactRouterBootstrap = __webpack_require__(492);
+	var _QuestionList2 = _interopRequireDefault(_QuestionList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var NewQuestionForm = _react2.default.createClass({
-		displayName: 'NewQuestionForm',
-
-		// don't think these propTypes are necessary
-		propTypes: {
-			onAdd: _react2.default.PropTypes.func.isRequired
-		},
-		getInitialState: function getInitialState() {
-			return {
-				text: ""
-			};
-		},
-		onQuestionChange: function onQuestionChange(event) {
-			//console.log('typing new question... ', event.target.value);
-			this.setState({
-				text: event.target.value
-			});
-		},
-		onSubmit: function onSubmit(event) {
-			event.preventDefault();
-			var questionText = this.state.text.trim();
-			if (!questionText) {
-				return;
-			}
-			this.props.onAdd({ text: questionText }); // onAdd is a callback prop, it passes the question = { text: questionText} back up to Application parent
-			this.setState({ text: "" }); // reset input value on form submit
-		},
-		render: function render() {
-			return _react2.default.createElement(
-				'form',
-				{ className: 'question-form', onSubmit: this.onSubmit },
-				_react2.default.createElement(
-					'div',
-					{ className: 'grid-parent' },
-					_react2.default.createElement(
-						'div',
-						{ className: 'grid-100 circle--input--group' },
-						_react2.default.createElement('input', { type: 'text', placeholder: 'What\'s your question?', id: 'question',
-							value: this.state.text,
-							onChange: this.onQuestionChange }),
-						_react2.default.createElement('input', { className: 'button-primary question', type: 'submit', value: 'Ask' })
-					)
-				)
-			);
-		}
-	}); // Libraries imported through Webpack
-
-
-	function Question(props) {
-		var createdAt = moment(props.createdAt).format("MMMM Do YYYY, h:mm:ss A");
-		return _react2.default.createElement(
-			'div',
-			{ className: 'grid-parent question' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'grid-10' },
-				_react2.default.createElement('img', { className: 'avatar', src: 'images/avatar.png', alt: 'avatar' })
-			),
-			_react2.default.createElement(
-				'div',
-				{ className: 'grid-90' },
-				_react2.default.createElement(
-					'p',
-					null,
-					props.text
-				),
-				_react2.default.createElement(
-					'small',
-					{ className: 'align-right block' },
-					'Asked ',
-					_react2.default.createElement(
-						'strong',
-						null,
-						createdAt
-					)
-				)
-			)
-		);
-	}
-
-	Question.propTypes = {
-		id: _react2.default.PropTypes.string.isRequired,
-		text: _react2.default.PropTypes.string.isRequired,
-		createdAt: _react2.default.PropTypes.string
-	};
-
-	var Questions_list = _react2.default.createClass({
-		displayName: 'Questions_list',
-
-		getDefaultProps: function getDefaultProps() {
-			// initializing props here, these can be overridden
-			return {
-				pollInterval: 120000,
-				url: "http://localhost:3000/questions"
-			};
-		},
-		getInitialState: function getInitialState() {
-			return {
-				questions: []
-			};
-		},
-		getQuestionsFromServer: function getQuestionsFromServer() {
-			$.get(this.props.url).then(function (result) {
-				console.log("ajax result", result);
-				this.setState({ questions: result });
-			}.bind(this)).catch(function (err) {
-				console.log("error", err);
-			}.bind(this)).always(function () {
-				console.log("finally");
-			}.bind(this));
-		},
-		postNewQuestion: function postNewQuestion(newQuestion) {
-			$.post(this.props.url, newQuestion, function (result) {
-				console.log("posted question with id:", result);
-				this.getQuestionsFromServer(); // refresh results
-			}.bind(this));
-		},
-		componentDidMount: function componentDidMount() {
-			this.getQuestionsFromServer();
-			// optionally poll for new questions every min:
-			// setInterval(this.getQuestionsFromServer, this.props.pollInterval )
-		},
-		onNewQuestion: function onNewQuestion(newQuestion) {
-			this.postNewQuestion(newQuestion);
-		},
-		render: function render() {
-			var questions = this.state.questions.map(function (q, index) {
-				return _react2.default.createElement(
-					_reactRouterBootstrap.LinkContainer,
-					{ key: q._id, to: '/question/' + q._id + ' ' },
-					_react2.default.createElement(
-						_reactBootstrap.Button,
-						null,
-						_react2.default.createElement(Question, { id: q._id,
-							text: q.text,
-							createdAt: q.createdAt })
-					)
-				);
-			}); // and then no need to bind this
-
-			return _react2.default.createElement(
-				'div',
-				{ className: 'grid-100' },
-				_react2.default.createElement(
-					'h1',
-					{ className: 'name align-center' },
-					'Code Q&A'
-				),
-				_react2.default.createElement(NewQuestionForm, { onAdd: this.onNewQuestion }),
-				_react2.default.createElement(
-					'h2',
-					null,
-					'Questions'
-				),
-				_react2.default.createElement('hr', null),
-				_react2.default.createElement(
-					'div',
-					{ className: 'questions' },
-					questions
-				)
-			);
-		}
-
-	});
-
+	// Libraries imported through Webpack
 	var Question_view = _react2.default.createClass({
 		displayName: 'Question_view',
 
@@ -319,6 +155,9 @@
 			);
 		}
 	});
+
+	// Components
+
 
 	function Votes(props) {
 		return _react2.default.createElement(
@@ -418,7 +257,7 @@
 		_react2.default.createElement(
 			_reactRouter.Route,
 			{ component: Application },
-			_react2.default.createElement(_reactRouter.Route, { path: '/', component: Questions_list }),
+			_react2.default.createElement(_reactRouter.Route, { path: '/', component: _QuestionList2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'question/:qId', component: Question_view })
 		)
 	), document.getElementById('container'));
@@ -46812,6 +46651,274 @@
 
 	exports.default = LinkContainer;
 	module.exports = exports['default'];
+
+/***/ },
+/* 495 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Iulia on 3/13/17.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var NewQuestionForm = function (_Component) {
+		_inherits(NewQuestionForm, _Component);
+
+		function NewQuestionForm() {
+			var _ref;
+
+			var _temp, _this, _ret;
+
+			_classCallCheck(this, NewQuestionForm);
+
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+
+			return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = NewQuestionForm.__proto__ || Object.getPrototypeOf(NewQuestionForm)).call.apply(_ref, [this].concat(args))), _this), _this.state = { text: '' }, _this.onQuestionChange = function (event) {
+				console.log('Typing new question... ', event.target.value);
+				_this.setState({
+					text: event.target.value
+				});
+			}, _this.onSubmit = function (event) {
+				event.preventDefault();
+				var questionText = _this.state.text.trim();
+				if (!questionText) {
+					return;
+				}
+				_this.props.onAdd({ text: questionText }); // onAdd is a callback prop, it passes the question = { text: questionText} back up to Application parent
+				_this.setState({ text: "" }); // reset input value on form submit
+			}, _temp), _possibleConstructorReturn(_this, _ret);
+		}
+
+		_createClass(NewQuestionForm, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'form',
+					{ className: 'question-form', onSubmit: this.onSubmit },
+					_react2.default.createElement(
+						'div',
+						{ className: 'grid-parent' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'grid-100 circle--input--group' },
+							_react2.default.createElement('input', { type: 'text', placeholder: 'What\'s your question?', id: 'question',
+								value: this.state.text,
+								onChange: this.onQuestionChange }),
+							_react2.default.createElement('input', { className: 'button-primary question', type: 'submit', value: 'Ask' })
+						)
+					)
+				);
+			}
+		}]);
+
+		return NewQuestionForm;
+	}(_react.Component);
+
+	NewQuestionForm.propTypes = {
+		onAdd: _react.PropTypes.func.isRequired
+	};
+	exports.default = NewQuestionForm;
+
+/***/ },
+/* 496 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function Question(props) {
+		var createdAt = moment(props.createdAt).format("MMMM Do YYYY, h:mm:ss A");
+		return _react2.default.createElement(
+			"div",
+			{ className: "grid-parent question" },
+			_react2.default.createElement(
+				"div",
+				{ className: "grid-10" },
+				_react2.default.createElement("img", { className: "avatar", src: "images/avatar.png", alt: "avatar" })
+			),
+			_react2.default.createElement(
+				"div",
+				{ className: "grid-90" },
+				_react2.default.createElement(
+					"p",
+					null,
+					props.text
+				),
+				_react2.default.createElement(
+					"small",
+					{ className: "align-right block" },
+					"Asked ",
+					_react2.default.createElement(
+						"strong",
+						null,
+						createdAt
+					)
+				)
+			)
+		);
+	}
+
+	Question.propTypes = {
+		id: _react.PropTypes.string.isRequired,
+		text: _react.PropTypes.string.isRequired,
+		createdAt: _react.PropTypes.string
+	};
+
+	exports.default = Question;
+
+/***/ },
+/* 497 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouterBootstrap = __webpack_require__(492);
+
+	var _reactBootstrap = __webpack_require__(241);
+
+	var _NewQuestionF = __webpack_require__(495);
+
+	var _NewQuestionF2 = _interopRequireDefault(_NewQuestionF);
+
+	var _Question = __webpack_require__(496);
+
+	var _Question2 = _interopRequireDefault(_Question);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var QuestionsList = function (_Component) {
+		_inherits(QuestionsList, _Component);
+
+		function QuestionsList() {
+			var _ref;
+
+			var _temp, _this, _ret;
+
+			_classCallCheck(this, QuestionsList);
+
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+
+			return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = QuestionsList.__proto__ || Object.getPrototypeOf(QuestionsList)).call.apply(_ref, [this].concat(args))), _this), _this.defaultProps = {
+				pollInterval: 120000,
+				url: "http://localhost:3000/questions"
+			}, _this.state = { questions: [] }, _this.getQuestionsFromServer = function () {
+				$.get(_this.defaultProps.url).then(function (result) {
+					console.log("ajax result", result);
+					_this.setState({ questions: result });
+				}).catch(function (err) {
+					console.log("error", err);
+				}).always(function () {
+					console.log("finally");
+				});
+			}, _this.postNewQuestion = function (newQuestion) {
+				$.post(_this.props.url, newQuestion, function (result) {
+					console.log("posted question with id:", result);
+					this.getQuestionsFromServer(); // refresh results
+				}.bind(_this));
+			}, _this.onNewQuestion = function (newQuestion) {
+				_this.postNewQuestion(newQuestion);
+			}, _temp), _possibleConstructorReturn(_this, _ret);
+		}
+
+		_createClass(QuestionsList, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.getQuestionsFromServer();
+				// optionally poll for new questions every min:
+				// setInterval(this.getQuestionsFromServer, this.props.pollInterval )
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var questions = this.state.questions.map(function (q, index) {
+					return _react2.default.createElement(
+						_reactRouterBootstrap.LinkContainer,
+						{ key: q._id, to: '/question/' + q._id + ' ' },
+						_react2.default.createElement(
+							_reactBootstrap.Button,
+							null,
+							_react2.default.createElement(_Question2.default, { id: q._id,
+								text: q.text,
+								createdAt: q.createdAt })
+						)
+					);
+				}); // and then no need to bind this
+
+				return _react2.default.createElement(
+					'div',
+					{ className: 'grid-100' },
+					_react2.default.createElement(
+						'h1',
+						{ className: 'name align-center' },
+						'Code Q&A'
+					),
+					_react2.default.createElement(_NewQuestionF2.default, { onAdd: this.onNewQuestion }),
+					_react2.default.createElement(
+						'h2',
+						null,
+						'Questions'
+					),
+					_react2.default.createElement('hr', null),
+					_react2.default.createElement(
+						'div',
+						{ className: 'questions' },
+						questions
+					)
+				);
+			}
+		}]);
+
+		return QuestionsList;
+	}(_react.Component);
+
+	exports.default = QuestionsList;
 
 /***/ }
 /******/ ]);
