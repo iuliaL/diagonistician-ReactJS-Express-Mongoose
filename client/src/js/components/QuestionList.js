@@ -52,7 +52,7 @@ export default class QuestionsList extends Component{
 		
 		return (
 			<div className="grid-100">
-				<h1 className="name align-center">Code Q&amp;A</h1>
+				<h1 className="name align-center">Diagnostician</h1>
 				<NewQuestionForm onAdd={this.onNewQuestion}/>
 				<h2>Questions</h2>
 				<hr/>
