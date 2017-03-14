@@ -1,9 +1,10 @@
 ### Medical Cases - Questions & Answers app
 
-![Application ScreenShot](/app-shot.png?raw=true "Application ScreenShot")
+<kbd>
+  <img src="/app-shot.png?raw=true">
+</kbd>
 
-Front-End: React JS
-
-Helper tools: Webpack
-
-Back-end : REST API with Express &amp; Mongoose
+Stack:
+- Front-End: React JS
+- Helper tools: Webpack
+- Server : REST API with Express &amp; Mongoose
