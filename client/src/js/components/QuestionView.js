@@ -1,6 +1,8 @@
 import React,{PropTypes, Component} from 'react';
 
 import Answer from './Answer';
+import makeRequest from '../fetchHelper';
+
 
 export default class QuestionView extends Component{
 	constructor(props){
@@ -21,37 +23,30 @@ export default class QuestionView extends Component{
 		this.getAnswersFromServer();
 	}
 	getAnswersFromServer = () => {
-		$.get(this.defaultProps.baseUrl + this.props.params.qId) // taking question id from url params
-			.then((result) =>{
-				console.log("ajax result", result);
-				this.setState({ question: result });
+		makeRequest(`${this.defaultProps.baseUrl}${this.props.params.qId}`) // taking question id from url params
+			.then(data =>{
+				console.log("get question result", data);
+				this.setState({ question: data });
 			})
-			.catch(function(err) {
-				console.log("error", err)
-			}.bind(this))
-			.always(function() {
-				console.log("finally");
-			}.bind(this));
+			.catch((err) => console.log("error", err))
 	};
 	onNewAnswerInput = event  => this.setState({ newAnswer : event.target.value });
 	onNewAnswerSubmit = event => {
 		event.preventDefault();
 		// post new answer and refresh answer list
-		let url = encodeURI(this.defaultProps.baseUrl + this.props.params.qId.trim() + '/answers');
-		// needed to trim the param don't know why i had a whitespace :(
-		let data = { text: this.state.newAnswer };
-		$.post(url, data, result => {
+		const url = encodeURI(`${this.defaultProps.baseUrl}${this.props.params.qId}/answers`);
+		const data = { text: this.state.newAnswer };
+		makeRequest(url,'POST', data).then(result => {
 			console.log("posted new answer", result);
 			this.getAnswersFromServer(); // refresh results
 			this.setState({newAnswer: ""}); // reset textArea
 		});
-		
 	};
 	refreshVoteCount = (arg, answerId) =>{
 		console.log("refreshing state?", arg, answerId);
 		// arg will be either "up" or "down"
-		let url = encodeURI(this.defaultProps.baseUrl + this.props.params.qId.trim() + '/answers/'+ answerId +'/vote-');
-		$.post(`${url}${arg}`, ()=>{
+		const url = encodeURI(`${this.defaultProps.baseUrl}${this.props.params.qId}/answers/${answerId}/vote-${arg}`);
+		makeRequest(url, 'POST').then (()=>{
 			console.log("Voted", arg);
 			this.getAnswersFromServer();
 		});
@@ -65,7 +60,7 @@ export default class QuestionView extends Component{
 				        votes={a.votes}
 				        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
 				        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
-				        questionNamespace={this.defaultProps.baseUrl + this.props.params.qId.trim() + '/answers/'}
+				        questionNamespace={this.defaultProps.baseUrl + this.props.params.qId + '/answers/'}
 				        onVoteCountChanged={this.refreshVoteCount}/>
 			)
 		});

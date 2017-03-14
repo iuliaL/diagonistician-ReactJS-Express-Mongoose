@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/build/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -58,191 +58,21 @@
 
 	var _QuestionList2 = _interopRequireDefault(_QuestionList);
 
+	var _QuestionView = __webpack_require__(498);
+
+	var _QuestionView2 = _interopRequireDefault(_QuestionView);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// Libraries imported through Webpack
-	var QuestionView = _react2.default.createClass({
-		displayName: 'QuestionView',
-
-		getDefaultProps: function getDefaultProps() {
-			return {
-				baseUrl: "http://localhost:3000/questions/",
-				qId: '00000000000'
-			};
-		},
-		getInitialState: function getInitialState() {
-			return {
-				question: {
-					text: '',
-					answers: []
-
-				},
-				newAnswer: ''
-			};
-		},
-		getAnswersFromServer: function getAnswersFromServer() {
-			$.get(this.props.baseUrl + this.props.params.qId) // taking question id from url params
-			.then(function (result) {
-				console.log("ajax result", result);
-				this.setState({ question: result });
-			}.bind(this)).catch(function (err) {
-				console.log("error", err);
-			}.bind(this)).always(function () {
-				console.log("finally");
-			}.bind(this));
-		},
-		componentDidMount: function componentDidMount() {
-			this.getAnswersFromServer();
-		},
-		onNewAnswerInput: function onNewAnswerInput(event) {
-			this.setState({ newAnswer: event.target.value });
-		},
-		onNewAnswerSubmit: function onNewAnswerSubmit(event) {
-			event.preventDefault();
-			// post new answer and refresh answer list
-			var url = encodeURI(this.props.baseUrl + this.props.params.qId.trim() + '/answers');
-			// needed to trim the param don't know why i had a whitespace :(
-			var data = { text: this.state.newAnswer };
-			$.post(url, data, function (result) {
-				console.log("posted new answer", result);
-				this.getAnswersFromServer(); // refresh results
-				this.setState({ newAnswer: "" }); // reset textArea
-			}.bind(this));
-		},
-		refreshVoteCount: function refreshVoteCount(arg, answerId) {
-			console.log("refreshing state?", arg, answerId);
-			// arg will be either "up" or "down"
-			var url = encodeURI(this.props.baseUrl + this.props.params.qId.trim() + '/answers/' + answerId + '/vote-');
-			$.post('' + url + arg, function () {
-				console.log("Voted", arg);
-				this.getAnswersFromServer();
-			}.bind(this));
-		},
-		render: function render() {
-			var answers = this.state.question.answers.map(function (a, index) {
-				return _react2.default.createElement(Answer, { key: a._id,
-					id: a._id,
-					text: a.text,
-					votes: a.votes,
-					createdAt: moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A"),
-					updatedAt: moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A"),
-					questionNamespace: this.props.baseUrl + this.props.params.qId.trim() + '/answers/',
-					onVoteCountChanged: this.refreshVoteCount });
-			}.bind(this)); // and then no need to bind this
-			return _react2.default.createElement(
-				'div',
-				{ className: 'grid-100' },
-				_react2.default.createElement(
-					'h2',
-					{ className: 'question-heading' },
-					this.state.question.text
-				),
-				_react2.default.createElement('hr', null),
-				_react2.default.createElement(
-					'h3',
-					null,
-					'Add an Answer'
-				),
-				answers,
-				_react2.default.createElement(
-					'form',
-					{ onSubmit: this.onNewAnswerSubmit },
-					_react2.default.createElement('textarea', { className: 'full-width', placeholder: 'Your answer...', id: 'message',
-						value: this.state.newAnswer,
-						onChange: this.onNewAnswerInput }),
-					_react2.default.createElement('input', { className: 'button-primary answer', type: 'submit', value: 'Post answer' })
-				)
-			);
-		}
-	});
-
 	// Components
-
-
-	function Votes(props) {
-		return _react2.default.createElement(
-			'div',
-			{ className: 'answer-voting' },
-			_react2.default.createElement(
-				'span',
-				{ className: 'icon-chevron-up', onClick: function onClick() {
-						props.onVote('up');
-					} },
-				' '
-			),
-			_react2.default.createElement(
-				'strong',
-				{ className: 'vote-count' },
-				props.votes
-			),
-			_react2.default.createElement(
-				'span',
-				{ className: 'icon-chevron-down', onClick: function onClick() {
-						props.onVote('down');
-					} },
-				' '
-			)
-		);
-	}
-
-	var Answer = function Answer(props) {
-		console.log('DEBUGS');
-		onVoteChange = function onVoteChange(arg) {
-			console.log("on vote ", arg);
-			props.onVoteCountChanged(arg, props.id);
-		};
-		return _react2.default.createElement(
-			'div',
-			{ className: 'grid-parent answer-container' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'grid-10' },
-				_react2.default.createElement(Votes, { votes: props.votes, onVote: onVoteChange })
-			),
-			_react2.default.createElement(
-				'div',
-				{ className: 'grid-90' },
-				_react2.default.createElement(
-					'p',
-					{ style: { 'color': 'black', 'fontWeight': 600 } },
-					undefined.props.text
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'align-right' },
-					_react2.default.createElement(
-						'small',
-						null,
-						'Answered ',
-						_react2.default.createElement(
-							'strong',
-							null,
-							props.createdAt
-						),
-						' | '
-					),
-					_react2.default.createElement(
-						'small',
-						null,
-						'Modified ',
-						_react2.default.createElement(
-							'strong',
-							null,
-							props.updatedAt
-						)
-					)
-				)
-			)
-		);
-	};
-
 	function Application(props) {
 		return _react2.default.createElement(
 			'div',
 			{ className: 'bounds' },
 			props.children
 		);
-	}
+	} // Libraries imported through Webpack
+
 
 	(0, _reactDom.render)(_react2.default.createElement(
 		_reactRouter.Router,
@@ -251,7 +81,7 @@
 			_reactRouter.Route,
 			{ component: Application },
 			_react2.default.createElement(_reactRouter.Route, { path: '/', component: _QuestionList2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'question/:qId', component: QuestionView })
+			_react2.default.createElement(_reactRouter.Route, { path: 'question/:qId', component: _QuestionView2.default })
 		)
 	), document.getElementById('container'));
 
@@ -27395,16 +27225,16 @@
 				pollInterval: 120000,
 				url: "http://localhost:3000/questions"
 			}, _this.state = { questions: [] }, _this.getQuestionsFromServer = function () {
-				$.get(_this.defaultProps.url).then(function (result) {
-					console.log("TRALA result", result);
-					_this.setState({ questions: result });
+				fetch(_this.defaultProps.url).then(checkStatus).then(function (result) {
+					return result.json();
+				}).then(function (data) {
+					console.log("Promise result", data);
+					_this.setState({ questions: data });
 				}).catch(function (err) {
-					console.log("error", err);
-				}).always(function () {
-					console.log("finally");
+					console.log("Error fetching questions", err);
 				});
 			}, _this.postNewQuestion = function (newQuestion) {
-				$.post(_this.props.url, newQuestion, function (result) {
+				$.post(_this.defaultProps.url, newQuestion, function (result) {
 					console.log("posted question with id:", result);
 					this.getQuestionsFromServer(); // refresh results
 				}.bind(_this));
@@ -27464,7 +27294,18 @@
 		return QuestionsList;
 	}(_react.Component);
 
+	/* fetch Promise checkStatus */
+
 	exports.default = QuestionsList;
+	function checkStatus(res) {
+		if (res.status >= 200 && res.status < 300) {
+			return res;
+		} else {
+			var error = new Error(res.statusText);
+			error.response = res;
+			throw error;
+		}
+	}
 
 /***/ },
 /* 242 */
@@ -46912,6 +46753,279 @@
 	};
 
 	exports.default = Question;
+
+/***/ },
+/* 498 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Answer = __webpack_require__(499);
+
+	var _Answer2 = _interopRequireDefault(_Answer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var QuestionView = function (_Component) {
+		_inherits(QuestionView, _Component);
+
+		function QuestionView(props) {
+			_classCallCheck(this, QuestionView);
+
+			var _this = _possibleConstructorReturn(this, (QuestionView.__proto__ || Object.getPrototypeOf(QuestionView)).call(this, props));
+
+			_this.getAnswersFromServer = function () {
+				fetch('' + _this.defaultProps.baseUrl + _this.props.params.qId) // taking question id from url params
+				.then(checkStatus).then(function (result) {
+					return result.json();
+				}).then(function (data) {
+					console.log("get question result", data);
+					_this.setState({ question: data });
+				}).catch(function (err) {
+					return console.log("error", err);
+				});
+			};
+
+			_this.onNewAnswerInput = function (event) {
+				return _this.setState({ newAnswer: event.target.value });
+			};
+
+			_this.onNewAnswerSubmit = function (event) {
+				event.preventDefault();
+				// post new answer and refresh answer list
+				var url = encodeURI(_this.defaultProps.baseUrl + _this.props.params.qId.trim() + '/answers');
+				// needed to trim the param don't know why i had a whitespace :(
+				var data = { text: _this.state.newAnswer };
+				$.post(url, data, function (result) {
+					console.log("posted new answer", result);
+					_this.getAnswersFromServer(); // refresh results
+					_this.setState({ newAnswer: "" }); // reset textArea
+				});
+			};
+
+			_this.refreshVoteCount = function (arg, answerId) {
+				console.log("refreshing state?", arg, answerId);
+				// arg will be either "up" or "down"
+				var url = encodeURI(_this.defaultProps.baseUrl + _this.props.params.qId.trim() + '/answers/' + answerId + '/vote-');
+				$.post('' + url + arg, function () {
+					console.log("Voted", arg);
+					_this.getAnswersFromServer();
+				});
+			};
+
+			_this.defaultProps = {
+				baseUrl: "http://localhost:3000/questions/",
+				qId: '00000000000'
+			};
+			_this.state = {
+				question: {
+					text: '',
+					answers: []
+				},
+				newAnswer: ''
+			};
+			return _this;
+		}
+
+		_createClass(QuestionView, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.getAnswersFromServer();
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
+
+				var answers = this.state.question.answers.map(function (a, index) {
+					return _react2.default.createElement(_Answer2.default, { key: a._id,
+						id: a._id,
+						text: a.text,
+						votes: a.votes,
+						createdAt: moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A"),
+						updatedAt: moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A"),
+						questionNamespace: _this2.defaultProps.baseUrl + _this2.props.params.qId.trim() + '/answers/',
+						onVoteCountChanged: _this2.refreshVoteCount });
+				});
+				return _react2.default.createElement(
+					'div',
+					{ className: 'grid-100' },
+					_react2.default.createElement(
+						'h2',
+						{ className: 'question-heading' },
+						this.state.question.text
+					),
+					_react2.default.createElement('hr', null),
+					_react2.default.createElement(
+						'h3',
+						null,
+						'Add an Answer'
+					),
+					answers,
+					_react2.default.createElement(
+						'form',
+						{ onSubmit: this.onNewAnswerSubmit },
+						_react2.default.createElement('textarea', { className: 'full-width', placeholder: 'Your answer...', id: 'message',
+							value: this.state.newAnswer,
+							onChange: this.onNewAnswerInput }),
+						_react2.default.createElement('input', { className: 'button-primary answer', type: 'submit', value: 'Post answer' })
+					)
+				);
+			}
+		}]);
+
+		return QuestionView;
+	}(_react.Component);
+
+	/* fetch Promise checkStatus */
+
+	exports.default = QuestionView;
+	function checkStatus(res) {
+		if (res.status >= 200 && res.status < 300) {
+			return res;
+		} else {
+			var error = new Error(res.statusText);
+			error.response = res;
+			throw error;
+		}
+	}
+
+/***/ },
+/* 499 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Votes = __webpack_require__(500);
+
+	var _Votes2 = _interopRequireDefault(_Votes);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Answer = function Answer(props) {
+		var onVoteChange = function onVoteChange(arg) {
+			console.log("on vote ", arg);
+			props.onVoteCountChanged(arg, props.id);
+		};
+		return _react2.default.createElement(
+			'div',
+			{ className: 'grid-parent answer-container' },
+			_react2.default.createElement(
+				'div',
+				{ className: 'grid-10' },
+				_react2.default.createElement(_Votes2.default, { votes: props.votes, onVote: onVoteChange })
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'grid-90' },
+				_react2.default.createElement(
+					'p',
+					{ style: { 'color': 'black', 'fontWeight': 600 } },
+					props.text
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'align-right' },
+					_react2.default.createElement(
+						'small',
+						null,
+						'Answered ',
+						_react2.default.createElement(
+							'strong',
+							null,
+							props.createdAt
+						),
+						' | '
+					),
+					_react2.default.createElement(
+						'small',
+						null,
+						'Modified ',
+						_react2.default.createElement(
+							'strong',
+							null,
+							props.updatedAt
+						)
+					)
+				)
+			)
+		);
+	};
+
+	exports.default = Answer;
+
+/***/ },
+/* 500 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function Votes(props) {
+		return _react2.default.createElement(
+			"div",
+			{ className: "answer-voting" },
+			_react2.default.createElement(
+				"span",
+				{ className: "icon-chevron-up", onClick: function onClick() {
+						props.onVote('up');
+					} },
+				" "
+			),
+			_react2.default.createElement(
+				"strong",
+				{ className: "vote-count" },
+				props.votes
+			),
+			_react2.default.createElement(
+				"span",
+				{ className: "icon-chevron-down", onClick: function onClick() {
+						props.onVote('down');
+					} },
+				" "
+			)
+		);
+	}
+
+	Votes.propTypes = {
+		onVote: _react.PropTypes.func.isRequired,
+		votes: _react.PropTypes.number.isRequired
+	};
+
+	exports.default = Votes;
 
 /***/ }
 /******/ ]);

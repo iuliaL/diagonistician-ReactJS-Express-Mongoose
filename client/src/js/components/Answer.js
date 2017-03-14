@@ -3,10 +3,10 @@ import React from 'react';
 import Votes from './Votes';
 
 const Answer = (props) => {
-	function onVoteChange ( arg ) {
+	const onVoteChange = arg => {
 		console.log("on vote ", arg);
 		props.onVoteCountChanged(arg, props.id);
-	}
+	};
 	return (
 		<div className="grid-parent answer-container">
 			<div className="grid-10">
