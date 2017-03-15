@@ -1,17 +1,18 @@
 "use strict";
 
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 // middleware here:
-var bodyParser = require('body-parser');
-var logger = require("morgan");
+const bodyParser = require('body-parser');
+const logger = require("morgan");
 
 // other modules:
-var routes = require('./routes'); //  or ./routes.js
-var errorHandler = require("./errorHandler").handleError;
+const questionRoutes = require('./routes');
+const authRoutes = require('./auth');
+const errorHandler = require("./errorHandler").handleError;
 require("./database"); // need this line otherwise app won't know about the database module
 
-var serverPort = process.env.PORT || 3000;
+const serverPort = process.env.PORT || 8080;
 
 // app.use is handling Middleware in express
 // We use logger(morgan) to log requests in the console and body-parser to parse req.body
@@ -37,11 +38,13 @@ app.use(function (req,res,next) {
 	next();
 });
 
-app.use('/questions',routes);
+app.use('/questions', questionRoutes);
+app.use('/auth', authRoutes);
+// NOTHING served on '/' (root)
 
 //catch 404 and forward to error handler (resource not found)
 app.use(function(req,res,next){
-	var err = new Error("Not Found");
+	const err = new Error("Not Found");
 	err.status = 404;
 	next(err);
 });

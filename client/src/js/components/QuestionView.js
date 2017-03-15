@@ -7,8 +7,9 @@ import makeRequest from '../fetchHelper';
 export default class QuestionView extends Component{
 	constructor(props){
 		super(props);
+		console.log('Props',props);
 		this.defaultProps = {
-			baseUrl : "http://localhost:3000/questions/",
+			baseUrl : "http://localhost:8080/questions/",
 			qId : '00000000000'
 		};
 		this.state = {

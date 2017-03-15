@@ -6,8 +6,10 @@ import { Router, Route, browserHistory } from 'react-router';
 // Components
 import QuestionList  from './components/QuestionList'
 import QuestionView from './components/QuestionView';
+import RegisterForm from './components/RegisterForm'
 
 function Application(props){
+	const onNewUser = (user) => console.log(user);
 	return (
 		<div className="bounds">
 			{/*here are the routes*/}
@@ -21,6 +23,9 @@ render((
 		<Route component={Application}>
 			<Route path="/" component={QuestionList}/>
 			<Route path="question/:qId" component={QuestionView}/>
+			{/*<Route path="login" component={LoginForm}/>*/}
+			<Route path="register" component={RegisterForm} onAdd={(user)=>{console.log('user',user)}}/>
+			{/* got the user credentials till here*/}
 		</Route>
 	</Router>
 	),document.getElementById('container'));
