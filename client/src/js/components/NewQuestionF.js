@@ -27,11 +27,11 @@ export default class NewQuestionForm extends Component{
 		return (
 			<form className="question-form" onSubmit={this.onSubmit}>
 				<div className="grid-parent">
-					<div className="grid-100 circle--input--group">
-						<input type="text" placeholder="Tell us about your symptoms, medical history..." id="question"
+					<div className="grid-100">
+						<textarea type="text" placeholder="Tell us about your symptoms, medical history..." id="question"
 						       value={this.state.text}
 						       onChange={this.onQuestionChange}/>
-						<input className="button-primary question" type="submit" value="Ask"/>
+						<input className="button-primary ask-question-button" type="submit" value="Ask a doctor"/>
 					</div>
 				</div>
 			</form>

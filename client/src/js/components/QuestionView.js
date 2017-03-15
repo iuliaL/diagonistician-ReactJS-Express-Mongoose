@@ -68,8 +68,8 @@ export default class QuestionView extends Component{
 			<div className="grid-100">
 				<h2 className="question-heading">{this.state.question.text}</h2>
 				<hr/>
-				<h3>Add an Answer</h3>
 				{answers}
+				<h3>Add an Answer</h3>
 				<form onSubmit={this.onNewAnswerSubmit}>
 					<textarea className="full-width" placeholder="Your answer..." id="message"
 					          value={this.state.newAnswer}

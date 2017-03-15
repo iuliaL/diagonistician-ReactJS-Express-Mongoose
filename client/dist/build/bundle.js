@@ -58,7 +58,7 @@
 
 	var _QuestionList2 = _interopRequireDefault(_QuestionList);
 
-	var _QuestionView = __webpack_require__(498);
+	var _QuestionView = __webpack_require__(499);
 
 	var _QuestionView2 = _interopRequireDefault(_QuestionView);
 
@@ -27199,6 +27199,10 @@
 
 	var _Question2 = _interopRequireDefault(_Question);
 
+	var _fetchHelper = __webpack_require__(498);
+
+	var _fetchHelper2 = _interopRequireDefault(_fetchHelper);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27225,19 +27229,19 @@
 				pollInterval: 120000,
 				url: "http://localhost:3000/questions"
 			}, _this.state = { questions: [] }, _this.getQuestionsFromServer = function () {
-				fetch(_this.defaultProps.url).then(checkStatus).then(function (result) {
-					return result.json();
-				}).then(function (data) {
+				(0, _fetchHelper2.default)(_this.defaultProps.url).then(function (data) {
 					console.log("Promise result", data);
 					_this.setState({ questions: data });
 				}).catch(function (err) {
 					console.log("Error fetching questions", err);
 				});
 			}, _this.postNewQuestion = function (newQuestion) {
-				$.post(_this.defaultProps.url, newQuestion, function (result) {
-					console.log("posted question with id:", result);
-					this.getQuestionsFromServer(); // refresh results
-				}.bind(_this));
+				(0, _fetchHelper2.default)(_this.defaultProps.url, 'post', newQuestion).then(function (response) {
+					console.log("posted question with id:", response);
+					_this.getQuestionsFromServer(); // refresh results
+				}).catch(function (err) {
+					return console.log('Error posting new question', err);
+				});
 			}, _this.onNewQuestion = function (newQuestion) {
 				_this.postNewQuestion(newQuestion);
 			}, _temp), _possibleConstructorReturn(_this, _ret);
@@ -27253,10 +27257,10 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var questions = this.state.questions.map(function (q, index) {
+				var questions = this.state.questions.map(function (q) {
 					return _react2.default.createElement(
 						_reactRouterBootstrap.LinkContainer,
-						{ key: q._id, to: '/question/' + q._id + ' ' },
+						{ key: q._id, to: '/question/' + q._id },
 						_react2.default.createElement(
 							_reactBootstrap.Button,
 							null,
@@ -27273,7 +27277,7 @@
 					_react2.default.createElement(
 						'h1',
 						{ className: 'name align-center' },
-						'Code Q&A'
+						'Diagnostician'
 					),
 					_react2.default.createElement(_NewQuestionF2.default, { onAdd: this.onNewQuestion }),
 					_react2.default.createElement(
@@ -27294,18 +27298,7 @@
 		return QuestionsList;
 	}(_react.Component);
 
-	/* fetch Promise checkStatus */
-
 	exports.default = QuestionsList;
-	function checkStatus(res) {
-		if (res.status >= 200 && res.status < 300) {
-			return res;
-		} else {
-			var error = new Error(res.statusText);
-			error.response = res;
-			throw error;
-		}
-	}
 
 /***/ },
 /* 242 */
@@ -46679,11 +46672,11 @@
 						{ className: 'grid-parent' },
 						_react2.default.createElement(
 							'div',
-							{ className: 'grid-100 circle--input--group' },
-							_react2.default.createElement('input', { type: 'text', placeholder: 'What\'s your question?', id: 'question',
+							{ className: 'grid-100' },
+							_react2.default.createElement('textarea', { type: 'text', placeholder: 'Tell us about your symptoms, medical history...', id: 'question',
 								value: this.state.text,
 								onChange: this.onQuestionChange }),
-							_react2.default.createElement('input', { className: 'button-primary question', type: 'submit', value: 'Ask' })
+							_react2.default.createElement('input', { className: 'button-primary ask-question-button', type: 'submit', value: 'Ask a doctor' })
 						)
 					)
 				);
@@ -46756,6 +46749,44 @@
 
 /***/ },
 /* 498 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/* fetch Promise checkStatus */
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = makeRequest;
+	function checkStatus(res) {
+		if (res.status >= 200 && res.status < 300) {
+			return Promise.resolve(res);
+		} else {
+			var error = new Error(res.statusText);
+			error.response = res;
+			return Promise.reject(error);
+		}
+	}
+
+	function makeRequest(url) {
+		var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GET';
+		var payload = arguments[2];
+		var params = arguments[3];
+		var headers = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : { "Content-type": "application/json" };
+
+		var options = { method: method, params: params, headers: headers };
+		if (payload) {
+			options.body = JSON.stringify(payload);
+		}
+		console.log('fetch options', options);
+		return fetch(url, options).then(checkStatus).then(function (result) {
+			return result.json();
+		});
+	}
+
+/***/ },
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46770,9 +46801,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Answer = __webpack_require__(499);
+	var _Answer = __webpack_require__(500);
 
 	var _Answer2 = _interopRequireDefault(_Answer);
+
+	var _fetchHelper = __webpack_require__(498);
+
+	var _fetchHelper2 = _interopRequireDefault(_fetchHelper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46791,10 +46826,8 @@
 			var _this = _possibleConstructorReturn(this, (QuestionView.__proto__ || Object.getPrototypeOf(QuestionView)).call(this, props));
 
 			_this.getAnswersFromServer = function () {
-				fetch('' + _this.defaultProps.baseUrl + _this.props.params.qId) // taking question id from url params
-				.then(checkStatus).then(function (result) {
-					return result.json();
-				}).then(function (data) {
+				(0, _fetchHelper2.default)('' + _this.defaultProps.baseUrl + _this.props.params.qId) // taking question id from url params
+				.then(function (data) {
 					console.log("get question result", data);
 					_this.setState({ question: data });
 				}).catch(function (err) {
@@ -46809,10 +46842,9 @@
 			_this.onNewAnswerSubmit = function (event) {
 				event.preventDefault();
 				// post new answer and refresh answer list
-				var url = encodeURI(_this.defaultProps.baseUrl + _this.props.params.qId.trim() + '/answers');
-				// needed to trim the param don't know why i had a whitespace :(
+				var url = encodeURI('' + _this.defaultProps.baseUrl + _this.props.params.qId + '/answers');
 				var data = { text: _this.state.newAnswer };
-				$.post(url, data, function (result) {
+				(0, _fetchHelper2.default)(url, 'POST', data).then(function (result) {
 					console.log("posted new answer", result);
 					_this.getAnswersFromServer(); // refresh results
 					_this.setState({ newAnswer: "" }); // reset textArea
@@ -46822,8 +46854,8 @@
 			_this.refreshVoteCount = function (arg, answerId) {
 				console.log("refreshing state?", arg, answerId);
 				// arg will be either "up" or "down"
-				var url = encodeURI(_this.defaultProps.baseUrl + _this.props.params.qId.trim() + '/answers/' + answerId + '/vote-');
-				$.post('' + url + arg, function () {
+				var url = encodeURI('' + _this.defaultProps.baseUrl + _this.props.params.qId + '/answers/' + answerId + '/vote-' + arg);
+				(0, _fetchHelper2.default)(url, 'POST').then(function () {
 					console.log("Voted", arg);
 					_this.getAnswersFromServer();
 				});
@@ -46860,7 +46892,7 @@
 						votes: a.votes,
 						createdAt: moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A"),
 						updatedAt: moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A"),
-						questionNamespace: _this2.defaultProps.baseUrl + _this2.props.params.qId.trim() + '/answers/',
+						questionNamespace: _this2.defaultProps.baseUrl + _this2.props.params.qId + '/answers/',
 						onVoteCountChanged: _this2.refreshVoteCount });
 				});
 				return _react2.default.createElement(
@@ -46893,21 +46925,10 @@
 		return QuestionView;
 	}(_react.Component);
 
-	/* fetch Promise checkStatus */
-
 	exports.default = QuestionView;
-	function checkStatus(res) {
-		if (res.status >= 200 && res.status < 300) {
-			return res;
-		} else {
-			var error = new Error(res.statusText);
-			error.response = res;
-			throw error;
-		}
-	}
 
 /***/ },
-/* 499 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46920,7 +46941,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Votes = __webpack_require__(500);
+	var _Votes = __webpack_require__(501);
 
 	var _Votes2 = _interopRequireDefault(_Votes);
 
@@ -46979,7 +47000,7 @@
 	exports.default = Answer;
 
 /***/ },
-/* 500 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
