@@ -69,7 +69,8 @@ export default class QuestionsList extends Component{
 				<h1 className="name align-center">Diagnostician</h1>
 				{/*TODO: add user logged in conditionals here*/}
 				{!this.checkIfHasRoute('/add') &&
-				<button className="button-primary ask-question-button" onClick={this.goToAdd}>Ask a question</button>}
+				<button className="button-primary ask-question-button question-form"
+				        onClick={this.goToAdd}>Ask a question</button>}
 				{newQuestionForm}
 				<h2>Questions</h2>
 				<hr/>
