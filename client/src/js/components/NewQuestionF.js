@@ -4,9 +4,6 @@
 import React, {Component, PropTypes} from 'react';
 
 export default class NewQuestionForm extends Component{
-	static propTypes = {
-		onAdd: PropTypes.func.isRequired
-	};
 	state = { text : ''};
 	onQuestionChange = event => {
 		console.log('Typing new question... ', event.target.value);

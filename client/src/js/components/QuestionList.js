@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap';
 
-import NewQuestionForm from './NewQuestionF';
 import Question from './Question';
 import makeRequest from '../fetchHelper';
 
@@ -38,6 +37,11 @@ export default class QuestionsList extends Component{
 		this.postNewQuestion(newQuestion);
 	};
 	render () {
+		const newQuestionForm = React.Children.map(this.props.children, child =>{
+			return React.cloneElement(child, {
+				onAdd: this.onNewQuestion // add onAdd callback to NewQuestionForm
+			});
+		});
 		const questions = this.state.questions.map(q => {
 			return (
 				<LinkContainer key={q._id} to={`/question/${q._id}`}>
@@ -53,7 +57,8 @@ export default class QuestionsList extends Component{
 		return (
 			<div className="grid-100">
 				<h1 className="name align-center">Diagnostician</h1>
-				<NewQuestionForm onAdd={this.onNewQuestion}/>
+				{newQuestionForm}
+				{/* this.props.children  meaning NewQuestionForm*/}
 				<h2>Questions</h2>
 				<hr/>
 				<div className="questions">
