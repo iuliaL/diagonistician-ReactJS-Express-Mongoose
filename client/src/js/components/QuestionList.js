@@ -1,4 +1,6 @@
 import React, {Component, PropTypes} from 'react';
+import { browserHistory } from 'react-router'
+
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap';
 
@@ -14,7 +16,7 @@ export default class QuestionsList extends Component{
 	getQuestionsFromServer = () => {
 		makeRequest(this.defaultProps.url)
 			.then(data =>{
-				console.log("Promise result", data);
+				//console.log("Promise result", data);
 				this.setState({ questions: data });
 			}).catch((err)=> {
 				console.log("Error fetching questions", err)
@@ -35,6 +37,14 @@ export default class QuestionsList extends Component{
 	}
 	onNewQuestion =(newQuestion) => {
 		this.postNewQuestion(newQuestion);
+	};
+	goToAdd = (event) => {
+		event.preventDefault();
+		const path = '/add';
+		browserHistory.push(path);
+	};
+	checkIfHasRoute = (route) => {
+		return this.props.location.pathname == route;
 	};
 	render () {
 		const newQuestionForm = React.Children.map(this.props.children, child =>{
@@ -57,8 +67,10 @@ export default class QuestionsList extends Component{
 		return (
 			<div className="grid-100">
 				<h1 className="name align-center">Diagnostician</h1>
+				{/*TODO: add user logged in conditionals here*/}
+				{!this.checkIfHasRoute('/add') &&
+				<button className="button-primary ask-question-button" onClick={this.goToAdd}>Ask a question</button>}
 				{newQuestionForm}
-				{/* this.props.children  meaning NewQuestionForm*/}
 				<h2>Questions</h2>
 				<hr/>
 				<div className="questions">
