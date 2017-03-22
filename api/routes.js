@@ -2,7 +2,7 @@
 
 var express = require("express");
 var router = express.Router();
-var Question = require('./models');
+var Question = require('./models/QuestionModel');
 
 //GET /questions
 router.get('/',function(req,res,next){
@@ -58,7 +58,7 @@ router.get('/:qId',function(req,res, next){
 
 //POST /questions
 router.post('/',function(req,res,next){
-	var newQuestion = new Question(req.body);
+	const newQuestion = new Question(req.body);
 	newQuestion.save()
 	.then(function(reply){ //the reply is the actual question created
 		res.status(201).json(reply.id)

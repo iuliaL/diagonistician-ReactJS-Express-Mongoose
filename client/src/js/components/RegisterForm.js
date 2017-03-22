@@ -3,6 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react';
 import { withRouter } from 'react-router';
+import makeRequest from '../fetchHelper';
 
 
 class RegisterForm extends Component{
@@ -13,7 +14,7 @@ class RegisterForm extends Component{
 	};
 	state = { username : '', password: ''};
 	onInputChange = (event) => {
-		console.log('Typing ... ', event.target.value);
+		//console.log('Typing ... ', event.target.value);
 		const what = event.target.name;
 		this.setState({
 			[what]: event.target.value
@@ -22,13 +23,22 @@ class RegisterForm extends Component{
 	onSubmit = (event) => {
 		event.preventDefault();
 		const username = this.state.username.trim();
-		const password = this.state.password.trim();
+		const password = this.state.password;
 		if (!username || !password) {
 			alert('Please type username and password!');
 			return;
 		}
 		this.props.onAdd({ username, password });
+		this.postNewUser({ username, password })
+			//TODO redirect after register
+			.then(()=>console.log("Redirect me to questions"));
 		this.setState({ username : '', password: ''});
+	};
+	postNewUser = (user) => {
+		const url = 'http://localhost:8080/auth/register';
+		return makeRequest(url, "POST", user)
+			.then((response)=> console.log('User created', response))
+			.catch((e)=> console.log('Could not create user',e));
 	};
 	render(){
 		return (
