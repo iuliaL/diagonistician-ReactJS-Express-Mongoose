@@ -2,8 +2,10 @@
  * Created by Iulia on 3/13/17.
  */
 import React, {Component, PropTypes} from 'react';
+import { withRouter } from 'react-router';
 
-export default class RegisterForm extends Component{
+
+class RegisterForm extends Component{
 	static propTypes = {
 		route: PropTypes.shape({
 			onAdd: PropTypes.func.isRequired
@@ -25,7 +27,7 @@ export default class RegisterForm extends Component{
 			alert('Please type username and password!');
 			return;
 		}
-		this.props.route.onAdd({ username, password });
+		this.props.onAdd({ username, password });
 		this.setState({ username : '', password: ''});
 	};
 	render(){
@@ -49,3 +51,5 @@ export default class RegisterForm extends Component{
 		)
 	}
 }
+
+export default withRouter(RegisterForm)

@@ -1,10 +1,12 @@
 import React, {Component, PropTypes} from 'react';
-import { browserHistory } from 'react-router'
+import { Route } from 'react-router'
+import { Switch } from 'react-router-dom'
 
-import { LinkContainer } from 'react-router-bootstrap';
-import { Button } from 'react-bootstrap';
+
+import LinkWrap from './LinkWrap';
 
 import Question from './Question';
+import NewQuestionForm from './NewQuestionF';
 import makeRequest from '../fetchHelper';
 
 export default class QuestionsList extends Component{
@@ -16,7 +18,7 @@ export default class QuestionsList extends Component{
 	getQuestionsFromServer = () => {
 		makeRequest(this.defaultProps.url)
 			.then(data =>{
-				//console.log("Promise result", data);
+				console.log("Promise result", data);
 				this.setState({ questions: data });
 			}).catch((err)=> {
 				console.log("Error fetching questions", err)
@@ -35,43 +37,32 @@ export default class QuestionsList extends Component{
 		// optionally poll for new questions every min:
 		// setInterval(this.getQuestionsFromServer, this.props.pollInterval )
 	}
-	onNewQuestion =(newQuestion) => {
-		this.postNewQuestion(newQuestion);
-	};
-	goToAdd = (event) => {
-		event.preventDefault();
-		const path = '/add';
-		browserHistory.push(path);
-	};
-	checkIfHasRoute = (route) => {
-		return this.props.location.pathname == route;
-	};
+	onNewQuestion = newQuestion => this.postNewQuestion(newQuestion);
+	checkIfHasRoute = route => this.props.location.pathname == route;
 	render () {
-		const newQuestionForm = React.Children.map(this.props.children, child =>{
-			return React.cloneElement(child, {
-				onAdd: this.onNewQuestion // add onAdd callback to NewQuestionForm
-			});
-		});
 		const questions = this.state.questions.map(q => {
 			return (
-				<LinkContainer key={q._id} to={`/question/${q._id}`}>
-					<Button>
-						<Question id={q._id}
-						          text={q.text}
-						          createdAt={q.createdAt}/>
-					</Button>
-				</LinkContainer>
+				<LinkWrap key={q._id} to={`/question/${q._id}`}>
+					<Question id={q._id}
+					          text={q.text}
+					          createdAt={q.createdAt}/>
+				</LinkWrap>
 			)
 		}); // and then no need to bind this
 		
 		return (
 			<div className="grid-100">
 				<h1 className="name align-center">Diagnostician</h1>
+				
 				{/*TODO: add user logged in conditionals here*/}
-				{!this.checkIfHasRoute('/add') &&
-				<button className="button-primary ask-question-button question-form"
-				        onClick={this.goToAdd}>Ask a question</button>}
-				{newQuestionForm}
+				{!this.checkIfHasRoute('/list/add') &&
+					<LinkWrap to="/list/add">
+						<button className="button-primary ask-question-button question-form">Ask a question</button>
+					</LinkWrap>}
+				
+				<Switch>
+					<Route path='/list/add' render={() => <NewQuestionForm onAdd={this.onNewQuestion}/>}/>
+				</Switch>
 				<h2>Questions</h2>
 				<hr/>
 				<div className="questions">
@@ -80,6 +71,5 @@ export default class QuestionsList extends Component{
 			</div>
 		)
 	}
-	
 }
 

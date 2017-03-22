@@ -5,7 +5,12 @@ const router = express.Router();
 
 // GET /register
 router.get('/register', function(req, res, next) {
-	return res.send('Register route');
+	return res.send('GET Register route');
+});
+
+// GET /register
+router.post('/register', function(req, res, next) {
+	return res.send('POST Register route');
 });
 
 // GET /login
