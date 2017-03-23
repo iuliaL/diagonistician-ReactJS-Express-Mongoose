@@ -32,9 +32,9 @@ class RegisterForm extends Component{
 		}
 		this.props.onAdd({ username, password });
 		this.postNewUser({ username, password })
-		//TODO redirect after register
+		//TODO redirect after login
 			.then(()=>console.log("Redirect me to questions"));
-		this.setState({ username : '', password: ''});
+		//this.setState({ username : '', password: ''});
 	};
 	postNewUser = (user) => {
 		const url = 'http://localhost:8080/auth/login';
@@ -56,7 +56,7 @@ class RegisterForm extends Component{
 						       value={this.state.password}
 						       name="password" onChange={this.onInputChange}
 						/>
-						<input className="button-primary ask-question-button" type="submit" value="Register"/>
+						<input className="button-primary ask-question-button" type="submit" value="Login"/>
 					</div>
 				</div>
 			</form>

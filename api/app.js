@@ -4,9 +4,10 @@ const express = require('express');
 const app = express();
 // middleware here:
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const logger = require("morgan");
 
-// other modules:
+// app modules:
 const questionRoutes = require('./routes');
 const authRoutes = require('./auth');
 const errorHandler = require("./errorHandler").handleError;
@@ -25,6 +26,11 @@ app.use(logger("dev"));
 // 	console.log('req.body is ',req.body);
 // 	next();
 // });
+app.use(session({
+	secret: 'my secret level of security',
+	resave: true,
+	saveUninitialized: false
+}));
 
 app.use(function (req,res,next) {
 	res.header('Access-Control-Allow-Origin', "*"); // req accepted from any domain
