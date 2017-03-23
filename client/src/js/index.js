@@ -13,6 +13,7 @@ import createBrowserHistory from 'history/createBrowserHistory' // this works li
 import QuestionList  from './components/QuestionList'
 import QuestionView from './components/QuestionView';
 import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/LoginForm';
 
 const history = createBrowserHistory();
 
@@ -31,7 +32,7 @@ render((
 			<Switch>
 				<Route path="/list" component={QuestionList}/>
 				<Route path="/question/:qId" component={QuestionView}/>
-				{/*<Route path="login" component={LoginForm}/>*/}
+				<Route path="/login" render={()=> <LoginForm onAdd={(user)=>console.log(user)}/>}/>
 				<Route path="/register" render={()=> <RegisterForm onAdd={(user)=>console.log(user)}/>}/>
 				{/* my register POST will be in this register form for the moment */}
 				{/* got the user credentials till here*/}
