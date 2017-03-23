@@ -32,13 +32,14 @@ userSchema.statics.authenticate = function (username, password) {
 		this.model('user').findOne({username})
 			.exec()
 			.then((user)=>{
-				console.log('found?', user);
 				if(user){
 					bcrypt.compare(password, user.password, function (err, match) {
 						// password matches hashed password from db
 						if(err) return reject(err);
 						match ? resolve(user) : function(){
 							const err = new Error('Invalid password');
+							// although i wouldn't differentiate
+							// username error from pass error for the sake of security
 							err.status = 401;
 							reject(err);
 							}();

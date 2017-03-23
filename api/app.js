@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 // middleware here:
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const logger = require("morgan");
 
@@ -21,11 +22,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); // man this line is important :)
 app.use(logger("dev"));
 
-// app.use(function(req,res,next){
-// 	// here i can see the req payload with every request (example of most basic middleware)
-// 	console.log('req.body is ',req.body);
-// 	next();
-// });
+
+// need cookieParser middleware before we can do anything with cookies
+app.use(cookieParser());
+
 app.use(session({
 	secret: 'my secret level of security',
 	resave: true,
@@ -33,14 +33,22 @@ app.use(session({
 }));
 
 app.use(function (req,res,next) {
-	res.header('Access-Control-Allow-Origin', "*"); // req accepted from any domain
-	res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Accept, Content-Type");
+	res.header('Access-Control-Allow-Origin', "http://localhost:3001"); // can't use * with credentials
+	res.header('Access-Control-Allow-Credentials', true); //need for setting cookies with express
+	res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Accept, Content-Type, Cookie");
 	if (req.method === "OPTIONS") {
 		res.header({
 			"Access-Control-Allow-Methods": "PUT,POST,DELETE"
 		});
 		return res.status(200).json({});
 	 }
+	next();
+});
+
+app.use(function(req,res,next){
+	// here i can see the req payload with every request (example of most basic middleware)
+	// and check session and cookies are being sent by the browser
+	console.log(' we sending cookies? ', req.cookies, 'we have a session?', req.session);
 	next();
 });
 

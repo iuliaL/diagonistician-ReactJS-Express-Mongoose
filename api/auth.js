@@ -15,7 +15,10 @@ router.post('/register', function(req, res, next) {
 		}
 		const newUser = {username, password};
 		User.create(newUser)
-			.then(()=>res.status(201).json({message: 'OK. New user created'}))
+			.then((user)=>{
+				req.session.userId = user._id; // that means keep a session after register
+				res.status(201).json({message: 'OK. New user created'})
+			})
 			.catch((err)=> {
 				if (err.code === 11000) {
 					const err = new Error('This user exists already');
@@ -36,10 +39,11 @@ router.post('/login', function(req, res, next) {
 	const {username, password} = req.body;
 	if(username && password){
 		User.authenticate(username,password)
-			.then( response => {
-				console.log('something from callback', response);
-				res.status(200).json(response)})
-			.catch(err => next(err));
+			.then(user => {
+				req.session.userId = user._id;
+				console.log('session',req.session);
+				res.status(200).json({message: 'Authenticated'})
+			}).catch(err => next(err));
 	} else {
 		const err = new Error('Both username and password are mandatory!');
 		err.status = 401; // Unauthorized

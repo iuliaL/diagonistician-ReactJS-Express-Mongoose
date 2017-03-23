@@ -16,10 +16,11 @@ export default function makeRequest(
 		url,
 		method = 'GET',
 		payload,
-	    params,
-	    headers = {"Content-type": "application/json"}
-	) {
-		const options = { method, params, headers};
+		params,
+	    headers = {"Content-type": "application/json"},
+		credentials = 'include', // Don't forget to specify this if you need cookies
+) {
+		const options = { method, params, headers, credentials };
 		if(payload){ options.body = JSON.stringify( payload)}
 		console.log('fetch options',options);
 			return fetch(url, options )
