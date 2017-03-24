@@ -31,16 +31,22 @@ class RegisterForm extends Component{
 			return;
 		}
 		this.props.onAdd({ username, password });
-		this.postNewUser({ username, password })
+		this.login({ username, password })
 		//TODO redirect after login
 			.then(()=>console.log("Redirect me to questions"));
 		//this.setState({ username : '', password: ''});
 	};
-	postNewUser = (user) => {
+	login = (user) => {
 		const url = 'http://localhost:8080/auth/login';
 		return makeRequest(url, "POST", user)
-			.then((response)=> console.log('User created', response))
-			.catch((e)=> console.log('Could not create user',e));
+			.then((response)=> console.log('User logged in successfully', response))
+			.catch((e)=> console.log('Could not log in user',e));
+	};
+	logout = () => {
+		const url = 'http://localhost:8080/auth/logout';
+		return makeRequest(url, "GET")
+			.then((response)=> console.log('User logged out', response))
+			.catch((e)=> console.log('Could not logout user',e));
 	};
 	render(){
 		return (
@@ -57,6 +63,7 @@ class RegisterForm extends Component{
 						       name="password" onChange={this.onInputChange}
 						/>
 						<input className="button-primary ask-question-button" type="submit" value="Login"/>
+						<input className="button-secondary ask-question-button" type="button" onClick={this.logout} value="Logout"/>
 					</div>
 				</div>
 			</form>

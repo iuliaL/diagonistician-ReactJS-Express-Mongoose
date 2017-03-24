@@ -51,4 +51,18 @@ router.post('/login', function(req, res, next) {
 	}
 });
 
+//GET /logout
+router.get('/logout', function (req, res, next) {
+	if(req.session && req.session.userId){
+		req.session.destroy((err)=> {
+			if(err){
+				return next(err);
+			} else {
+				console.log('session destroyed, user logged out');
+				res.status(200).json({ message: 'session destroyed, user logged out'});
+			}
+		})
+	}
+});
+
 module.exports = router;

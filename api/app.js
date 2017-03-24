@@ -29,7 +29,10 @@ app.use(cookieParser());
 app.use(session({
 	secret: 'my secret level of security',
 	resave: true,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie : {
+		httpOnly: false
+	}
 }));
 
 app.use(function (req,res,next) {
