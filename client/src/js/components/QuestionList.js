@@ -12,7 +12,7 @@ import makeRequest from '../fetchHelper';
 export default class QuestionsList extends Component{
 	defaultProps = {
 		pollInterval : 120000,
-		url: "http://localhost:8080/questions"
+		url: "http://localhost:8080/api/questions"
 	};
 	state = { questions: []};
 	getQuestionsFromServer = () => {

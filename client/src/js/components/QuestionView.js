@@ -8,7 +8,7 @@ export default class QuestionView extends Component{
 		super(props);
 		console.log('Props',props);
 		this.defaultProps = {
-			baseUrl : "http://localhost:8080/questions/",
+			baseUrl : "http://localhost:8080/api/questions/",
 			qId : '00000000000'
 		};
 		this.state = {

@@ -2,10 +2,15 @@
 
 var express = require("express");
 var router = express.Router();
-var Question = require('./models/QuestionModel');
+var Question = require('./../models/QuestionModel');
+
+const baseUrl = '/questions';
+
+const secret = require('../secrets');
+const expressJWT = require('express-jwt');
 
 //GET /questions
-router.get('/',function(req,res,next){
+router.get(baseUrl, function(req,res,next){
 	var query = Question.find({}, null); // null is for projection
 	query.sort({ createdAt: - 1});
 	query.exec()
@@ -51,13 +56,13 @@ router.param('aId', function(req,res,next){
 	} else { next(); } //will pass req.answer to the route
 });
 
-router.get('/:qId',function(req,res, next){
+router.get(`${baseUrl}/:qId`,function(req,res, next){
 	console.log('getting question');
 	res.status(200).json(req.questionFound.publicFormat());
 });
 
 //POST /questions
-router.post('/',function(req,res,next){
+router.post(`${baseUrl}`, function(req,res,next){
 	const newQuestion = new Question(req.body);
 	newQuestion.save()
 	.then(function(reply){ //the reply is the actual question created
@@ -69,7 +74,7 @@ router.post('/',function(req,res,next){
 });
 
 //DELETE /questions/:qId
-router.delete("/:qId", function (req,res,next) {
+router.delete(`${baseUrl}/:qId`, function (req,res,next) {
 	req.questionFound.remove().then(function () {
 		res.status(200).send("Question deleted successfully.")
 	}).catch(function(err){
@@ -78,7 +83,7 @@ router.delete("/:qId", function (req,res,next) {
 });
 
 //POST /questions/:qId/answers
-router.post('/:qId/answers',function(req, res, next){
+router.post(`${baseUrl}/:qId/answers`,function(req, res, next){
 	var questionFound = req.questionFound;
 	questionFound.answers.push(req.body);
 	questionFound.save()
@@ -91,7 +96,7 @@ router.post('/:qId/answers',function(req, res, next){
 });
 
 //PUT /questions/:qId/answers/:aId
-router.put('/:qId/answers/:aId', function(req,res){
+router.put(`${baseUrl}/:qId/answers/:aId`, function(req,res){
 	req.answer.update(req.body)
 	.then(function(reply){
 		res.status(200).json(reply.id);
@@ -102,7 +107,7 @@ router.put('/:qId/answers/:aId', function(req,res){
 });
 
 //DELETE /questions/:qId/answers/:aId
-router.delete('/:qId/answers/:aId',function(req,res){
+router.delete(`${baseUrl}/:qId/answers/:aId`,function(req,res){
 	req.answer.remove()
 	.then(function(){
 		req.answer.parent().save()
@@ -120,7 +125,7 @@ router.delete('/:qId/answers/:aId',function(req,res){
 // &
 //POST /questions/:qId/answers/:aId/vote-down
 
-router.post('/:qId/answers/:aId/vote-:dir', function(req,res,next){
+router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
 			if(req.params.dir.search(/^(up|down)$/) === -1){
 				var err = new Error("Not found");
 				err.status = 404;

@@ -2,7 +2,10 @@
 
 const express = require("express");
 const router = express.Router();
-const User = require('./models/UserModel');
+const User = require('./../models/UserModel');
+const secret = require('../secrets');
+const jwt = require('jsonwebtoken');
+
 
 // POST /register
 router.post('/register', function(req, res, next) {
@@ -16,7 +19,7 @@ router.post('/register', function(req, res, next) {
 		const newUser = {username, password};
 		User.create(newUser)
 			.then((user)=>{
-				req.session.userId = user._id; // that means keep a session after register
+				//req.session.userId = user._id; // that means keep a session after register
 				res.status(201).json({message: 'OK. New user created'})
 			})
 			.catch((err)=> {
@@ -40,9 +43,13 @@ router.post('/login', function(req, res, next) {
 	if(username && password){
 		User.authenticate(username,password)
 			.then(user => {
-				req.session.userId = user._id;
-				console.log('session',req.session);
-				res.status(200).json({message: 'Authenticated'})
+				//req.session.userId = user._id;
+				//console.log('session',req.session);
+				const token = jwt.sign(
+					{ user }, //payload
+					secret  // sign the token with my server-stored secret
+				);
+				res.status(200).json({message: 'Authenticated', token: token})
 			}).catch(err => next(err));
 	} else {
 		const err = new Error('Both username and password are mandatory!');
