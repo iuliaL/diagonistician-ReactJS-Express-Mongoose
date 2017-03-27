@@ -44,7 +44,9 @@ router.post('/login', function(req, res, next) {
 	if(username && password){
 		User.authenticate(username,password)
 			.then(user => {
+				user = user.toObject();
 				delete user.password;
+				delete user.username;
 				const token = jwt.sign(
 					{ user }, //payload
 					secret  // sign the token with my server-stored secret
