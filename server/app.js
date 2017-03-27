@@ -10,7 +10,8 @@ const expressJWT = require('express-jwt');
 
 // app modules:
 const secret = require('./secrets');
-const questionRoutes = require('./api');
+const questionRoutes = require('./api/questions');
+const userRoutes = require('./api/users');
 const authRoutes = require('./auth');
 const errorHandler = require("./errorHandler").handleError;
 require("./database"); // need this line otherwise app won't know about the database module
@@ -88,11 +89,12 @@ app.use(function (req,res,next) {
 app.use(function(req,res,next){
 	// here i can see the req payload with every request (example of most basic middleware)
 	// and check session and cookies are being sent by the browser
-	console.log('REQ header?', req.header('Authorization'), req.user, req.method,'we sending cookies? ', req.cookies, 'we have a session?', req.session);
+	console.log(req.user);
 	next();
 });
 
 app.use('/api', questionRoutes);
+//[questionRoutes, userRoutes]
 app.use('/auth', authRoutes);
 // NOTHING served on '/' (root)
 

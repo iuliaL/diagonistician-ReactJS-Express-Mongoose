@@ -2,11 +2,11 @@
 
 var express = require("express");
 var router = express.Router();
-var Question = require('./../models/QuestionModel');
+var Question = require('./../../models/QuestionModel');
 
 const baseUrl = '/questions';
 
-const secret = require('../secrets');
+const secret = require('../../secrets');
 const expressJWT = require('express-jwt');
 
 //GET /questions

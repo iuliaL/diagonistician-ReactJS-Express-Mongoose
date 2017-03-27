@@ -32,9 +32,16 @@ class RegisterForm extends Component{
 		}
 		this.props.onAdd({ username, password });
 		this.login({ username, password })
-		//TODO redirect after login
-			.then(()=>console.log("Redirect me to questions"));
+		//TODO redirect after login and get user details
+			//.then(this.getUserDetails())
+			.then((user)=>console.log("Redirect me to questions and make this", user, 'available'));
 		//this.setState({ username : '', password: ''});
+	};
+	getUserDetails = (token) => {
+		const url = 'http://localhost:8080/auth/user-details';
+		return makeRequest(url, "GET", null, null, {Authorization: `Bearer ${token}` })
+			.then((reply)=> reply.user)
+			.catch((err)=>'couldn\'t get user data');
 	};
 	login = (user) => {
 		const url = 'http://localhost:8080/auth/login';
@@ -43,6 +50,8 @@ class RegisterForm extends Component{
 			.then((response)=> {
 				console.log('User logged in successfully', response);
 				localStorage.setItem('jwt', response.token);
+				// get user info
+				return this.getUserDetails(response.token);
 			})
 			.catch((e)=> console.log('Could not log in user',e));
 	};

@@ -5,6 +5,9 @@ const router = express.Router();
 const User = require('./../models/UserModel');
 const secret = require('../secrets');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+mongoose.set('debug', true);
+
 
 
 // POST /register
@@ -74,6 +77,20 @@ router.get('/logout', function (req, res, next) {
 	// 	})
 	// }
 	res.status(200).json({ message: 'user logged out'});
+});
+
+// GET user details
+router.get('/user-details', function (req, res, next) {
+	if(req.user && req.user.user){
+		User.findOne({_id: req.user.user._id})
+			.then((user)=>{
+				console.log('user details', user);
+				res.json({user})})
+			.catch((err)=> next(err))
+	}else {
+		const err = new Error('Couldn\'t retrieve user id from token');
+		return next(err)
+	}
 });
 
 module.exports = router;
