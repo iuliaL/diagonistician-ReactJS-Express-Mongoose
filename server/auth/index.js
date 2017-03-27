@@ -19,7 +19,6 @@ router.post('/register', function(req, res, next) {
 		const newUser = {username, password};
 		User.create(newUser)
 			.then((user)=>{
-				//req.session.userId = user._id; // that means keep a session after register
 				res.status(201).json({message: 'OK. New user created'})
 			})
 			.catch((err)=> {
@@ -39,17 +38,19 @@ router.post('/register', function(req, res, next) {
 
 // POST /login
 router.post('/login', function(req, res, next) {
-	const {username, password} = req.body;
+	const b64Encoded = req.header('Authorization').split('Basic ').pop();
+	const credentials = new Buffer(b64Encoded, 'base64').toString().split(":");
+	const [ username, password ] = credentials;
 	if(username && password){
 		User.authenticate(username,password)
 			.then(user => {
-				//req.session.userId = user._id;
-				//console.log('session',req.session);
+				delete user.password;
 				const token = jwt.sign(
 					{ user }, //payload
 					secret  // sign the token with my server-stored secret
 				);
-				res.status(200).json({message: 'Authenticated', token: token})
+				res.status(200)
+					.json({message: 'Authenticated', token: token});
 			}).catch(err => next(err));
 	} else {
 		const err = new Error('Both username and password are mandatory!');
@@ -60,16 +61,17 @@ router.post('/login', function(req, res, next) {
 
 //GET /logout
 router.get('/logout', function (req, res, next) {
-	if(req.session && req.session.userId){
-		req.session.destroy((err)=> {
-			if(err){
-				return next(err);
-			} else {
-				console.log('session destroyed, user logged out');
-				res.status(200).json({ message: 'session destroyed, user logged out'});
-			}
-		})
-	}
+	// if(req.session && req.session.userId){
+	// 	req.session.destroy((err)=> {
+	// 		if(err){
+	// 			return next(err);
+	// 		} else {
+	// 			console.log('session destroyed, user logged out');
+	// 			res.status(200).json({ message: 'session destroyed, user logged out'});
+	// 		}
+	// 	})
+	// }
+	res.status(200).json({ message: 'user logged out'});
 });
 
 module.exports = router;

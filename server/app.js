@@ -10,8 +10,8 @@ const expressJWT = require('express-jwt');
 
 // app modules:
 const secret = require('./secrets');
-const questionRoutes = require('./api/routes');
-const authRoutes = require('./auth/routes');
+const questionRoutes = require('./api');
+const authRoutes = require('./auth');
 const errorHandler = require("./errorHandler").handleError;
 require("./database"); // need this line otherwise app won't know about the database module
 
@@ -65,10 +65,10 @@ app.use(session({
 app.use(function (req,res,next) {
 	res.header('Access-Control-Allow-Origin', "http://localhost:3001"); // can't use * with credentials
 	res.header('Access-Control-Allow-Credentials', true); //need for setting cookies with express
-	res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Accept, Content-Type, Cookie");
+	res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Accept, Content-Type, Cookie, Authorization");
 	if (req.method === "OPTIONS") {
 		res.header({
-			"Access-Control-Allow-Methods": "PUT,POST,DELETE"
+			"Access-Control-Allow-Methods": "PUT, POST,DELETE"
 		});
 		return res.status(200).json({});
 	 }
@@ -78,7 +78,7 @@ app.use(function (req,res,next) {
 app.use(function(req,res,next){
 	// here i can see the req payload with every request (example of most basic middleware)
 	// and check session and cookies are being sent by the browser
-	console.log('REQ?', req.user, req.method,'we sending cookies? ', req.cookies, 'we have a session?', req.session);
+	console.log('REQ header?', req.header('Authorization'), req.user, req.method,'we sending cookies? ', req.cookies, 'we have a session?', req.session);
 	next();
 });
 

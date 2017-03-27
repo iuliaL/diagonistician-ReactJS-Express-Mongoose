@@ -38,14 +38,21 @@ class RegisterForm extends Component{
 	};
 	login = (user) => {
 		const url = 'http://localhost:8080/auth/login';
-		return makeRequest(url, "POST", user)
-			.then((response)=> console.log('User logged in successfully', response))
+		const credentials = btoa(`${user.username}:${user.password}`);
+		return makeRequest(url, "POST", null, null, { Authorization: `Basic ${credentials}` })
+			.then((response)=> {
+				console.log('User logged in successfully', response);
+				localStorage.setItem('jwt', response.token);
+			})
 			.catch((e)=> console.log('Could not log in user',e));
 	};
 	logout = () => {
 		const url = 'http://localhost:8080/auth/logout';
 		return makeRequest(url, "GET")
-			.then((response)=> console.log('User logged out', response))
+			.then((response)=> {
+				console.log(response.message);
+				localStorage.removeItem('jwt');
+			})
 			.catch((e)=> console.log('Could not logout user',e));
 	};
 	render(){
