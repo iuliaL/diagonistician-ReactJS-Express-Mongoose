@@ -39,7 +39,17 @@ app.use(logger("dev"));
 // }
 
 //init token middleware => protecting all routes except following, if no token => Unauthorized
-app.use(expressJWT({secret}).unless(
+app.use(expressJWT({
+	secret,
+	getToken: function fromHeaderOrQuerystring (req) {
+		if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+			return req.headers.authorization.split(' ')[1];
+		} else if (req.query && req.query.token) {
+			return req.query.token;
+		}
+		return null;
+	}
+}).unless(
 	{ path: [
 		'/auth/login',
 		'/auth/register',
