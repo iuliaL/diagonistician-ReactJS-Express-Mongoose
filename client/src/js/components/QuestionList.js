@@ -22,7 +22,7 @@ class QuestionsList extends Component{
 		makeRequest(this.defaultProps.url, 'post', newQuestion)
 			.then((response)=> {
 					console.log("posted question with id:", response);
-					this.getQuestionsFromServer(); // refresh results
+					this.props.actions.fetchQuestions(); // refresh results
 				})
 			.catch((err)=> console.log('Error posting new question',err));
 	};
