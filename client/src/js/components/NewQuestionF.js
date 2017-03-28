@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react';
 
-export default class NewQuestionForm extends Component{
+class NewQuestionForm extends Component{
 	state = { text : ''};
 	onQuestionChange = event => {
 		console.log('Typing new question... ', event.target.value);
@@ -35,3 +35,4 @@ export default class NewQuestionForm extends Component{
 		)
 	}
 }
+export default NewQuestionForm

@@ -4,25 +4,19 @@ import { Switch } from 'react-router-dom'
 
 
 import LinkWrap from './LinkWrap';
-
 import Question from './Question';
 import NewQuestionForm from './NewQuestionF';
 import makeRequest from '../fetchHelper';
 
-export default class QuestionsList extends Component{
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as Actions from '../actioncreators/actions';
+
+
+class QuestionsList extends Component{
 	defaultProps = {
 		pollInterval : 120000,
 		url: "http://localhost:8080/api/questions"
-	};
-	state = { questions: []};
-	getQuestionsFromServer = () => {
-		makeRequest(this.defaultProps.url)
-			.then(data =>{
-				console.log("Promise result", data);
-				this.setState({ questions: data });
-			}).catch((err)=> {
-				console.log("Error fetching questions", err)
-			});
 	};
 	postNewQuestion = (newQuestion) => {
 		makeRequest(this.defaultProps.url, 'post', newQuestion)
@@ -32,15 +26,11 @@ export default class QuestionsList extends Component{
 				})
 			.catch((err)=> console.log('Error posting new question',err));
 	};
-	componentDidMount() {
-		this.getQuestionsFromServer();
-		// optionally poll for new questions every min:
-		// setInterval(this.getQuestionsFromServer, this.props.pollInterval )
-	}
 	onNewQuestion = newQuestion => this.postNewQuestion(newQuestion);
 	checkIfHasRoute = route => this.props.location.pathname == route;
 	render () {
-		const questions = this.state.questions.map(q => {
+		console.log('q list props', this.props);
+		const questions = this.props.questions.map(q => {
 			return (
 				<LinkWrap key={q._id} to={`/question/${q._id}`}>
 					<Question id={q._id}
@@ -73,3 +63,19 @@ export default class QuestionsList extends Component{
 	}
 }
 
+function mapStateToProps(state) {
+	return {
+		questions: state.questions
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators(Actions, dispatch)
+	};
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(QuestionsList);

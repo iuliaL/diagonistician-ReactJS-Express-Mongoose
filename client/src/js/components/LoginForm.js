@@ -8,7 +8,7 @@ import { withRouter } from 'react-router';
 import makeRequest from '../fetchHelper';
 
 
-class RegisterForm extends Component{
+class LoginForm extends Component{
 	static propTypes = {
 		route: PropTypes.shape({
 			onAdd: PropTypes.func.isRequired
@@ -87,4 +87,4 @@ class RegisterForm extends Component{
 	}
 }
 
-export default withRouter(RegisterForm)
+export default withRouter(LoginForm)

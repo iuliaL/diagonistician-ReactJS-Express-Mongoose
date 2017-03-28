@@ -107,6 +107,11 @@ app.use(function(req,res,next){
 
 app.use(errorHandler);
 
+// // but I use webpack dev server
+// app.get('/*', (req,res) => {
+// 	res.sendfile(path.join(__dirname, 'client/dist/index.html'))
+// });
+
 app.listen(serverPort,function(){
 	console.log("Server running on port ", serverPort)
 });

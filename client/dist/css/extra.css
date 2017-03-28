@@ -1,0 +1,25 @@
+.btn--dash {
+    padding: 0;
+    border-bottom: 2px dashed;
+}
+.btn--nav {
+    margin: 0 20px;
+    position: absolute;
+    text-decoration: none;
+    cursor: pointer;
+}
+.btn--nav:first-child{
+    left: 25%;
+}
+.btn--nav:last-child{
+    right: 25%;
+}
+nav {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+}
+
+header.circle--header {
+    position: relative;
+}
