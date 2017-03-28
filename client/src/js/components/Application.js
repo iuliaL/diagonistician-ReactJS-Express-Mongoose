@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 
@@ -34,7 +35,9 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(
+export default withRouter(connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Application);
+)(Application));
+
+// need with router here otherwise Add question button or question links => /add won't work
