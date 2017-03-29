@@ -1,7 +1,7 @@
 'use strict';
 
 import * as ActionTypes from '../actiontypes/constants';
-import makeRequest from '../fetchHelper';
+import QuestionApi from '../apirequests/questions'
 
 function requestQuestions() {
 	return {
@@ -26,7 +26,7 @@ export function fetchQuestions() {
 	//using thunk middleware here
 	return function (dispatch) {
 		dispatch(requestQuestions());
-		return makeRequest('/api/questions')
+		return QuestionApi.fetchAll()
 			.then((questions) => dispatch(receiveQuestions(questions)))
 			.catch((err) => dispatch(rejectQuestions(err)))
 	}
@@ -51,13 +51,14 @@ function rejectPostQuestion(error) {
 }
 
 export function addQuestion(question) {
-	console.log('got question', question);
 	return function (dispatch) {
 		dispatch(requestPostQuestion()); // init request, maybe add a loader
-		return makeRequest('/api/questions',"POST", question)
-			.then((id)=>{console.log("posted question with id:", id);
+		return QuestionApi.postQuestion(question)
+			.then((id)=>{
+				console.log("posted question with id:", id);
+				dispatch(successPostQuestion()); // show success hint to user
 				dispatch(fetchQuestions())}) //refresh results
-			.catch((err)=>dispatch(rejectPostQuestion(err)))
+			.catch((err)=>dispatch(rejectPostQuestion(err))); // show err to user
 	}
 	
 }
