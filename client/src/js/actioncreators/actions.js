@@ -3,9 +3,9 @@
 import * as ActionTypes from '../actiontypes/constants';
 import QuestionApi from '../apirequests/questions'
 
-function requestQuestions() {
+function initRequest() {
 	return {
-		type: ActionTypes.FETCH_QUESTIONS_REQUEST
+		type: ActionTypes.INIT_REQUEST
 	}
 }
 
@@ -15,9 +15,10 @@ function receiveQuestions(questions) {
 		questions
 	}
 }
-function rejectQuestions(error) {
+
+function requestFail(error) {
 	return {
-		type: ActionTypes.FETCH_QUESTIONS_FAILURE,
+		type: ActionTypes.REQUEST_FAILURE,
 		error
 		// this function is unhandled for now
 	}
@@ -26,10 +27,24 @@ function rejectQuestions(error) {
 export function fetchQuestions() {
 	//using thunk middleware here
 	return function (dispatch) {
-		dispatch(requestQuestions());
+		dispatch(initRequest());
 		return QuestionApi.fetchAll()
 			.then((questions) => dispatch(receiveQuestions(questions)))
-			.catch((err) => dispatch(rejectQuestions(err)))
+			.catch((err) => dispatch(requestFail(err)))
+	}
+}
+function receiveQuestion(question) {
+	return {
+		type: ActionTypes.FETCH_QUESTION_SUCCESS,
+		question
+	}
+}
+export function fetchOne(id) {
+	return function (dispatch) {
+		dispatch(initRequest());
+		return QuestionApi.fetchOne(id)
+			.then((q)=> dispatch(receiveQuestion(q)))
+			.catch((err)=> dispatch(requestFail(err)))
 	}
 }
 

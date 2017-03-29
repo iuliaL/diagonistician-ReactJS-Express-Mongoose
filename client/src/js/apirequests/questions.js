@@ -11,6 +11,9 @@ export default class QuestionApi {
 	static fetchAll(){
 		return makeRequest(path)
 	}
+	static fetchOne(id){
+		return makeRequest(`${path}/${id}`)
+	}
 	static postQuestion(q){
 		return makeRequest(path,"POST", q)
 	}

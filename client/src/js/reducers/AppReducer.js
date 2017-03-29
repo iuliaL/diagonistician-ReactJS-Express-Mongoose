@@ -6,6 +6,7 @@ import auth from '../login/auth';
 // The initial application state
 const initialState = {
 	questions : [],
+	question: {},
 	loginFormState: {
 		username: '',
 		password: ''
@@ -22,6 +23,11 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				questions: action.questions
+			};
+		case ActionTypes.FETCH_QUESTION_SUCCESS:
+			return {
+				...state,
+				question: action.question
 			};
 		
 		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that post was successful

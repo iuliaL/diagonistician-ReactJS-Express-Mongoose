@@ -1,30 +1,27 @@
 import React,{PropTypes, Component} from 'react';
+//redux
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as Actions from '../actioncreators/actions';
 
 import Answer from './Answer';
 import makeRequest from '../fetchHelper';
 
-export default class QuestionView extends Component{
+class QuestionView extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			question : {
-				text: '',
-				answers: []
-			},
+			// question : {
+			// 	text: '',
+			// 	answers: []
+			// },
 			newAnswer: ''
 		};
 	}
-	componentDidMount() {
-		this.getAnswersFromServer();
+	componentWillMount() {
+		const { fetchOne } = this.props.actions;
+		fetchOne(this.props.match.params.qId);
 	}
-	getAnswersFromServer = () => {
-		makeRequest(`${this.defaultProps.baseUrl}${this.props.match.params.qId}`) // taking question id from url params
-			.then(data =>{
-				console.log("get question result", data);
-				this.setState({ question: data });
-			})
-			.catch((err) => console.log("error", err))
-	};
 	onNewAnswerInput = event  => this.setState({ newAnswer : event.target.value });
 	onNewAnswerSubmit = event => {
 		event.preventDefault();
@@ -47,21 +44,25 @@ export default class QuestionView extends Component{
 		});
 	};
 	render() {
-		const answers = this.state.question.answers.map((a,index) => {
-			return (
-				<Answer key={a._id}
-				        id={a._id}
-				        text={a.text}
-				        votes={a.votes}
-				        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
-				        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
-				        questionNamespace={this.defaultProps.baseUrl + this.props.match.params.qId + '/answers/'}
-				        onVoteCountChanged={this.refreshVoteCount}/>
-			)
-		});
+		const { actions, question } = this.props;
+		let answers;
+		if(question.answers) {
+			answers = question.answers.map((a,index) => {
+				return (
+					<Answer key={a._id}
+					        id={a._id}
+					        text={a.text}
+					        votes={a.votes}
+					        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
+					        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
+					        questionNamespace={this.defaultProps.baseUrl + this.props.match.params.qId + '/answers/'}
+					        onVoteCountChanged={this.refreshVoteCount}/>
+				)
+			});
+		}
 		return (
 			<div className="grid-100">
-				<h2 className="question-heading">{this.state.question.text}</h2>
+				<h2 className="question-heading">{question.text}</h2>
 				<hr/>
 				{answers}
 				<h3>Add an Answer</h3>
@@ -76,3 +77,16 @@ export default class QuestionView extends Component{
 		)
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		question : state.question
+	}
+}
+function mapActionsToProps(dispatch) {
+	return {
+		actions: bindActionCreators(Actions,dispatch)
+	}
+}
+
+export default connect(mapStateToProps,mapActionsToProps)(QuestionView)
