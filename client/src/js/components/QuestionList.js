@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 // router
 import { Route } from 'react-router'
-import { Switch } from 'react-router-dom'
+import { Switch, Redirect } from 'react-router-dom'
 
 //redux
 import {connect} from 'react-redux';
@@ -20,7 +20,8 @@ class QuestionsList extends Component{
 	};
 	checkIfHasRoute = route => this.props.location.pathname == route;
 	render () {
-		const { actions, questions } = this.props;
+		const { actions, questions, successMessage, errorMessage } = this.props;
+		console.log('success msg', successMessage, 'questions', questions.length);
 		const { addQuestion } = actions;
 		const questionList = questions.map(q => {
 			return (
@@ -35,6 +36,9 @@ class QuestionsList extends Component{
 		return (
 			<div className="grid-100">
 				<h1 className="name align-center">Diagnostician</h1>
+				
+				{!!successMessage && <div className="alert alert-success">{successMessage}</div>}
+				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 				
 				{/*TODO: add user logged in conditionals here*/}
 				{!this.checkIfHasRoute('/list/add') &&
@@ -57,7 +61,9 @@ class QuestionsList extends Component{
 
 function mapStateToProps(state) {
 	return {
-		questions: state.questions
+		questions: state.questions,
+		successMessage: state.successMessage,
+		errorMessage: state.errorMessage
 	};
 }
 

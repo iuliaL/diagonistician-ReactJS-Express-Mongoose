@@ -6,11 +6,12 @@ import auth from '../login/auth';
 // The initial application state
 const initialState = {
 	questions : [],
-	formState: {
+	loginFormState: {
 		username: '',
 		password: ''
 	},
 	loggedIn: auth.loggedIn(),
+	successMessage: '',
 	errorMessage: ''
 };
 
@@ -23,10 +24,16 @@ export default function(state = initialState, action) {
 				questions: action.questions
 			};
 		
-		case ActionTypes.POST_QUESTION_SUCCESS: // add a hint that post was successful maybe
+		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that post was successful
 				return {
-					...state
+					...state,
+					successMessage: action.message
 				};
+		case ActionTypes.SET_ERROR_MESSAGE: // add a hint that post was successful
+			return {
+				...state,
+				errorMessage: action.message
+			};
 		default:
 			return state;
 	}

@@ -10,7 +10,6 @@ import * as Actions from '../actioncreators/actions';
 
 class Application extends Component{
 	render() {
-		console.log('APP props',this.props);
 		return (
 			<div>
 				<Nav loggedIn={false} />

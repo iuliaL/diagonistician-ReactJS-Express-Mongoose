@@ -19,6 +19,7 @@ function rejectQuestions(error) {
 	return {
 		type: ActionTypes.FETCH_QUESTIONS_FAILURE,
 		error
+		// this function is unhandled for now
 	}
 }
 
@@ -38,27 +39,43 @@ function requestPostQuestion() {
 	}
 }
 
-function successPostQuestion() {
-	return {
-		type: ActionTypes.POST_QUESTION_SUCCESS,
-	}
-}
-function rejectPostQuestion(error) {
-	return {
-		type: ActionTypes.POST_QUESTION_FAILURE,
-		error
-	}
-}
-
 export function addQuestion(question) {
 	return function (dispatch) {
 		dispatch(requestPostQuestion()); // init request, maybe add a loader
 		return QuestionApi.postQuestion(question)
 			.then((id)=>{
 				console.log("posted question with id:", id);
-				dispatch(successPostQuestion()); // show success hint to user
+				dispatch(setSuccessMessage('Question was asked successfully!')); // show success hint to user
 				dispatch(fetchQuestions())}) //refresh results
-			.catch((err)=>dispatch(rejectPostQuestion(err))); // show err to user
+			.catch((err)=>{
+				console.log(err,'err');
+				dispatch(setErrorMessage(err.message))
+		}); // show err to user
 	}
-	
+}
+
+/**
+ * Sets the state successMessage
+ */
+function setSuccessMessage(message) {
+	return (dispatch) => {
+		dispatch({ type: ActionTypes.SET_SUCCESS_MESSAGE, message });
+		// Remove the  message after 3 seconds
+		setTimeout(() => {
+			dispatch({ type: ActionTypes.SET_SUCCESS_MESSAGE, message: '' });
+		}, 3000);
+	}
+}
+
+/**
+ * Sets the state errorMessage
+ */
+function setErrorMessage(message) {
+	return (dispatch) => {
+		dispatch({ type: ActionTypes.SET_ERROR_MESSAGE, message });
+		// Remove the  message after 3 seconds
+		setTimeout(() => {
+			dispatch({ type: ActionTypes.SET_ERROR_MESSAGE, message: '' });
+		}, 3000);
+	}
 }
