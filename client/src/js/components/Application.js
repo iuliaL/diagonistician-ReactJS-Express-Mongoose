@@ -34,10 +34,11 @@ function mapDispatchToProps(dispatch) {
 		actions: bindActionCreators(Actions, dispatch)
 	};
 }
-
-export default withRouter(connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Application));
+export default Application;
+// export default withRouter(connect(
+// 	mapStateToProps,
+// 	mapDispatchToProps
+// )(Application));
 
 // need with router here otherwise Add question button or question links => /add won't work
+// Application does not have location property and thus the children won't know about url location, App acts as a blocker

@@ -1,36 +1,28 @@
 import React, {Component, PropTypes} from 'react';
+// router
 import { Route } from 'react-router'
 import { Switch } from 'react-router-dom'
 
-
-import LinkWrap from './LinkWrap';
-import Question from './Question';
-import NewQuestionForm from './NewQuestionF';
-import makeRequest from '../fetchHelper';
-
+//redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as Actions from '../actioncreators/actions';
 
+// components
+import LinkWrap from './LinkWrap';
+import Question from './Question';
+import NewQuestionForm from './NewQuestionF';
+
 
 class QuestionsList extends Component{
-	defaultProps = {
-		pollInterval : 120000,
-		url: "http://localhost:8080/api/questions"
+	static propTypes = {
+		questions: PropTypes.array.isRequired,
 	};
-	postNewQuestion = (newQuestion) => {
-		makeRequest(this.defaultProps.url, 'post', newQuestion)
-			.then((response)=> {
-					console.log("posted question with id:", response);
-					this.props.actions.fetchQuestions(); // refresh results
-				})
-			.catch((err)=> console.log('Error posting new question',err));
-	};
-	onNewQuestion = newQuestion => this.postNewQuestion(newQuestion);
 	checkIfHasRoute = route => this.props.location.pathname == route;
 	render () {
-		console.log('q list props', this.props);
-		const questions = this.props.questions.map(q => {
+		const { actions, questions } = this.props;
+		const { addQuestion } = actions;
+		const questionList = questions.map(q => {
 			return (
 				<LinkWrap key={q._id} to={`/question/${q._id}`}>
 					<Question id={q._id}
@@ -51,12 +43,12 @@ class QuestionsList extends Component{
 					</LinkWrap>}
 				
 				<Switch>
-					<Route path='/list/add' render={() => <NewQuestionForm onAdd={this.onNewQuestion}/>}/>
+					<Route path='/list/add' render={() => <NewQuestionForm onAdd={addQuestion}/>}/>
 				</Switch>
 				<h2>Questions</h2>
 				<hr/>
 				<div className="questions">
-					{questions}
+					{questionList}
 				</div>
 			</div>
 		)

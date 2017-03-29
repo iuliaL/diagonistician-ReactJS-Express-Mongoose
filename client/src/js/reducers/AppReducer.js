@@ -15,6 +15,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
+	// make a COPY to the actual state (immutability) and merge it with the next questions
 	switch (action.type){
 		case ActionTypes.FETCH_QUESTIONS_SUCCESS:
 			return {
@@ -22,20 +23,10 @@ export default function(state = initialState, action) {
 				questions: action.questions
 			};
 		
-		
-		case ActionTypes.ADD_QUESTION:
-			const updates = {
-				questions: [
-					...state.questions,
-					{
-						text: action.text,
-						created: action.createdAt
-					}
-				]
-			};
-			// make a COPY to the actual state (immutability) and merge it with the next questions
-			return Object.assign({}, state, updates);
-		// return {...state, players: updates}
+		case ActionTypes.POST_QUESTION_SUCCESS: // add a hint that post was successful maybe
+				return {
+					...state
+				};
 		default:
 			return state;
 	}

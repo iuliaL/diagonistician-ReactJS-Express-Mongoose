@@ -1,5 +1,7 @@
 'use strict';
 
+const baseUrl = 'http://localhost:8080';
+
 /* fetch Promise checkStatus */
 
 function checkStatus(res) {
@@ -31,7 +33,7 @@ export default function makeRequest(
 		}
 		if(payload){ options.body = JSON.stringify( payload)}
 		console.log('fetch options',options);
-			return fetch(url, options )
+			return fetch(`${baseUrl}${url}`, options )
 				.then(checkStatus)
 				.then(result => result.json())
 	}
