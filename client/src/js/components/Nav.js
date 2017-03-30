@@ -18,8 +18,8 @@ function Nav(props) {
 	// based on the current authentication state.
 	const navButtons = props.loggedIn ? (
 			<nav>
-				<Link to="/dashboard" className="btn btn--dash btn--nav">Dashboard</Link>
-				<a href="#" className="btn btn--login btn--nav" onClick={logout}>Logout</a>
+				<Link to="/list" className="btn btn--nav">Home</Link>
+				<a href="#" className="btn btn--login btn--nav" onClick={(ev)=>{ev.preventDefault(); logout}}>Logout</a>
 			</nav>
 		) : (
 			<nav>

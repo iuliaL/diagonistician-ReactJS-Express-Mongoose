@@ -1,5 +1,7 @@
 import makeRequest from '../fetchHelper';
 
+//TODO remove this module entirely after moving all to Auth class
+
 const auth = {
 	/**
 	 * Logs a user in

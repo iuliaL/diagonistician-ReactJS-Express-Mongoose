@@ -10,9 +10,10 @@ import * as Actions from '../actioncreators/questionActions';
 
 class Application extends Component{
 	render() {
+		//console.log('APP PROPS',this.props);
 		return (
 			<div>
-				<Nav loggedIn={false} />
+				<Nav loggedIn={this.props.loggedIn} />
 				{/*here are the routes*/}
 				<div className="bounds">
 					{this.props.children}
@@ -24,7 +25,7 @@ class Application extends Component{
 
 function mapStateToProps(state) {
 	return {
-		questions: state.questions
+		loggedIn: state.loggedIn
 	};
 }
 
@@ -33,11 +34,11 @@ function mapDispatchToProps(dispatch) {
 		actions: bindActionCreators(Actions, dispatch)
 	};
 }
-export default Application;
-// export default withRouter(connect(
-// 	mapStateToProps,
-// 	mapDispatchToProps
-// )(Application));
 
-// need with router here otherwise Add question button or question links => /add won't work
+export default withRouter(connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Application));
+
+// need withRouter here otherwise Add question button or question links => /add won't work
 // Application does not have location property and thus the children won't know about url location, App acts as a blocker
