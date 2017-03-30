@@ -10,29 +10,20 @@ import makeRequest from '../fetchHelper';
 class QuestionView extends Component{
 	constructor(props){
 		super(props);
-		this.state = {
-			// question : {
-			// 	text: '',
-			// 	answers: []
-			// },
-			newAnswer: ''
-		};
+		this.state = { newAnswer: '' };
+		this.addAnswer = props.actions.addAnswer;
+		this.fetchOne = props.actions.fetchOne;
 	}
 	componentWillMount() {
-		const { fetchOne } = this.props.actions;
-		fetchOne(this.props.match.params.qId);
+		this.fetchOne(this.props.match.params.qId);
 	}
-	onNewAnswerInput = event  => this.setState({ newAnswer : event.target.value });
+	onNewAnswerInput = event => this.setState({ newAnswer : event.target.value });
 	onNewAnswerSubmit = event => {
 		event.preventDefault();
-		// post new answer and refresh answer list
-		const url = encodeURI(`${this.defaultProps.baseUrl}${this.props.match.params.qId}/answers`);
-		const data = { text: this.state.newAnswer };
-		makeRequest(url,'POST', data).then(result => {
-			console.log("posted new answer", result);
-			this.getAnswersFromServer(); // refresh results
-			this.setState({newAnswer: ""}); // reset textArea
-		});
+		// post new answer and refresh answer list, the refresh is handled in the actionCreator
+		// by fetching again the question and updating state
+		const answer = { text: this.state.newAnswer };
+		this.addAnswer(this.props.match.params.qId, answer)
 	};
 	refreshVoteCount = (arg, answerId) =>{
 		console.log("refreshing state?", arg, answerId);
@@ -44,7 +35,7 @@ class QuestionView extends Component{
 		});
 	};
 	render() {
-		const { actions, question } = this.props;
+		const { question } = this.props;
 		let answers;
 		if(question.answers) {
 			answers = question.answers.map((a,index) => {
@@ -55,7 +46,6 @@ class QuestionView extends Component{
 					        votes={a.votes}
 					        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
 					        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
-					        questionNamespace={this.defaultProps.baseUrl + this.props.match.params.qId + '/answers/'}
 					        onVoteCountChanged={this.refreshVoteCount}/>
 				)
 			});

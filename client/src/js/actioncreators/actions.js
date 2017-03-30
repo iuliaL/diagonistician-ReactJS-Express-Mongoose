@@ -9,7 +9,7 @@ function initRequest() {
 	}
 }
 
-function receiveQuestions(questions) {
+function receivedQuestions(questions) {
 	return {
 		type: ActionTypes.FETCH_QUESTIONS_SUCCESS,
 		questions
@@ -29,11 +29,11 @@ export function fetchQuestions() {
 	return function (dispatch) {
 		dispatch(initRequest());
 		return QuestionApi.fetchAll()
-			.then((questions) => dispatch(receiveQuestions(questions)))
+			.then((questions) => dispatch(receivedQuestions(questions)))
 			.catch((err) => dispatch(requestFail(err)))
 	}
 }
-function receiveQuestion(question) {
+function receivedQuestion(question) { // carry the question => reducer
 	return {
 		type: ActionTypes.FETCH_QUESTION_SUCCESS,
 		question
@@ -43,7 +43,7 @@ export function fetchOne(id) {
 	return function (dispatch) {
 		dispatch(initRequest());
 		return QuestionApi.fetchOne(id)
-			.then((q)=> dispatch(receiveQuestion(q)))
+			.then((q)=> dispatch(receivedQuestion(q)))
 			.catch((err)=> dispatch(requestFail(err)))
 	}
 }
@@ -51,6 +51,11 @@ export function fetchOne(id) {
 function requestPostQuestion() {
 	return {
 		type: ActionTypes.POST_QUESTION_REQUEST,
+	}
+}
+function requestPostAnswer() {
+	return {
+		type: ActionTypes.POST_ANSWER_REQUEST,
 	}
 }
 
@@ -66,6 +71,20 @@ export function addQuestion(question) {
 				console.log(err,'err');
 				dispatch(setErrorMessage(err.message))
 		}); // show err to user
+	}
+}
+export function addAnswer(questionId, answer) {
+	return function (dispatch) {
+		dispatch(requestPostAnswer()); // init request, maybe add a loader
+		return QuestionApi.postAnswer(questionId, answer)
+			.then((id)=>{
+				console.log("posted answer with id:", id);
+				dispatch(setSuccessMessage('Answer was added successfully!')); // show success hint to user
+				dispatch(fetchOne(questionId))}) //refresh question
+			.catch((err)=>{
+				console.log(err,'err');
+				dispatch(setErrorMessage(err.message))
+			}); // show err to user
 	}
 }
 

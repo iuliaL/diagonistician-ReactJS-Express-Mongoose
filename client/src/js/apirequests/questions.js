@@ -17,4 +17,7 @@ export default class QuestionApi {
 	static postQuestion(q){
 		return makeRequest(path,"POST", q)
 	}
+	static postAnswer(qId, answer){
+		return makeRequest(`${path}/${qId}/answers`, "POST", answer); // answer = {text: '...'}
+	}
 }
