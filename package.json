@@ -15,15 +15,19 @@
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
     "express-session": "^1.15.1",
+    "jsonwebtoken": "^7.3.0",
     "mongoose": "^4.6.3",
     "morgan": "^1.7.0",
     "react": "^15.3.2",
-    "react-bootstrap": "^0.30.5",
     "react-dom": "^15.3.2",
+    "react-redux": "^5.0.3",
     "react-router": "^4.0.0",
-    "react-router-bootstrap": "^0.23.1",
-    "react-router-dom": "^4.0.0"
+    "react-router-dom": "^4.0.0",
+    "redux": "^3.6.0",
+    "redux-logger": "^3.0.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

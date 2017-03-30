@@ -1,46 +1,29 @@
 import React,{PropTypes, Component} from 'react';
+//redux
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as Actions from '../actioncreators/actions';
 
 import Answer from './Answer';
 import makeRequest from '../fetchHelper';
 
-export default class QuestionView extends Component{
+class QuestionView extends Component{
 	constructor(props){
 		super(props);
-		console.log('Props',props);
-		this.defaultProps = {
-			baseUrl : "http://localhost:8080/questions/",
-			qId : '00000000000'
-		};
-		this.state = {
-			question : {
-				text: '',
-				answers: []
-			},
-			newAnswer: ''
-		};
+		this.state = { newAnswer: '' };
+		this.addAnswer = props.actions.addAnswer;
+		this.fetchOne = props.actions.fetchOne;
 	}
-	componentDidMount() {
-		this.getAnswersFromServer();
+	componentWillMount() {
+		this.fetchOne(this.props.match.params.qId);
 	}
-	getAnswersFromServer = () => {
-		makeRequest(`${this.defaultProps.baseUrl}${this.props.match.params.qId}`) // taking question id from url params
-			.then(data =>{
-				console.log("get question result", data);
-				this.setState({ question: data });
-			})
-			.catch((err) => console.log("error", err))
-	};
-	onNewAnswerInput = event  => this.setState({ newAnswer : event.target.value });
+	onNewAnswerInput = event => this.setState({ newAnswer : event.target.value });
 	onNewAnswerSubmit = event => {
 		event.preventDefault();
-		// post new answer and refresh answer list
-		const url = encodeURI(`${this.defaultProps.baseUrl}${this.props.match.params.qId}/answers`);
-		const data = { text: this.state.newAnswer };
-		makeRequest(url,'POST', data).then(result => {
-			console.log("posted new answer", result);
-			this.getAnswersFromServer(); // refresh results
-			this.setState({newAnswer: ""}); // reset textArea
-		});
+		// post new answer and refresh answer list, the refresh is handled in the actionCreator
+		// by fetching again the question and updating state
+		const answer = { text: this.state.newAnswer };
+		this.addAnswer(this.props.match.params.qId, answer)
 	};
 	refreshVoteCount = (arg, answerId) =>{
 		console.log("refreshing state?", arg, answerId);
@@ -52,21 +35,24 @@ export default class QuestionView extends Component{
 		});
 	};
 	render() {
-		const answers = this.state.question.answers.map((a,index) => {
-			return (
-				<Answer key={a._id}
-				        id={a._id}
-				        text={a.text}
-				        votes={a.votes}
-				        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
-				        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
-				        questionNamespace={this.defaultProps.baseUrl + this.props.match.params.qId + '/answers/'}
-				        onVoteCountChanged={this.refreshVoteCount}/>
-			)
-		});
+		const { question } = this.props;
+		let answers;
+		if(question.answers) {
+			answers = question.answers.map((a,index) => {
+				return (
+					<Answer key={a._id}
+					        id={a._id}
+					        text={a.text}
+					        votes={a.votes}
+					        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
+					        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
+					        onVoteCountChanged={this.refreshVoteCount}/>
+				)
+			});
+		}
 		return (
 			<div className="grid-100">
-				<h2 className="question-heading">{this.state.question.text}</h2>
+				<h2 className="question-heading">{question.text}</h2>
 				<hr/>
 				{answers}
 				<h3>Add an Answer</h3>
@@ -81,3 +67,16 @@ export default class QuestionView extends Component{
 		)
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		question : state.question
+	}
+}
+function mapActionsToProps(dispatch) {
+	return {
+		actions: bindActionCreators(Actions,dispatch)
+	}
+}
+
+export default connect(mapStateToProps,mapActionsToProps)(QuestionView)

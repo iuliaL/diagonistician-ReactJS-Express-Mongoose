@@ -3,10 +3,9 @@
  */
 import React, {Component, PropTypes} from 'react';
 
-export default class NewQuestionForm extends Component{
+class NewQuestionForm extends Component{
 	state = { text : ''};
 	onQuestionChange = event => {
-		console.log('Typing new question... ', event.target.value);
 		this.setState({
 			text: event.target.value
 		})
@@ -17,7 +16,7 @@ export default class NewQuestionForm extends Component{
 		if (!questionText) {
 			return;
 		}
-		this.props.onAdd({ text: questionText} ); // onAdd is a callback prop, it passes the question = { text: questionText} back up to Application parent
+		this.props.onAdd({ text: questionText} ); // onAdd is a callback prop, it passes the question = { text: questionText} back up to store
 		this.setState({text: ""}); // reset input value on form submit
 	};
 	render(){
@@ -35,3 +34,4 @@ export default class NewQuestionForm extends Component{
 		)
 	}
 }
+export default NewQuestionForm
