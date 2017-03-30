@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Votes from './Votes';
+import FormattedDate from './FormattedDate';
 
 const Answer = (props) => {
 	const onVoteChange = arg => {
@@ -16,8 +17,8 @@ const Answer = (props) => {
 				<p style={{'color': 'black', 'fontWeight': 600}}>{props.text}</p>
 				
 				<div className="align-right">
-					<small>Answered <strong>{props.createdAt}</strong> | </small>
-					<small>Modified <strong>{props.updatedAt}</strong></small>
+					<small>Answered <strong><FormattedDate date={props.createdAt}/></strong> | </small>
+					<small>Modified <strong><FormattedDate date={props.updatedAt}/></strong></small>
 				</div>
 			</div>
 		</div>

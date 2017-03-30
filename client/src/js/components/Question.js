@@ -1,7 +1,8 @@
 import React, { PropTypes} from 'react';
 
+import FormattedDate from './FormattedDate';
+
 function Question (props) {
-	const createdAt = moment(props.createdAt).format("MMMM Do YYYY, h:mm:ss A");
 	return (
 		<div className="grid-parent question">
 			<div className="grid-10">
@@ -9,7 +10,10 @@ function Question (props) {
 			</div>
 			<div className="grid-90">
 				<p>{props.text}</p>
-				<small className="align-right block">Asked <strong>{createdAt}</strong></small>
+				<small className="align-right block">
+					Asked
+					<strong><FormattedDate date={props.createdAt}/></strong>
+				</small>
 			</div>
 		</div>
 	)

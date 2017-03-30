@@ -5,7 +5,6 @@ import {bindActionCreators} from 'redux';
 import * as Actions from '../actioncreators/actions';
 
 import Answer from './Answer';
-import makeRequest from '../fetchHelper';
 
 class QuestionView extends Component{
 	constructor(props){
@@ -40,8 +39,8 @@ class QuestionView extends Component{
 					        id={a._id}
 					        text={a.text}
 					        votes={a.votes}
-					        createdAt={ moment(a.createdAt).format("MMMM Do YYYY, h:mm:ss A") }
-					        updatedAt={ moment(a.updatedAt).format("MMMM Do YYYY, h:mm:ss A") }
+					        createdAt={a.createdAt}
+					        updatedAt={a.updatedAt}
 					        onVoteCountChanged={this.refreshVoteCount}/>
 				)
 			});
