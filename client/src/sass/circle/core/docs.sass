@@ -39,7 +39,7 @@ $icon-font-path: "../../../icons/"
     font-size: 19px
     color: $link
     font-family: $icon-font
-
+    
 a
   em
     text-decoration: none
@@ -49,7 +49,7 @@ table
   [class^="icon-"],
   [class*=" icon-"]
     font-size: 24px
-
+    
 pre
   &.prettyprint
     display: block
@@ -107,42 +107,5 @@ pre
   // a function name
   .fun
     color: #478c90
-
-// Use higher contrast and text-weight for printable form.
-@media print, projection
-  .str
-    color: #006600
-  .kwd
-    color: #006
-    font-weight: bold
-  .com
-    color: #600
-    font-style: italic
-  .typ
-    color: #404
-    font-weight: bold
-  .lit
-    color: #004444
-  .pun, .opn, .clo
-    color: #444400
-  .tag
-    color: #006
-    font-weight: bold
-  .atn
-    color: #440044
-  .atv
-    color: #006600
-
-// Specify class=linenums on a pre to get line numbering
-
-ol.linenums
-  margin-top: 0
-  margin-bottom: 0
-
-// IE indents via margin-left
-
-li
-  &.L0, &.L1, &.L2, &.L3, &.L4, &.L5, &.L6, &.L7, &.L8, &.L9, &.L1, &.L3, &.L5, &.L7, &.L9
-    //
 
 // Alternate shading for lines
