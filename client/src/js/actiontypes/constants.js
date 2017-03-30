@@ -19,6 +19,9 @@ export const POST_QUESTION_REQUEST = 'POST_QUESTION_REQUEST';
 // posting answer to API
 export const POST_ANSWER_REQUEST = 'POST_ANSWER_REQUEST';
 
+export const VOTE_ANSWER_REQUEST = 'VOTE_ANSWER_REQUEST';
+// vote up/down
+
 export const VOTE = 'VOTE';
 
 

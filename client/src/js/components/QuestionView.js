@@ -13,6 +13,7 @@ class QuestionView extends Component{
 		this.state = { newAnswer: '' };
 		this.addAnswer = props.actions.addAnswer;
 		this.fetchOne = props.actions.fetchOne;
+		this.voteAnswer = props.actions.voteAnswer;
 	}
 	componentWillMount() {
 		this.fetchOne(this.props.match.params.qId);
@@ -27,15 +28,10 @@ class QuestionView extends Component{
 	};
 	refreshVoteCount = (arg, answerId) =>{
 		console.log("refreshing state?", arg, answerId);
-		// arg will be either "up" or "down"
-		const url = encodeURI(`${this.defaultProps.baseUrl}${this.props.match.params.qId}/answers/${answerId}/vote-${arg}`);
-		makeRequest(url, 'POST').then (()=>{
-			console.log("Voted", arg);
-			this.getAnswersFromServer();
-		});
+		this.voteAnswer(this.props.match.params.qId, answerId, arg)
 	};
 	render() {
-		const { question } = this.props;
+		const { question, successMessage, errorMessage } = this.props;
 		let answers;
 		if(question.answers) {
 			answers = question.answers.map((a,index) => {
@@ -53,6 +49,10 @@ class QuestionView extends Component{
 		return (
 			<div className="grid-100">
 				<h2 className="question-heading">{question.text}</h2>
+				
+				{!!successMessage && <div className="alert alert-success">{successMessage}</div>}
+				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+				
 				<hr/>
 				{answers}
 				<h3>Add an Answer</h3>
@@ -70,7 +70,9 @@ class QuestionView extends Component{
 
 function mapStateToProps(state) {
 	return {
-		question : state.question
+		question : state.question,
+		successMessage: state.successMessage,
+		errorMessage: state.errorMessage
 	}
 }
 function mapActionsToProps(dispatch) {

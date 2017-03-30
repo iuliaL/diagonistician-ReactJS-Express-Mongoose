@@ -27,7 +27,7 @@ export default function(state = initialState, action) {
 		case ActionTypes.FETCH_QUESTION_SUCCESS:
 			return {
 				...state,
-				question: action.question
+				question: action.question,
 			};
 		
 		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that post was successful

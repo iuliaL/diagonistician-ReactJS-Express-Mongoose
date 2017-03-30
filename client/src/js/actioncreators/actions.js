@@ -58,6 +58,11 @@ function requestPostAnswer() {
 		type: ActionTypes.POST_ANSWER_REQUEST,
 	}
 }
+function requestVoteAnswer() {
+	return {
+		type: ActionTypes.VOTE_ANSWER_REQUEST,
+	}
+}
 
 export function addQuestion(question) {
 	return function (dispatch) {
@@ -80,6 +85,21 @@ export function addAnswer(questionId, answer) {
 			.then((id)=>{
 				console.log("posted answer with id:", id);
 				dispatch(setSuccessMessage('Answer was added successfully!')); // show success hint to user
+				dispatch(fetchOne(questionId))}) //refresh question
+			.catch((err)=>{
+				console.log(err,'err');
+				dispatch(setErrorMessage(err.message))
+			}); // show err to user
+	}
+}
+
+export function voteAnswer(questionId, answerId, arg) {
+	return function (dispatch) {
+		dispatch(requestVoteAnswer()); // init request, maybe add a loader
+		return QuestionApi.voteAnswer(questionId, answerId, arg)
+			.then((voted)=>{
+				const msgToShow = voted.voteDirection[0].toUpperCase() + voted.voteDirection.slice(1);
+				dispatch(setSuccessMessage( msgToShow + 'voted successfully!')); // show success hint to user
 				dispatch(fetchOne(questionId))}) //refresh question
 			.catch((err)=>{
 				console.log(err,'err');

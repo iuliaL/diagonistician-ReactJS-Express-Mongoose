@@ -127,7 +127,7 @@ router.delete(`${baseUrl}/:qId/answers/:aId`,function(req,res){
 
 router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
 			if(req.params.dir.search(/^(up|down)$/) === -1){
-				var err = new Error("Not found");
+				var err = new Error("Argument up/down not found");
 				err.status = 404;
 				next(err); //this next will call the Error handler with the err argument
 			} else {

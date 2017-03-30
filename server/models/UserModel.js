@@ -64,6 +64,13 @@ userSchema.pre("save", function(next) { // !!! this and arrow function
 		}).catch( err => next(err));
 });
 
+userSchema.methods.publicFormat = function() {
+	var result = this.toJSON();
+	// this is to get rid of the question __v (used internally by mongoose) when sending the data to the client
+	delete(result.__v);
+	return result
+};
+
 const User = mongoose.model('user', userSchema );
 
 module.exports = User;
