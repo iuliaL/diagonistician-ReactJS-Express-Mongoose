@@ -3,6 +3,12 @@
  */
 import React, {Component, PropTypes} from 'react';
 import { withRouter } from 'react-router';
+
+//redux
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as Actions from '../actioncreators/questionActions';
+
 import makeRequest from '../fetchHelper';
 
 
@@ -71,4 +77,17 @@ class RegisterForm extends Component{
 	}
 }
 
-export default withRouter(RegisterForm)
+function mapStateToProps(state) {
+	return {
+		successMessage: state.successMessage,
+		errorMessage: state.errorMessage
+	};
+}
+
+function mapDispatchedActionsToProps(dispatch) {
+	return {
+		actions: bindActionCreators(Actions, dispatch)
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchedActionsToProps)(RegisterForm)

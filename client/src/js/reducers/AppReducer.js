@@ -40,6 +40,10 @@ export default function(state = initialState, action) {
 				...state,
 				errorMessage: action.message
 			};
+		case ActionTypes.LOGIN_SUCCESS: //TODO do something on login success maybe redirect to /list
+			return {
+				...state,
+			};
 		default:
 			return state;
 	}

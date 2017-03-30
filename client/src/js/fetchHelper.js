@@ -14,7 +14,7 @@ function checkStatus(res) {
 	}
 }
 
-export default function makeRequest(
+const makeRequest = function(
 		url,
 		method = 'GET',
 		payload,
@@ -36,4 +36,6 @@ export default function makeRequest(
 			return fetch(`${baseUrl}${url}`, options )
 				.then(checkStatus)
 				.then(result => result.json())
-	}
+	};
+
+export default makeRequest;

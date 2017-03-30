@@ -2,7 +2,7 @@ import React,{PropTypes, Component} from 'react';
 //redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as Actions from '../actioncreators/actions';
+import * as Actions from '../actioncreators/questionActions';
 
 import Answer from './Answer';
 

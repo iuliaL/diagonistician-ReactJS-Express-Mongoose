@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 
 
 import Nav from './Nav';
-import * as Actions from '../actioncreators/actions';
+import * as Actions from '../actioncreators/questionActions';
 
 
 class Application extends Component{

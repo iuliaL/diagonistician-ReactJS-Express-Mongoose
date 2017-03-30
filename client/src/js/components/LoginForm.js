@@ -4,6 +4,12 @@
 'use strict';
 
 import React, { Component, PropTypes} from 'react';
+
+//redux
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as Actions from '../actioncreators/authActions';
+
 import { withRouter } from 'react-router';
 import makeRequest from '../fetchHelper';
 
@@ -15,6 +21,8 @@ class LoginForm extends Component{
 		})
 	};
 	state = { username : '', password: ''};
+	login = this.props.actions.login;
+	
 	onInputChange = (event) => {
 		//console.log('Typing ... ', event.target.value);
 		const what = event.target.name;
@@ -31,10 +39,10 @@ class LoginForm extends Component{
 			return;
 		}
 		this.props.onAdd({ username, password });
-		this.login({ username, password })
+		console.log('props login', this.props);
+		this.login(username, password);
 		//TODO redirect after login and get user details
-			//.then(this.getUserDetails())
-			.then((user)=>console.log("Redirect me to questions and make this", user, 'available'));
+		//	.then((user)=>console.log("Redirect me to questions and make this", user, 'available'));
 		//this.setState({ username : '', password: ''});
 	};
 	getUserDetails = (token) => {
@@ -43,20 +51,20 @@ class LoginForm extends Component{
 			.then((reply)=> reply.user)
 			.catch((err)=>'couldn\'t get user data');
 	};
-	login = (user) => {
-		const url = 'http://localhost:8080/auth/login';
-		const credentials = btoa(`${user.username}:${user.password}`);
-		return makeRequest(url, "POST", null, null, { Authorization: `Basic ${credentials}` })
-			.then((response)=> {
-				console.log('User logged in successfully', response);
-				localStorage.setItem('jwt', response.token);
-				// get user info
-				return this.getUserDetails(response.token);
-			})
-			.catch((e)=> console.log('Could not log in user',e));
-	};
+	// login = (user) => {
+	// 	const url = 'http://localhost:8080/auth/login';
+	// 	const credentials = btoa(`${user.username}:${user.password}`);
+	// 	return makeRequest(url, "POST", null, null, { Authorization: `Basic ${credentials}` })
+	// 		.then((response)=> {
+	// 			console.log('User logged in successfully', response);
+	// 			localStorage.setItem('jwt', response.token);
+	// 			// get user info
+	// 			return this.getUserDetails(response.token);
+	// 		})
+	// 		.catch((e)=> console.log('Could not log in user',e));
+	//};
 	logout = () => {
-		const url = 'http://localhost:8080/auth/logout';
+		let url = '/auth/logout';
 		return makeRequest(url, "GET")
 			.then((response)=> {
 				console.log(response.message);
@@ -87,4 +95,17 @@ class LoginForm extends Component{
 	}
 }
 
-export default withRouter(LoginForm)
+function mapStateToProps(state) {
+	return {
+		successMessage: state.successMessage,
+		errorMessage: state.errorMessage
+	};
+}
+
+function mapDispatchedActionsToProps(dispatch) {
+	return {
+		actions: bindActionCreators(Actions, dispatch)
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchedActionsToProps)(LoginForm)

@@ -16,7 +16,7 @@ import thunk from 'redux-thunk'; // lets us dispatch() functions async
 import logger from 'redux-logger'; // nice state console.logs
 
 import AppReducer from './reducers/AppReducer';
-import { fetchQuestions } from './actioncreators/actions'
+import { fetchQuestions } from './actioncreators/questionActions'
 
 import createBrowserHistory from 'history/createBrowserHistory' // this works like this
 
