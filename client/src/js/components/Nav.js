@@ -30,7 +30,7 @@ function Nav(props) {
 	
 	return(
 		<header className="circle--header">
-			<a href="/"><img className="main-logo" src="images/doctor.svg" alt="logo"/></a>
+			<a href="/"><img className="main-logo" src="/images/doctor.svg" alt="logo"/></a>
 			{navButtons}
 		</header>
 
