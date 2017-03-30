@@ -13,8 +13,8 @@ function registerSuccess() {
 	return { type: ActionTypes.REGISTER_SUCCESS }
 }
 
-function loginSuccess() {
-	return { type: ActionTypes.LOGIN_SUCCESS}
+function loginSuccess(redirect) {
+	return { type: ActionTypes.LOGIN_SUCCESS, redirect }
 }
 
 export function login(username, password) {
@@ -24,8 +24,8 @@ export function login(username, password) {
 			.then((response) => {
 				console.log('User logged in successfully', response);
 				localStorage.setItem('jwt', response.token);
-				dispatch(loginSuccess())
-			}).catch((err)=>dispatch(setErrorMessage(err)));
+				dispatch(loginSuccess('/list'))
+			}).catch((err)=>dispatch(setErrorMessage(err.message)));
 	}
 }
 

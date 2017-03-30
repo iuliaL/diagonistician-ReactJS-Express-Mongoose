@@ -43,6 +43,7 @@ export default function(state = initialState, action) {
 		case ActionTypes.LOGIN_SUCCESS: //TODO do something on login success maybe redirect to /list
 			return {
 				...state,
+				redirect: action.redirect
 			};
 		default:
 			return state;
