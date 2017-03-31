@@ -24,6 +24,7 @@ class QuestionView extends Component{
 		// by fetching again the question and updating state
 		const answer = { text: this.state.newAnswer };
 		this.addAnswer(this.props.match.params.qId, answer)
+			.then(()=>this.setState( { newAnswer: '' }));
 	};
 	refreshVoteCount = (arg, answerId) =>{
 		console.log("refreshing state?", arg, answerId);

@@ -1,8 +1,7 @@
 'use strict';
 
 import * as ActionTypes from '../actiontypes/constants';
-//import auth from '../login/auth';
-import Auth from '../apirequests/auth';
+import Auth from '../requests/auth';
 
 
 // The initial application state
@@ -42,11 +41,15 @@ export default function(state = initialState, action) {
 				...state,
 				errorMessage: action.message
 			};
-		case ActionTypes.LOGIN_SUCCESS: //TODO do something on login success maybe redirect to /list
+		case ActionTypes.LOGIN_SUCCESS:
 			return {
 				...state,
-				redirect: action.redirect,
-				loggedIn: Auth.loggedIn() // refresh loggedIn
+				loggedIn: action.loggedIn
+			};
+		case ActionTypes.LOGOUT_SUCCESS:
+			return {
+				...state,
+				loggedIn: action.loggedIn
 			};
 		default:
 			return state;

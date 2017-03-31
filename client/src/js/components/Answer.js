@@ -15,7 +15,6 @@ const Answer = (props) => {
 			</div>
 			<div className="grid-90">
 				<p style={{'color': 'black', 'fontWeight': 600}}>{props.text}</p>
-				
 				<div className="align-right">
 					<small>Answered <strong><FormattedDate date={props.createdAt}/></strong> | </small>
 					<small>Modified <strong><FormattedDate date={props.updatedAt}/></strong></small>

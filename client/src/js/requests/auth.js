@@ -7,7 +7,7 @@ import makeRequest from '../fetchHelper';
 
 const path = '/auth';
 
-export default class Auth{
+export default class Auth {
 	static login(user,pass){
 		const credentials = btoa(`${user}:${pass}`);
 		return makeRequest(`${path}/login`, "POST", null, null, { Authorization: `Basic ${credentials}`})
@@ -21,5 +21,8 @@ export default class Auth{
 	 */
 	static loggedIn() {
 		return !!localStorage.getItem('jwt');
+	}
+	static logout(){ // does nothing but sending GET request with token
+		return makeRequest(`${path}/logout`, "GET")
 	}
 }

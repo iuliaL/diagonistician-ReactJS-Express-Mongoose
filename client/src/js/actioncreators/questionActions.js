@@ -2,7 +2,7 @@
 
 import * as ActionTypes from '../actiontypes/constants';
 import { setErrorMessage, setSuccessMessage } from './messageActions';
-import QuestionApi from '../apirequests/questions';
+import QuestionApi from '../requests/questions';
 
 function initRequest() {
 	return {

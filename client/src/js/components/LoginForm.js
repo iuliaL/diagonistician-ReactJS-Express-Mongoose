@@ -10,8 +10,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as Actions from '../actioncreators/authActions';
 
-import { Redirect } from 'react-router';
+import { withRouter, Redirect } from 'react-router';
 import makeRequest from '../fetchHelper';
+
+import createBrowserHistory from 'history/createBrowserHistory' // this works like this
+const history = createBrowserHistory();
 
 
 class LoginForm extends Component{
@@ -47,50 +50,37 @@ class LoginForm extends Component{
 			.then((reply)=> reply.user)
 			.catch((err)=>'couldn\'t get user data');
 	};
-	logout = () => {
-		let url = '/auth/logout';
-		return makeRequest(url, "GET")
-			.then((response)=> {
-				console.log(response.message);
-				localStorage.removeItem('jwt');
-			})
-			.catch((e)=> console.log('Could not logout user',e));
-	};
+
 	render(){
-		const { redirect, errorMessage } = this.props;
+		const { errorMessage, loggedIn } = this.props;
+		console.log(errorMessage,loggedIn,'history',history);
 		return (
-			<div>
-				{/*redirect if login success*/}
-				{!!redirect && <Redirect to={redirect} />}
+			<form className="question-form" onSubmit={this.onSubmit}>
+				{loggedIn && <Redirect to="/list"/>}
+				<h1>Login</h1>
+				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 				
-				<form className="question-form" onSubmit={this.onSubmit}>
-					<h1>Login</h1>
-					
-					{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-					
-					<div className="grid-parent">
-						<div className="grid-100">
-							<input type="text" placeholder="Username"
-							       value={this.state.username} name="username"
-							       onChange={this.onInputChange}
-							/>
-							<input type="password" placeholder="Password"
-							       value={this.state.password}
-							       name="password" onChange={this.onInputChange}
-							/>
-							<input className="button-primary ask-question-button" type="submit" value="Login"/>
-							<input className="button-secondary ask-question-button" type="button" onClick={this.logout} value="Logout"/>
-						</div>
+				<div className="grid-parent">
+					<div className="grid-100">
+						<input type="text" placeholder="Username"
+						       value={this.state.username} name="username"
+						       onChange={this.onInputChange}
+						/>
+						<input type="password" placeholder="Password"
+						       value={this.state.password}
+						       name="password" onChange={this.onInputChange}
+						/>
+						<input className="button-primary ask-question-button" type="submit" value="Login"/>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		)
 	}
 }
 
 function mapStateToProps(state) {
 	return {
-		redirect: state.redirect,
+		loggedIn: state.loggedIn,
 		errorMessage: state.errorMessage
 	};
 }
@@ -101,4 +91,4 @@ function mapDispatchedActionsToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchedActionsToProps)(LoginForm)
+export default withRouter(connect(mapStateToProps, mapDispatchedActionsToProps)(LoginForm))

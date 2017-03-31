@@ -5,23 +5,27 @@ import {bindActionCreators} from 'redux';
 
 
 import Nav from './Nav';
-import * as Actions from '../actioncreators/questionActions';
+import * as Actions from '../actioncreators/authActions';
 
 
-class Application extends Component{
-	render() {
-		//console.log('APP PROPS',this.props);
-		return (
-			<div>
-				<Nav loggedIn={this.props.loggedIn} />
-				{/*here are the routes*/}
-				<div className="bounds">
-					{this.props.children}
-				</div>
+const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ history, children, actions, loggedIn})=>{
+	console.log('APP logged in', loggedIn);
+	const logout = ()=> {
+		actions.logout();
+	};
+	return (
+		<div>
+			<Nav loggedIn={loggedIn} onLogout={logout}/>
+			{/*here are the routes*/}
+			<div className="bounds">
+				{children}
 			</div>
-		)
-	}
-}
+		</div>
+	)
+}));
+
+
+
 
 function mapStateToProps(state) {
 	return {
@@ -34,11 +38,7 @@ function mapDispatchToProps(dispatch) {
 		actions: bindActionCreators(Actions, dispatch)
 	};
 }
-
-export default withRouter(connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Application));
+export default Application;
 
 // need withRouter here otherwise Add question button or question links => /add won't work
 // Application does not have location property and thus the children won't know about url location, App acts as a blocker

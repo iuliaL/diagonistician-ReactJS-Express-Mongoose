@@ -1,7 +1,8 @@
 'use strict';
 
 import * as ActionTypes from '../actiontypes/constants';
-import Auth from '../apirequests/auth';
+import { setErrorMessage, setSuccessMessage } from './messageActions';
+import Auth from '../requests/auth';
 
 function initRequest() {
 	return {
@@ -13,8 +14,11 @@ function registerSuccess() {
 	return { type: ActionTypes.REGISTER_SUCCESS }
 }
 
-function loginSuccess(redirect) {
-	return { type: ActionTypes.LOGIN_SUCCESS, redirect }
+function loginSuccess(loggedIn) {
+	return { type: ActionTypes.LOGIN_SUCCESS, loggedIn }
+}
+function logoutSuccess(loggedIn) {
+	return { type: ActionTypes.LOGOUT_SUCCESS, loggedIn }
 }
 
 export function login(username, password) {
@@ -24,7 +28,17 @@ export function login(username, password) {
 			.then((response) => {
 				console.log('User logged in successfully', response);
 				localStorage.setItem('jwt', response.token);
-				dispatch(loginSuccess('/list'))
+				dispatch(loginSuccess(Auth.loggedIn()));
+			}).catch((err)=>dispatch(setErrorMessage(err.message)));
+	}
+}
+export function logout() {
+	return function (dispatch) {
+		return Auth.logout()
+			.then((res)=> {
+				localStorage.removeItem('jwt');
+				dispatch(logoutSuccess(Auth.loggedIn()));
+				dispatch(setSuccessMessage(res.message));
 			}).catch((err)=>dispatch(setErrorMessage(err.message)));
 	}
 }
@@ -32,19 +46,5 @@ export function login(username, password) {
 export function register(username, password) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
-		
-	}
-}
-
-/**
- * Sets the state errorMessage
- */
-function setErrorMessage(message) {
-	return (dispatch) => {
-		dispatch({ type: ActionTypes.SET_ERROR_MESSAGE, message });
-		// Remove the  message after 3 seconds
-		setTimeout(() => {
-			dispatch({ type: ActionTypes.SET_ERROR_MESSAGE, message: '' });
-		}, 3000);
 	}
 }
