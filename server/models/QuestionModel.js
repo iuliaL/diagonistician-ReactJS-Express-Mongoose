@@ -21,7 +21,12 @@ var answerSchema = mongoose.Schema({
 		required: true,
 		min: [10, 'Answer must be at least 10 characters long']
 	},
-	votes	 	: { type: Number, default: 0 }
+	votes: { type: Number, default: 0 },
+	owner: {
+		type: String, // user id
+		required: true
+	},
+	votedBy: [ String ]
 },
 	{ timestamps: {
 		createdAt	: "createdAt",
@@ -46,7 +51,11 @@ var questionSchema = mongoose.Schema({
 		required: true,
 		min: 10
 	},
-	answers		: [ answerSchema ]
+	answers	: [ answerSchema ],
+	owner: {
+		type: String, // user id
+		required: true
+	},
 },
 	{ timestamps: {
 		createdAt	: "createdAt"

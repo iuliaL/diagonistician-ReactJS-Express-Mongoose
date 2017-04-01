@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 mongoose.set('debug', true);
 
 
-
 // POST /register
 router.post('/register', function(req, res, next) {
 	const {username, password, confirmPassword} = req.body;
@@ -47,11 +46,11 @@ router.post('/login', function(req, res, next) {
 	if(username && password){
 		User.authenticate(username,password)
 			.then(user => {
-				user = user.toObject();
+				user =  user.publicFormat(); // delete the __v
 				delete user.password;
 				delete user.username;
 				const token = jwt.sign(
-					{ user }, //payload
+					user, //payload
 					secret  // sign the token with my server-stored secret
 				);
 				res.status(200)
@@ -72,8 +71,8 @@ router.get('/logout', function (req, res, next) {
 
 // GET user details
 router.get('/user-details', function (req, res, next) {
-	if(req.user && req.user.user){
-		User.findOne({_id: req.user.user._id})
+	if(req.user && req.user){
+		User.findOne({_id: req.user._id})
 			.then((user)=>{
 				console.log('user details', user);
 				res.json({user})})

@@ -64,6 +64,14 @@ router.get(`${baseUrl}/:qId`,function(req,res, next){
 //POST /questions
 router.post(`${baseUrl}`, function(req,res,next){
 	const newQuestion = new Question(req.body);
+	console.log('user?',req.user);
+	if(req.user && req.user._id){
+		newQuestion.owner = req.user._id;
+	} else {
+		const error =  new Error('No logged in user found');
+		error.status = 500;
+		return next(error);
+	}
 	newQuestion.save()
 	.then(function(reply){ //the reply is the actual question created
 		res.status(201).json(reply.id)

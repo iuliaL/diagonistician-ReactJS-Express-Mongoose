@@ -17,7 +17,12 @@ const userSchema = mongoose.Schema({
 		password: {
 			type: String,
 			required: true
+		},
+		points: {
+			type: Number,
+			default: 0
 		}
+		
 	},
 	{ timestamps: {
 		createdAt	: "createdAt",
@@ -66,7 +71,7 @@ userSchema.pre("save", function(next) { // !!! this and arrow function
 
 userSchema.methods.publicFormat = function() {
 	var result = this.toJSON();
-	// this is to get rid of the question __v (used internally by mongoose) when sending the data to the client
+	// this is to get rid of the  __v
 	delete(result.__v);
 	return result
 };

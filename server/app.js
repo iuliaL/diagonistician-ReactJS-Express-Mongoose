@@ -59,19 +59,6 @@ app.use(expressJWT({
 	}
 ));
 
-// need cookieParser middleware before we can do anything with cookies
-//app.use(cookieParser());
-
-/*
-app.use(session({
-	secret: 'my secret level of security',
-	resave: true,
-	saveUninitialized: false,
-	cookie : {
-		httpOnly: false
-	}
-}));
-*/
 
 app.use(function (req,res,next) {
 	res.header('Access-Control-Allow-Origin', "http://localhost:3001"); // can't use * with credentials
@@ -89,7 +76,7 @@ app.use(function (req,res,next) {
 app.use(function(req,res,next){
 	// here i can see the req payload with every request (example of most basic middleware)
 	// and check session and cookies are being sent by the browser
-	console.log(req.user);
+	console.log('REQ.USER',req.user); // this holds the token info for the protected routes only
 	next();
 });
 
