@@ -11,7 +11,7 @@ import * as Actions from '../actioncreators/authActions';
 const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ history, children, actions, loggedIn})=>{
 	console.log('APP logged in', loggedIn);
 	const logout = ()=> {
-		actions.logout();
+		actions.logout(history);
 	};
 	return (
 		<div>

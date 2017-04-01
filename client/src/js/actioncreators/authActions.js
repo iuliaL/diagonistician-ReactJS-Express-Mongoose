@@ -36,12 +36,13 @@ export function login(username, password) {
 			}).catch((err)=>dispatch(setErrorMessage(err.message)));
 	}
 }
-export function logout() {
+export function logout(history) {
 	return function (dispatch) {
 		return Auth.logout()
 			.then((res)=> {
 				localStorage.removeItem('jwt');
 				dispatch(logoutSuccess(Auth.loggedIn()));
+				dispatch(forwardTo(history,'/list'));
 				dispatch(setSuccessMessage(res.message));
 			}).catch((err)=>dispatch(setErrorMessage(err.message)));
 	}

@@ -41,7 +41,7 @@ class RegisterForm extends Component{
 			alert('Passwords don\'t match!');
 			return;
 		}
-		this.register({ username, password, confirmPassword }, this.props.history)
+		this.register({ username, password, confirmPassword }, this.props.history)// i am passing history to the action creator so i can use history with redux
 			.then(()=>{
 				console.log("need to redirect me to questions");
 			});
