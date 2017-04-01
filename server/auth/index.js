@@ -48,7 +48,6 @@ router.post('/login', function(req, res, next) {
 			.then(user => {
 				user =  user.publicFormat(); // delete the __v
 				delete user.password;
-				delete user.username;
 				const token = jwt.sign(
 					user, //payload
 					secret  // sign the token with my server-stored secret

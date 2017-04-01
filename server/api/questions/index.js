@@ -39,7 +39,7 @@ router.param('qId', function(req,res,next){
 			next(err); // this error will be caught by the errorHandler
 		} else {
 			req.questionFound = question;
-			next(); //will pass req.questionFound to the route
+			next(); //will pass req.questionFound to the req obj
 		}
 	})
 	.catch(function(err){
@@ -64,11 +64,12 @@ router.get(`${baseUrl}/:qId`,function(req,res, next){
 //POST /questions
 router.post(`${baseUrl}`, function(req,res,next){
 	const newQuestion = new Question(req.body);
-	console.log('user?',req.user);
-	if(req.user && req.user._id){
-		newQuestion.owner = req.user._id;
+	console.log('user?', req.user);
+	if(req.user){
+		const { _id, username } = req.user;
+		newQuestion.owner = { _id, username};
 	} else {
-		const error =  new Error('No logged in user found');
+		const error =  new Error('Couldn\'t parse token');
 		error.status = 500;
 		return next(error);
 	}
@@ -92,15 +93,24 @@ router.delete(`${baseUrl}/:qId`, function (req,res,next) {
 
 //POST /questions/:qId/answers
 router.post(`${baseUrl}/:qId/answers`,function(req, res, next){
-	var questionFound = req.questionFound;
-	questionFound.answers.push(req.body);
-	questionFound.save()
+	const questionFound = req.questionFound;
+	const newAnswer = req.body;
+	console.log('who is this?',req.user);
+	if(req.user){
+		const { _id, username } = req.user;
+		newAnswer.owner = { _id, username};
+	} else {
+		const error =  new Error('No logged in user found');
+		error.status = 500;
+		return next(error);
+	}
+	questionFound.answers.push(newAnswer);
+	questionFound.save() // save the parent question
 	.then(function(reply){
 		res.status(201).json(reply.id);
 	}).catch(function(err){
 		next(err);
 	})
-
 });
 
 //PUT /questions/:qId/answers/:aId

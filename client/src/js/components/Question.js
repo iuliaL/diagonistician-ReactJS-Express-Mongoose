@@ -10,10 +10,11 @@ function Question (props) {
 			</div>
 			<div className="grid-90">
 				<p>{props.text}</p>
-				<small className="align-right block">
-					Asked
-					<strong><FormattedDate date={props.createdAt}/></strong>
-				</small>
+				<div className="align-right">
+					<small>Asked by <strong>{props.owner}</strong></small><br/>
+					<small>on <FormattedDate date={props.createdAt}/> | </small>
+					<small>Modified <FormattedDate date={props.updatedAt}/></small>
+				</div>
 			</div>
 		</div>
 	)

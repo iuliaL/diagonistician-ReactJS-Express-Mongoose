@@ -29,7 +29,10 @@ class QuestionsList extends Component{
 				<LinkWrap key={q._id} to={`/question/${q._id}`}>
 					<Question id={q._id}
 					          text={q.text}
-					          createdAt={q.createdAt}/>
+					          owner={q.owner.username}
+					          createdAt={q.createdAt}
+					          updatedAt={q.updatedAt}
+					/>
 				</LinkWrap>
 			)
 		}); // and then no need to bind this

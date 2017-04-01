@@ -23,11 +23,11 @@ var answerSchema = mongoose.Schema({
 	},
 	votes: { type: Number, default: 0 },
 	owner: {
-		type: String, // user id
-		required: true
+		_id : String, // user id
+		username : String
 	},
 	votedBy: [ String ]
-},
+	},
 	{ timestamps: {
 		createdAt	: "createdAt",
 		updatedAt	: "updatedAt"
@@ -53,8 +53,8 @@ var questionSchema = mongoose.Schema({
 	},
 	answers	: [ answerSchema ],
 	owner: {
-		type: String, // user id
-		required: true
+		_id : String, // user id
+		username : String
 	},
 },
 	{ timestamps: {

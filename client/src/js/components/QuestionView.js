@@ -39,6 +39,7 @@ class QuestionView extends Component{
 					<Answer key={a._id}
 					        id={a._id}
 					        text={a.text}
+					        owner={a.owner.username}
 					        votes={a.votes}
 					        createdAt={a.createdAt}
 					        updatedAt={a.updatedAt}
