@@ -13,16 +13,10 @@ import * as Actions from '../actioncreators/authActions';
 import { withRouter, Redirect } from 'react-router';
 import makeRequest from '../fetchHelper';
 
-import createBrowserHistory from 'history/createBrowserHistory' // this works like this
-const history = createBrowserHistory();
-
 
 class LoginForm extends Component{
 	static propTypes = {
-		route: PropTypes.shape({
-			onAdd: PropTypes.func.isRequired
-		}),
-		redirect: PropTypes.string,
+		loggedIn: PropTypes.bool,
 		errorMessage: PropTypes.string
 	};
 	state = { username : '', password: ''};
@@ -53,7 +47,6 @@ class LoginForm extends Component{
 
 	render(){
 		const { errorMessage, loggedIn } = this.props;
-		console.log(errorMessage,loggedIn,'history',history);
 		return (
 			<form className="question-form" onSubmit={this.onSubmit}>
 				{loggedIn && <Redirect to="/list"/>}
@@ -91,4 +84,4 @@ function mapDispatchedActionsToProps(dispatch) {
 	};
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchedActionsToProps)(LoginForm))
+export default connect(mapStateToProps, mapDispatchedActionsToProps)(LoginForm)

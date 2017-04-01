@@ -13,8 +13,8 @@ export default class Auth {
 		return makeRequest(`${path}/login`, "POST", null, null, { Authorization: `Basic ${credentials}`})
 	}
 	
-	static register(user,pass){
-		
+	static register(user){
+		return makeRequest(`${path}/register`, "POST", user )
 	}
 	/* Checks if anybody is logged in
 	 * @return {boolean} True if there is a logged in user, false if there isn't

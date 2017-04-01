@@ -6,11 +6,11 @@
  * This component renders the navigation bar
  */
 
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router-dom';
 
 function Nav(props) {
-	// Render either the Log In and register buttons, or the logout button
+	// Render either the Login and Sign up buttons, or the Home and Logout button
 	// based on the current authentication state.
 	const navButtons = props.loggedIn ? (
 			<nav>
@@ -19,7 +19,7 @@ function Nav(props) {
 			</nav>
 		) : (
 			<nav>
-				<Link to="/register" className="btn btn--login btn--nav">Register</Link>
+				<Link to="/register" className="btn btn--login btn--nav">Sign up</Link>
 				<Link to="/login" className="btn btn--login btn--nav">Login</Link>
 			</nav>
 		);
@@ -34,7 +34,8 @@ function Nav(props) {
 }
 
 Nav.propTypes = {
-	loggedIn: React.PropTypes.bool.isRequired
+	loggedIn: PropTypes.bool.isRequired,
+	onLogout: PropTypes.func.isRequired
 };
 
 export default Nav;

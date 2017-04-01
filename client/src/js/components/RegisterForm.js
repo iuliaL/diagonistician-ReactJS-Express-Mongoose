@@ -2,25 +2,27 @@
  * Created by Iulia on 3/13/17.
  */
 import React, {Component, PropTypes} from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, Redirect } from 'react-router';
 
 //redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as Actions from '../actioncreators/questionActions';
+import * as Actions from '../actioncreators/authActions';
 
 import makeRequest from '../fetchHelper';
 
 
 class RegisterForm extends Component{
+	constructor(props){
+		super(props);
+		this.register = props.actions.register;
+	}
 	static propTypes = {
-		route: PropTypes.shape({
-			onAdd: PropTypes.func.isRequired
-			})
+		loggedIn: PropTypes.bool,
+		errorMessage: PropTypes.string
 	};
 	state = { username : '', password: '', confirmPassword: ''};
 	onInputChange = (event) => {
-		//console.log('Typing ... ', event.target.value);
 		const what = event.target.name;
 		this.setState({
 			[what]: event.target.value
@@ -39,22 +41,24 @@ class RegisterForm extends Component{
 			alert('Passwords don\'t match!');
 			return;
 		}
-		this.props.onAdd({ username, password });
-		this.login({ username, password, confirmPassword })
-			//TODO redirect after register
-			.then(()=>console.log("Redirect me to questions"));
+		this.register({ username, password, confirmPassword }, this.props.history)
+			.then(()=>{
+				console.log("need to redirect me to questions");
+			});
+		
+	};
+	componentWillUnmount(){
 		this.setState({ username : '', password: '', confirmPassword: ''});
-	};
-	login = (user) => {
-		const url = 'http://localhost:8080/auth/register';
-		return makeRequest(url, "POST", user)
-			.then((response)=> console.log('User created', response))
-			.catch((e)=> console.log('Could not create user', e));
-	};
+	}
 	render(){
+		const errorMessage =  this.props.errorMessage;
+		const loggedIn = this.props.loggedIn;
 		return (
 			<form className="question-form" onSubmit={this.onSubmit}>
+				{loggedIn && <Redirect to="/list"/>}
 				<h1>Sign up</h1>
+				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+				
 				<div className="grid-parent">
 					<div className="grid-100">
 						<input type="text" placeholder="Username"
@@ -69,7 +73,7 @@ class RegisterForm extends Component{
 						       value={this.state.confirmPassword}
 						       name="confirmPassword" onChange={this.onInputChange}
 						/>
-						<input className="button-primary ask-question-button" type="submit" value="Register"/>
+						<input className="button-primary ask-question-button" type="submit" value="Sign Up"/>
 					</div>
 				</div>
 			</form>
@@ -79,8 +83,8 @@ class RegisterForm extends Component{
 
 function mapStateToProps(state) {
 	return {
-		successMessage: state.successMessage,
-		errorMessage: state.errorMessage
+		errorMessage: state.errorMessage,
+		loggedIn: state.loggedIn
 	};
 }
 

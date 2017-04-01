@@ -4,6 +4,10 @@ import * as ActionTypes from '../actiontypes/constants';
 import { setErrorMessage, setSuccessMessage } from './messageActions';
 import Auth from '../requests/auth';
 
+import createBrowserHistory from 'history/createBrowserHistory' // this works like this
+const history = createBrowserHistory();
+
+
 function initRequest() {
 	return {
 		type: ActionTypes.INIT_REQUEST
@@ -43,8 +47,22 @@ export function logout() {
 	}
 }
 
-export function register(username, password) {
+export function register(user, history) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
+		return Auth.register(user)
+			.then(()=> {
+					dispatch(registerSuccess());
+					dispatch(forwardTo(history,'/list'))
+			})
+			.catch((err)=> dispatch(setErrorMessage()))
 	}
+}
+
+function forwardTo(history,location) {
+	return {
+			type : ActionTypes.FORWARD_TO,
+			history,
+			location
+		}
 }

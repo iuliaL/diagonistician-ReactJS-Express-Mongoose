@@ -2,10 +2,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import {
-	Router,
+	BrowserRouter as Router,
 	Route,
 	Switch
 } from 'react-router-dom'
+
+import createBrowserHistory from 'history/createBrowserHistory' // this works like this
+const history = createBrowserHistory();
 
 //REDUX imports
 import { Provider } from 'react-redux';
@@ -18,7 +21,7 @@ import logger from 'redux-logger'; // nice state console.logs
 import AppReducer from './reducers/AppReducer';
 import { fetchQuestions } from './actioncreators/questionActions'
 
-import createBrowserHistory from 'history/createBrowserHistory' // this works like this
+
 
 // Components
 import Application from './components/Application';
@@ -28,7 +31,6 @@ import QuestionView from './components/QuestionView';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 
-const history = createBrowserHistory();
 const store = createStore(AppReducer, applyMiddleware(thunk, logger));
 
 store.dispatch(fetchQuestions()); // fetching questions at the highest level of the app
@@ -40,9 +42,8 @@ render((
 				<Switch>
 					<Route path="/list" component={QuestionList}/>
 					<Route path="/question/:qId" component={QuestionView}/>
-					<Route path="/login" render={()=> <LoginForm onAdd={(user)=>console.log(user)}/>}/>
-					<Route path="/register" render={()=> <RegisterForm onAdd={(user)=>console.log(user)}/>}/>
-					{/* my register POST will be in this register form for the moment */}
+					<Route path="/login"  component={LoginForm}/>
+					<Route path="/register" component={RegisterForm}/>
 					<Route path="*" component={NotFound}/>
 				</Switch>
 			</Application>
