@@ -20,7 +20,7 @@ import logger from 'redux-logger'; // nice state console.logs
 
 import AppReducer from './reducers/AppReducer';
 import { fetchQuestions } from './actioncreators/questionActions'
-
+import {requestUserDetails} from './actioncreators/authActions'
 
 
 // Components
@@ -34,6 +34,10 @@ import LoginForm from './components/LoginForm';
 const store = createStore(AppReducer, applyMiddleware(thunk, logger));
 
 store.dispatch(fetchQuestions()); // fetching questions at the highest level of the app
+
+if(store.getState().loggedIn && !store.getState().user._id){
+	store.dispatch(requestUserDetails())
+}
 
 render((
 	<Provider store={store}>

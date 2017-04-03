@@ -26,6 +26,7 @@ export default class Auth {
 		return makeRequest(`${path}/logout`, "GET")
 	}
 	static getUserDetails(){
+		console.log('made user details request');
 		return makeRequest(`${path}/user-details`)
 	}
 }

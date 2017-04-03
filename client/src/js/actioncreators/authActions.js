@@ -33,13 +33,21 @@ export function login(username, password, history) {
 				console.log('User logged in successfully', response);
 				localStorage.setItem('jwt', response.token);
 				dispatch(loginSuccess(Auth.loggedIn()));
-				Auth.getUserDetails()
-					.then((user) => dispatch(getUserDetails(user)))
-					.then(dispatch(forwardTo(history, '/list')))
+				dispatch(requestUserDetails());
 			})
+			.then(dispatch(forwardTo(history, '/list')))
 			.catch((err)=>dispatch(setErrorMessage(err.message)));
 	}
 }
+
+export function requestUserDetails() {
+	return function(dispatch){
+		return Auth.getUserDetails()
+			.then((user) => dispatch(getUserDetails(user)))
+			.catch((err)=>dispatch(setErrorMessage(err.message)));
+	}
+}
+
 export function logout(history) {
 	return function (dispatch) {
 		return Auth.logout()
