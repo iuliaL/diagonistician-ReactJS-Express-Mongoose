@@ -2,7 +2,6 @@
 
 /**
  * Nav.js
- *
  * This component renders the navigation bar
  */
 
@@ -13,28 +12,36 @@ function Nav(props) {
 	// Render either the Login and Sign up buttons, or the Home and Logout button
 	// based on the current authentication state.
 	const navButtons = props.loggedIn ? (
-			<nav>
-				<Link to="/list" className="btn btn--nav">Home</Link>
-				<a href="#" className="btn btn--login btn--nav" onClick={(ev)=>{ev.preventDefault(); props.onLogout()}}>Logout</a>
-			</nav>
+			<ul className="nav nav-pills">
+				<li><Link to="/list" className="btn">Home</Link></li>
+				<li><a href="#" className="btn" onClick={(ev)=>{ev.preventDefault(); props.onLogout()}}>Logout</a></li>
+				<li className="pull-right user-details">
+					<a className="username">{props.user.username}</a>
+					<a className="points">{props.user.points} points</a>
+				</li>
+			
+			</ul>
 		) : (
-			<nav>
-				<Link to="/register" className="btn btn--login btn--nav">Sign up</Link>
-				<Link to="/login" className="btn btn--login btn--nav">Login</Link>
-			</nav>
+			<ul  className="nav nav-pills">
+				<li><Link to="/register" className="btn">Sign up</Link></li>
+				<li><Link to="/login" className="btn">Login</Link></li>
+			</ul>
 		);
 	
 	return(
-		<header className="circle--header">
-			<a href="/"><img className="main-logo" src="/images/doctor.svg" alt="logo"/></a>
-			{navButtons}
-		</header>
+		<div className="circle--header">
+			<div className="bounds">
+				{navButtons}
+			</div>
+			<Link to="/list" className="logo-link"><img className="main-logo" src="/images/doctor.svg" alt="logo"/></Link>
+		</div>
 
 	)
 }
 
 Nav.propTypes = {
 	loggedIn: PropTypes.bool.isRequired,
+	user: PropTypes.object,
 	onLogout: PropTypes.func.isRequired
 };
 

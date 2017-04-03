@@ -36,15 +36,8 @@ class LoginForm extends Component{
 			alert('Please type username and password!');
 			return;
 		}
-		this.login(username, password);
+		this.login(username, password, this.props.history);
 	};
-	getUserDetails = (token) => {
-		const url = 'http://localhost:8080/auth/user-details';
-		return makeRequest(url, "GET", null, null, {Authorization: `Bearer ${token}` })
-			.then((reply)=> reply.user)
-			.catch((err)=>'couldn\'t get user data');
-	};
-
 	render(){
 		const { errorMessage, loggedIn } = this.props;
 		return (

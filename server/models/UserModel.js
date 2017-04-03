@@ -73,6 +73,7 @@ userSchema.methods.publicFormat = function() {
 	var result = this.toJSON();
 	// this is to get rid of the  __v
 	delete(result.__v);
+	delete result.password;
 	return result
 };
 

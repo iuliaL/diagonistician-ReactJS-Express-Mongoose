@@ -8,14 +8,14 @@ import Nav from './Nav';
 import * as Actions from '../actioncreators/authActions';
 
 
-const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ history, children, actions, loggedIn})=>{
+const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ history, children, actions, loggedIn, user})=>{
 	console.log('APP logged in', loggedIn);
 	const logout = ()=> {
 		actions.logout(history);
 	};
 	return (
 		<div>
-			<Nav loggedIn={loggedIn} onLogout={logout}/>
+			<Nav loggedIn={loggedIn} onLogout={logout} user={user}/>
 			{/*here are the routes*/}
 			<div className="bounds">
 				{children}
@@ -29,7 +29,8 @@ const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ h
 
 function mapStateToProps(state) {
 	return {
-		loggedIn: state.loggedIn
+		loggedIn: state.loggedIn,
+		user: state.user
 	};
 }
 

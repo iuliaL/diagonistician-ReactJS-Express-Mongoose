@@ -25,7 +25,7 @@ function logoutSuccess(loggedIn) {
 	return { type: ActionTypes.LOGOUT_SUCCESS, loggedIn }
 }
 
-export function login(username, password) {
+export function login(username, password, history) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
 		return Auth.login(username,password)
@@ -33,7 +33,11 @@ export function login(username, password) {
 				console.log('User logged in successfully', response);
 				localStorage.setItem('jwt', response.token);
 				dispatch(loginSuccess(Auth.loggedIn()));
-			}).catch((err)=>dispatch(setErrorMessage(err.message)));
+				Auth.getUserDetails()
+					.then((user) => dispatch(getUserDetails(user)))
+					.then(dispatch(forwardTo(history, '/list')))
+			})
+			.catch((err)=>dispatch(setErrorMessage(err.message)));
 	}
 }
 export function logout(history) {
@@ -53,10 +57,11 @@ export function register(user, history) {
 		dispatch(initRequest()); // show spinner or something
 		return Auth.register(user)
 			.then(()=> {
-					dispatch(registerSuccess());
-					dispatch(forwardTo(history,'/list'))
+				dispatch(registerSuccess());
+				dispatch(forwardTo(history, '/list'));
 			})
-			.catch((err)=> dispatch(setErrorMessage()))
+			.catch((err)=> dispatch(setErrorMessage()));
+			
 	}
 }
 
@@ -66,4 +71,11 @@ function forwardTo(history,location) {
 			history,
 			location
 		}
+}
+
+function getUserDetails(details) {
+	return {
+		type: ActionTypes.USER_DETAILS,
+		details
+	}
 }

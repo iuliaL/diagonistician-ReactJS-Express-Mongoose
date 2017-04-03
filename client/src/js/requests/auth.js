@@ -25,4 +25,7 @@ export default class Auth {
 	static logout(){ // does nothing but sending GET request with token
 		return makeRequest(`${path}/logout`, "GET")
 	}
+	static getUserDetails(){
+		return makeRequest(`${path}/user-details`)
+	}
 }

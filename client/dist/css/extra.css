@@ -1,25 +1,23 @@
-.btn--dash {
-    padding: 0;
-    border-bottom: 2px dashed;
+
+.nav>li>a:focus,
+.nav>li>a:hover {
+    color: #fff;
+    background: transparent;
 }
-.btn--nav {
-    margin: 0 20px;
-    position: absolute;
-    text-decoration: none;
-    cursor: pointer;
-}
-.btn--nav:first-child{
-    left: 25%;
-}
-.btn--nav:last-child{
-    right: 25%;
-}
-nav {
-    position: absolute;
-    bottom: 50px;
-    width: 100%;
+.nav-pills>li:hover a:not(.points):not(.username){
+    color: #fff;
 }
 
-header.circle--header {
-    position: relative;
+.user-details {
+
 }
+li.user-details >.points,
+li.user-details >.username {
+    display: inline-block;
+}
+li.user-details >.points:hover,
+li.user-details >.username:hover {
+    color: rgba(255, 255, 255, 0.5);
+    cursor: default;
+}
+

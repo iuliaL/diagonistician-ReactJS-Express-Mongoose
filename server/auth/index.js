@@ -74,7 +74,8 @@ router.get('/user-details', function (req, res, next) {
 		User.findOne({_id: req.user._id})
 			.then((user)=>{
 				console.log('user details', user);
-				res.json({user})})
+				user = user.publicFormat();
+				res.json(user)})
 			.catch((err)=> next(err))
 	}else {
 		const err = new Error('Couldn\'t retrieve user id from token');

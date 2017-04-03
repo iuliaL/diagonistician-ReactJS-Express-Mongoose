@@ -24,8 +24,11 @@ const makeRequest = function(
 ) {
 		const options = { method, params, headers, credentials };
 		options.headers = {...options.headers, "Content-type": "application/json"};
-		// check for client token (logged in) and add it to req header
+	console.log('LOCAL JWT!!',localStorage.getItem('jwt'));
+	
+	// check for client token (logged in) and add it to req header
 		if(localStorage.getItem('jwt')){
+			console.log('LOCAL JWT!!',localStorage.getItem('jwt'));
 			options.headers = {
 				...options.headers,
 				"Authorization": `Bearer ${localStorage.getItem('jwt')}`

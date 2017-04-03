@@ -467,15 +467,6 @@ em {
   font-weight: bold;
   font-style: normal; }
 
-a {
-  color: #689b98;
-  -webkit-transition: color 0.2s;
-  -moz-transition: color 0.2s;
-  -ms-transition: color 0.2s;
-  -o-transition: color 0.2s;
-  transition: color 0.2s; }
-  a:hover {
-    color: #537d7b; }
 
 .button,
 button,
@@ -1147,7 +1138,7 @@ hr {
 .circle--header {
   background: #537d7b;
   padding: 20px 0;
-  margin-bottom: 30px; }
+  margin-bottom: 50px; }
   .circle--header:before, .circle--header:after {
     content: " ";
     display: table; }
@@ -1552,9 +1543,16 @@ input[type="email"].circle--input--h6, input[type="number"].circle--input--h6, i
   width: 80px;
   margin: auto;
   display: block;
-  margin-bottom: -50px;
+  margin-bottom: 0;
   border: 4px solid rgba(30, 119, 155, 0.97);
   border-radius: 50%;
+}
+a.logo-link {
+  top: 40px;
+  display: block;
+  position: absolute;
+  transform: translate3d(-50%,0,0);
+  left: 50%;
 }
 
 .avatar {
