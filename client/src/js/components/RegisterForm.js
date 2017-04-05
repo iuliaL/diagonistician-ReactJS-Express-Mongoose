@@ -11,6 +11,7 @@ import * as Actions from '../actioncreators/authActions';
 
 import makeRequest from '../fetchHelper';
 
+import LinkWrap from './LinkWrap';
 
 class RegisterForm extends Component{
 	constructor(props){
@@ -74,7 +75,12 @@ class RegisterForm extends Component{
 						       name="confirmPassword" onChange={this.onInputChange}
 						/>
 						<input className="button-primary ask-question-button" type="submit" value="Sign Up"/>
+						<span className="pull-right" style={{marginTop: 15}}>Already have an account?
+							&nbsp;<LinkWrap to="/login">Login</LinkWrap>
+						</span>
+						
 					</div>
+					
 				</div>
 			</form>
 		)

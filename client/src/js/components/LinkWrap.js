@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 
 const LinkWrap = ({to, children}) => {
 	return (
-		<Link to={to}>{children}</Link>
+		<Link to={to} style={{ cursor: 'pointer'}}>{children}</Link>
 	);
 };
 

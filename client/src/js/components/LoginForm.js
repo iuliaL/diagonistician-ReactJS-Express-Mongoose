@@ -10,8 +10,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as Actions from '../actioncreators/authActions';
 
-import { withRouter, Redirect } from 'react-router';
-import makeRequest from '../fetchHelper';
+import { Redirect } from 'react-router';
+
+import LinkWrap from './LinkWrap';
+
 
 
 class LoginForm extends Component{
@@ -57,6 +59,12 @@ class LoginForm extends Component{
 						       name="password" onChange={this.onInputChange}
 						/>
 						<input className="button-primary ask-question-button" type="submit" value="Login"/>
+						<span className="pull-right" style={{marginTop: 15}}>
+							Don't have an account yet?
+							&nbsp;
+							<LinkWrap to="/register">Sign up</LinkWrap>
+
+						</span>
 					</div>
 				</div>
 			</form>
