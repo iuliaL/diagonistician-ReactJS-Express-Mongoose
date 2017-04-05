@@ -40,8 +40,9 @@ answerSchema.methods.update = function(updates){
 	return this.parent().save(); // don't forget to save() the parent
 };
 
-answerSchema.methods.vote = function(vote){
+answerSchema.methods.vote = function(vote, voter){
 	vote == "up" ? this.votes += 1 : this.votes -= 1;
+	this.votedBy.push(voter); // add voter to votedBy array
 	return this.parent().save(); // don't forget to save() the parent
 };
 

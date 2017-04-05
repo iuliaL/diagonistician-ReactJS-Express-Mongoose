@@ -88,7 +88,7 @@ export function addAnswer(questionId, answer) {
 				dispatch(setSuccessMessage('Answer was added successfully!')); // show success hint to user
 				dispatch(fetchOne(questionId))}) //refresh question
 			.catch((err)=>{
-				console.log(err,'err');
+				console.log(err.message,'err');
 				dispatch(setErrorMessage(err.message))
 			}); // show err to user
 	}

@@ -6,9 +6,6 @@ var Question = require('./../../models/QuestionModel');
 
 const baseUrl = '/questions';
 
-const secret = require('../../secrets');
-const expressJWT = require('express-jwt');
-
 //GET /questions
 router.get(baseUrl, function(req,res,next){
 	var query = Question.find({}, null); // null is for projection
@@ -95,7 +92,6 @@ router.delete(`${baseUrl}/:qId`, function (req,res,next) {
 router.post(`${baseUrl}/:qId/answers`,function(req, res, next){
 	const questionFound = req.questionFound;
 	const newAnswer = req.body;
-	console.log('who is this?',req.user);
 	if(req.user){
 		const { _id, username } = req.user;
 		newAnswer.owner = { _id, username};
@@ -144,18 +140,24 @@ router.delete(`${baseUrl}/:qId/answers/:aId`,function(req,res){
 //POST /questions/:qId/answers/:aId/vote-down
 
 router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
+	console.log('req user in vote', req.user, req.answer);
 			if(req.params.dir.search(/^(up|down)$/) === -1){
-				var err = new Error("Argument up/down not found");
+				const err = new Error("Argument up/down not found");
 				err.status = 404;
 				next(err); //this next will call the Error handler with the err argument
+			} else if(req.user && alreadyVoted(req.answer.votedBy, req.user._id)){
+				const err = new Error('Answers can be voted only once');
+				err.status = 400;
+				return next(err)
 			} else {
 				next(); // this next will go forward to send the response
 			}
 		},function(req,res){
-		req.answer.vote(req.params.dir)
+		req.answer.vote(req.params.dir,req.user._id)
 		.then(function(){
 			res.json({
-				voteDirection: req.params.dir
+				voteDirection: req.params.dir,
+				votedBy: req.answer.votedBy
 			});
 		})
 		.catch(function(err){
@@ -163,5 +165,8 @@ router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
 		});
 });
 
+function alreadyVoted(votes, voter) {
+	return votes.indexOf(voter) > -1
+}
 
 module.exports = router;

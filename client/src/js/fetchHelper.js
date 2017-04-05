@@ -14,6 +14,13 @@ function checkStatus(res) {
 	}
 }
 
+function handleErrors(response) {
+	if (!response.ok) {
+		throw Error(response.statusText);
+	}
+	return response;
+}
+
 const makeRequest = function(
 		url,
 		method = 'GET',
