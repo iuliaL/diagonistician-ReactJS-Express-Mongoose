@@ -20,6 +20,7 @@ class NewQuestionForm extends Component{
 		this.setState({text: ""}); // reset input value on form submit
 	};
 	render(){
+		console.log('rendered New question form', this.props,this.props.onAdd);
 		return (
 			<form className="question-form" onSubmit={this.onSubmit}>
 				<div className="grid-parent">
