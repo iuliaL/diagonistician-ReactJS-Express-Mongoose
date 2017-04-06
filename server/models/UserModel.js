@@ -62,7 +62,6 @@ userSchema.statics.authenticate = function (username, password) {
 
 // hash and salt password before saving to db
 userSchema.pre("save", function(next) { // !!! this and arrow function
-	//console.log('this get update', this.getUpdate());
 	bcrypt.hash(this.password, 10)
 		.then((hash) => {
 			console.log('new hash', hash);
