@@ -1,14 +1,16 @@
 "use strict";
 
-var express = require("express");
-var router = express.Router();
-var Question = require('./../../models/QuestionModel');
+const express = require("express");
+const router = express.Router();
+const Question = require('./../../models/QuestionModel');
+const User = require('../../models/UserModel');
+
 
 const baseUrl = '/questions';
 
 //GET /questions
 router.get(baseUrl, function(req,res,next){
-	var query = Question.find({}, null); // null is for projection
+	const query = Question.find({}, null); // null is for projection
 	query.sort({ createdAt: - 1});
 	query.exec()
 		.then(function(questions){
@@ -31,7 +33,7 @@ router.param('qId', function(req,res,next){
 	.then(function(question){
 		// handle the id Not Found possibility
 		if (!question){
-			var err = new Error("Question not found.");
+			const err = new Error("Question not found.");
 			err.status = 404;
 			next(err); // this error will be caught by the errorHandler
 		} else {
@@ -47,14 +49,13 @@ router.param('qId', function(req,res,next){
 router.param('aId', function(req,res,next){
 	req.answer = req.questionFound.answers.id(req.params.aId);//this id() retrieves the sub document with the respective id
 	if (!req.answer){
-		var err = new Error("Answer not found.");
+		const err = new Error("Answer not found.");
 		err.status = 404;
 		next(err); // this error will be caught by the errorHandler
 	} else { next(); } //will pass req.answer to the route
 });
 
 router.get(`${baseUrl}/:qId`,function(req,res, next){
-	console.log('getting question');
 	res.status(200).json(req.questionFound.publicFormat());
 });
 
@@ -138,7 +139,6 @@ router.delete(`${baseUrl}/:qId/answers/:aId`,function(req,res){
 //POST /questions/:qId/answers/:aId/vote-up
 // &
 //POST /questions/:qId/answers/:aId/vote-down
-
 router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
 	console.log('req user in vote', req.user, req.answer);
 			if(req.params.dir.search(/^(up|down)$/) === -1){
@@ -153,16 +153,29 @@ router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
 				next(); // this next will go forward to send the response
 			}
 		},function(req,res){
-		req.answer.vote(req.params.dir,req.user._id)
-		.then(function(){
-			res.json({
-				voteDirection: req.params.dir,
-				votedBy: req.answer.votedBy
+			// here get req.answer.owner and reward him
+			const rewardOwner = (ownerId) =>
+				User.findById(ownerId)
+					.exec()
+					.then((userFound)=> {
+						const points = userFound.points + (req.params.dir == 'up' ? 1 : -1);
+						User.update({_id: userFound._id},{ points, updatedAt: new Date()})
+						// i use update instead of save() model method cause it bypasses the middleware, meaning the pre-save pass rehashing
+							.then(() => console.log('user points updated'))
+					}).catch((err)=>console.log('something went wrong with user point update',err));
+			Promise.all([
+				req.answer.vote(req.params.dir, req.user._id),
+				rewardOwner(req.answer.owner._id)
+			])
+			.then(function(){
+				res.json({
+					voteDirection: req.params.dir,
+					votedBy: req.answer.votedBy
+				});
+			})
+			.catch(function(err){
+				next(err);
 			});
-		})
-		.catch(function(err){
-			next(err);
-		});
 });
 
 function alreadyVoted(votes, voter) {

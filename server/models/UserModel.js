@@ -62,15 +62,17 @@ userSchema.statics.authenticate = function (username, password) {
 
 // hash and salt password before saving to db
 userSchema.pre("save", function(next) { // !!! this and arrow function
+	//console.log('this get update', this.getUpdate());
 	bcrypt.hash(this.password, 10)
 		.then((hash) => {
+			console.log('new hash', hash);
 			this.password = hash;
 			next();
 		}).catch( err => next(err));
 });
 
 userSchema.methods.publicFormat = function() {
-	var result = this.toJSON();
+	const result = this.toJSON();
 	// this is to get rid of the  __v
 	delete(result.__v);
 	delete result.password;
