@@ -4,7 +4,8 @@ import { render } from 'react-dom';
 import {
 	BrowserRouter as Router,
 	Route,
-	Switch
+	Switch,
+	Redirect
 } from 'react-router-dom'
 
 import createBrowserHistory from 'history/createBrowserHistory' // this works like this
@@ -39,13 +40,35 @@ if(store.getState().loggedIn && !store.getState().user._id){
 	store.dispatch(requestUserDetails())
 }
 
+const PrivateQuestionRoute = ({component,loggedIn, ...rest}) => {
+	return (
+		<Route {...rest} render={ ({location}) => {
+			return (
+				loggedIn ? (
+						React.createElement(component)
+					) : (
+						<Redirect to={{
+							pathname: '/login',
+							state: {from: location.pathname}
+							// TODO use this somehow to redirect back after login
+							}}
+						/>
+					)
+			)
+			
+		} }/>
+	)
+};
+
 render((
 	<Provider store={store}>
 		<Router history={history}>
 			<Application>
 				<Switch>
 					<Route path="/list" component={QuestionList}/>
-					<Route path="/question/:qId" component={QuestionView}/>
+					<PrivateQuestionRoute loggedIn={store.getState().loggedIn}
+					                      path="/question/:qId"
+					                      component={QuestionView}/>
 					<Route path="/login"  component={LoginForm}/>
 					<Route path="/register" component={RegisterForm}/>
 					<Route path="*" component={NotFound}/>

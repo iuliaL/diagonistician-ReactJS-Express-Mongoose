@@ -15,22 +15,20 @@ import Question from './Question';
 import NewQuestionForm from './NewQuestionF';
 
 //Private route refers to /list/add
-const PrivateRoute = ({ component, path, onAdd, loggedIn }) => (
-		<Route path={path} render = { props => {
-			props.onAdd = onAdd; // pass on add to NewQuestionForm
-			return (
+const PrivateAddRoute = ({ component, onAdd, loggedIn ,...rest }) => {
+	return (
+		<Route {...rest} render={ (props) =>
+			(
 				loggedIn ? (
-						React.createElement(component, props)
+						<NewQuestionForm onAdd={onAdd}/>
 					) : (
-						<Redirect to={{
-							pathname: '/login',
-							state: {from: props.location}
-						}}/>
+						<Redirect to='/login'/>
 					)
-				)
-			}
-		} />
-	);
+			)
+		}/>
+	)
+};
+
 
 class QuestionsList extends Component{
 	static propTypes = {
@@ -39,21 +37,21 @@ class QuestionsList extends Component{
 	checkIfHasRoute = route => this.props.location.pathname == route;
 	render () {
 		const { actions, questions, successMessage, errorMessage } = this.props;
-		console.log('question list props', this.props);
-		console.log('success msg', successMessage, 'questions', questions.length);
 		const { addQuestion } = actions;
-		const questionList = questions.map(q => {
-			return (
-				<LinkWrap key={q._id} to={`/question/${q._id}`}>
+		
+		const singleQuestion = q =>
+			<div key={q._id}>
+				<LinkWrap to={`/question/${q._id}`}>
 					<Question id={q._id}
 					          text={q.text}
 					          owner={q.owner.username}
 					          createdAt={q.createdAt}
 					          updatedAt={q.updatedAt}
-					/>
+						/>
 				</LinkWrap>
-			)
-		});
+			</div>;
+							
+		const questionList = questions.map(singleQuestion);
 		
 		return (
 			<div className="grid-100">
@@ -68,7 +66,7 @@ class QuestionsList extends Component{
 					</LinkWrap>}
 					
 				{/*logged in conditional here*/}
-				<PrivateRoute loggedIn={this.props.loggedIn} path="/list/add" onAdd={addQuestion} component={NewQuestionForm}/>
+				<PrivateAddRoute loggedIn={this.props.loggedIn} path="/list/add" onAdd={addQuestion} component={NewQuestionForm}/>
 
 				<h2>Questions</h2>
 				<hr/>
