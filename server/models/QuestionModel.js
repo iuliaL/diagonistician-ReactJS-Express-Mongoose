@@ -1,21 +1,20 @@
 "use strict";
 
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 // here a 'pure' sorting function
-var sortAnswersDesc = function(answer1, answer2){
+function sortAnswersDesc(answer1, answer2){
 	// should return negative if answer1 has less votes than answer 2
 	// should return 0 if the votes count is equal for both answers
 	// should return positive if answer1 has more votes than answer 2
-
 	if(answer1.votes === answer2.votes){
 		return answer2.updatedAt - answer1.updatedAt; // this is sorting by updated at DESC
 	}
 	return answer2.votes - answer1.votes; // this is sorting by vote count desc
-};
+}
 
 
-var answerSchema = mongoose.Schema({
+const answerSchema = mongoose.Schema({
 	text: {
 		type: String,
 		required: true,
@@ -46,7 +45,7 @@ answerSchema.methods.vote = function(vote, voter){
 	return this.parent().save(); // don't forget to save() the parent
 };
 
-var questionSchema = mongoose.Schema({
+const questionSchema = mongoose.Schema({
 	text: {
 		type: String,
 		required: true,
@@ -65,7 +64,7 @@ var questionSchema = mongoose.Schema({
 );
 
 questionSchema.methods.publicFormat = function() {
-	var result = this.toJSON();
+	const result = this.toJSON();
 	// this is to get rid of the question __v (used internally by mongoose) when sending the data to the client
 	delete(result.__v);
 	return result

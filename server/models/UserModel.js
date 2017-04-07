@@ -11,8 +11,7 @@ const userSchema = mongoose.Schema({
 			type: String,
 			required: true,
 			unique: true,
-			trim: true,
-			min: [5, 'Answer must be at least 10 characters long']
+			trim: true
 		},
 		password: {
 			type: String,
