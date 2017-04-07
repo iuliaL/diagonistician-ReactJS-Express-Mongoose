@@ -8,16 +8,24 @@
     color: #fff;
 }
 
-.user-details {
-
-}
 li.user-details >.points,
 li.user-details >.username {
     display: inline-block;
+    color: #fff;
 }
+li.user-details >.points {
+    background: white;
+    border-radius: 60px;
+    color: #2690c6;
+}
+
 li.user-details >.points:hover,
 li.user-details >.username:hover {
-    color: rgba(255, 255, 255, 0.5);
+    color: #fff;
     cursor: default;
+}
+li.user-details>.points:hover {
+    background: white;
+    color: #2690c6;
 }
 

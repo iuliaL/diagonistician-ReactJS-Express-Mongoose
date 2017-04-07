@@ -16,8 +16,13 @@ function Nav(props) {
 				<li><Link to="/list" className="btn">Home</Link></li>
 				<li><a href="#" className="btn" onClick={(ev)=>{ev.preventDefault(); props.onLogout()}}>Logout</a></li>
 				<li className="pull-right user-details">
-					<a className="username">{props.user.username}</a>
-					<a className="points">{props.user.points} points</a>
+					<a className="btn username">
+						<i className="glyphicon glyphicon-user" style={{marginRight: 10}}> </i>
+						{props.user.username}</a>
+					<a className="btn points">
+						<i className="glyphicon glyphicon-plus" style={{marginRight: 5, color: 'red'}}> </i>
+						
+						 {props.user.points}</a>
 				</li>
 			
 			</ul>
