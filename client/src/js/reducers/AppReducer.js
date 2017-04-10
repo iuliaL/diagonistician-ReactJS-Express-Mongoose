@@ -53,9 +53,8 @@ export default function(state = initialState, action) {
 				loggedIn: action.loggedIn,
 				user: {}
 			};
-		case ActionTypes.FORWARD_TO: // this does not mutate the state, maybe i'll change something in the state in the future
-			action.history.push(action.location);
-			return state;
+
+			
 		case ActionTypes.USER_DETAILS:
 			return {
 				...state,

@@ -5,7 +5,8 @@ import {
 	BrowserRouter as Router,
 	Route,
 	Switch,
-	Redirect
+	Redirect,
+	withRouter
 } from 'react-router-dom'
 
 import createBrowserHistory from 'history/createBrowserHistory' // this works like this
@@ -22,6 +23,8 @@ import logger from 'redux-logger'; // nice state console.logs
 import AppReducer from './reducers/AppReducer';
 import { fetchQuestions } from './actioncreators/questionActions'
 import {requestUserDetails} from './actioncreators/authActions'
+import Auth from './requests/auth';
+
 
 
 // Components
@@ -40,25 +43,29 @@ if(store.getState().loggedIn && !store.getState().user._id){
 	store.dispatch(requestUserDetails())
 }
 
-const PrivateQuestionRoute = ({component,loggedIn, ...rest}) => {
+const PrivateQuestionRoute = ({component, ...rest}) => {
 	return (
-		<Route {...rest} render={ ({location}) => {
-			return (
-				loggedIn ? (
-						React.createElement(component)
-					) : (
+		<Route {...rest} render={ props => {
+				if(Auth.loggedIn()){
+					return (
+						React.createElement(component, props)
+					)
+				} else {
+					return (
 						<Redirect to={{
 							pathname: '/login',
-							state: {from: location.pathname}
-							// TODO use this somehow to redirect back after login
+							state: {
+								from: props.location.pathname, // redirect back after login
+								//params : props.match.params
+							}
 							}}
 						/>
-					)
-			)
+					)}
 			
 		} }/>
 	)
 };
+
 
 render((
 	<Provider store={store}>
@@ -66,8 +73,7 @@ render((
 			<Application>
 				<Switch>
 					<Route path="/list" component={QuestionList}/>
-					<PrivateQuestionRoute loggedIn={store.getState().loggedIn}
-					                      path="/question/:qId"
+					<PrivateQuestionRoute path="/question/:qId"
 					                      component={QuestionView}/>
 					<Route path="/login"  component={LoginForm}/>
 					<Route path="/register" component={RegisterForm}/>

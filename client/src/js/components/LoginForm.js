@@ -38,13 +38,28 @@ class LoginForm extends Component{
 			alert('Please type username and password!');
 			return;
 		}
-		this.login(username, password, this.props.history);
+		
+		this.login(username, password, this.props.history, this.props.location.state)
+		// redirect to /list or to back from where user arrived on this route
+		// .then(()=> {
+		// 	if()
+		// 	console.log('pathname', this.props.location.state.from,
+		// 		'state', this.props.location.state);
+		// 	this.props.history.push({
+		// 		pathname: this.props.location.state.from,
+		// 		state: this.props.location.state
+		// 	})
+		// });
 	};
 	render(){
-		const { errorMessage, loggedIn } = this.props;
+		const { errorMessage, loggedIn, location } = this.props;
+
 		return (
 			<form className="question-form" onSubmit={this.onSubmit}>
+				{/*if you accidentally arrive on this route go to homepage */}
 				{loggedIn && <Redirect to="/list"/>}
+				
+				
 				<h1>Login</h1>
 				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 				

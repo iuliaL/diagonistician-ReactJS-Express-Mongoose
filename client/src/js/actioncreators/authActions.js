@@ -25,7 +25,7 @@ function logoutSuccess(loggedIn) {
 	return { type: ActionTypes.LOGOUT_SUCCESS, loggedIn }
 }
 
-export function login(username, password, history) {
+export function login(username, password, history, newRoute) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
 		return Auth.login(username,password)
@@ -35,7 +35,9 @@ export function login(username, password, history) {
 				dispatch(loginSuccess(Auth.loggedIn()));
 				dispatch(requestUserDetails());
 			})
-			.then(dispatch(forwardTo(history, '/list')))
+			.then(() =>
+				newRoute ? forwardTo(history, newRoute.from) : forwardTo(history, '/list')
+			)
 			.catch((err)=>dispatch(setErrorMessage(err.message)));
 	}
 }
@@ -54,7 +56,7 @@ export function logout(history) {
 			.then((res)=> {
 				localStorage.removeItem('jwt');
 				dispatch(logoutSuccess(Auth.loggedIn()));
-				dispatch(forwardTo(history,'/list'));
+				forwardTo(history,'/list');
 				dispatch(setSuccessMessage(res.message));
 			}).catch((err)=>dispatch(setErrorMessage(err.message)));
 	}
@@ -66,19 +68,16 @@ export function register(user, history) {
 		return Auth.register(user)
 			.then(()=> {
 				dispatch(registerSuccess());
-				dispatch(forwardTo(history, '/list'));
+				forwardTo(history,'/list');
+				
 			})
 			.catch((err)=> dispatch(setErrorMessage()));
 			
 	}
 }
 
-function forwardTo(history,location) {
-	return {
-			type : ActionTypes.FORWARD_TO,
-			history,
-			location
-		}
+function forwardTo(history, pathname) {
+	history.push(pathname);
 }
 
 function getUserDetails(details) {

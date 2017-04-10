@@ -17,7 +17,7 @@ import NewQuestionForm from './NewQuestionF';
 //Private route refers to /list/add
 const PrivateAddRoute = ({ component, onAdd, loggedIn ,...rest }) => {
 	return (
-		<Route {...rest} render={ (props) =>
+		<Route {...rest} render={ props =>
 			(
 				loggedIn ? (
 						<NewQuestionForm onAdd={onAdd}/>

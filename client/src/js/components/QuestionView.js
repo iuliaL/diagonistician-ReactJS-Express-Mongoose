@@ -73,7 +73,8 @@ function mapStateToProps(state) {
 	return {
 		question : state.question,
 		successMessage: state.successMessage,
-		errorMessage: state.errorMessage
+		errorMessage: state.errorMessage,
+		loggedIn: state.loggedIn
 	}
 }
 function mapActionsToProps(dispatch) {
