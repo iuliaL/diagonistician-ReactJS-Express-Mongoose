@@ -25,6 +25,13 @@ function logoutSuccess(loggedIn) {
 	return { type: ActionTypes.LOGOUT_SUCCESS, loggedIn }
 }
 
+function getUserDetails(details) {
+	return {
+		type: ActionTypes.USER_DETAILS,
+		details
+	}
+}
+
 export function login(username, password, history, newRoute) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
@@ -68,11 +75,9 @@ export function register(user, history) {
 		return Auth.register(user)
 			.then(()=> {
 				dispatch(registerSuccess());
-				forwardTo(history,'/list');
-				
+				forwardTo(history,'/login');
 			})
 			.catch((err)=> dispatch(setErrorMessage()));
-			
 	}
 }
 
@@ -80,9 +85,3 @@ function forwardTo(history, pathname) {
 	history.push(pathname);
 }
 
-function getUserDetails(details) {
-	return {
-		type: ActionTypes.USER_DETAILS,
-		details
-	}
-}

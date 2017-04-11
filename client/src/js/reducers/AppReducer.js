@@ -28,12 +28,12 @@ export default function(state = initialState, action) {
 				question: action.question,
 			};
 		
-		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that post was successful
+		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that req was successful
 				return {
 					...state,
 					successMessage: action.message
 				};
-		case ActionTypes.SET_ERROR_MESSAGE: // add a hint that post was successful
+		case ActionTypes.SET_ERROR_MESSAGE: // add a hint that req failed
 			return {
 				...state,
 				errorMessage: action.message
@@ -49,7 +49,6 @@ export default function(state = initialState, action) {
 				loggedIn: action.loggedIn,
 				user: {}
 			};
-
 			
 		case ActionTypes.USER_DETAILS:
 			return {

@@ -1,6 +1,6 @@
 'use strict';
 /*
- * Keeping API requests organized
+ * Keeping Auth requests organized
  * */
 
 import makeRequest from '../fetchHelper';
@@ -16,17 +16,15 @@ export default class Auth {
 	static register(user){
 		return makeRequest(`${path}/register`, "POST", user )
 	}
-	/* Checks if anybody is logged in
-	 * @return {boolean} True if there is a logged in user, false if there isn't
-	 */
+	// Checks if anybody is logged in
+	// returns true if there is a logged in user, false if there isn't
 	static loggedIn() {
 		return !!localStorage.getItem('jwt');
 	}
-	static logout(){ // does nothing but sending GET request with token
+	static logout(){ // does nothing but sending GET request with token and then delete local storage jwt
 		return makeRequest(`${path}/logout`, "GET")
 	}
 	static getUserDetails(){
-		console.log('made user details request');
 		return makeRequest(`${path}/user-details`)
 	}
 }
