@@ -6,7 +6,7 @@ const User = require('../../models/UserModel');
 
 const baseUrl = '/users';
 
-// GET user id
+// GET user id (UNUSED)
 router.get(`${baseUrl}/:id`, function (req, res, next) {
 	User.findById(req.params.id)
 		.exec()

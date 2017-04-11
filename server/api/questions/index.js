@@ -144,11 +144,15 @@ router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
 			if(req.params.dir.search(/^(up|down)$/) === -1){
 				const err = new Error("Argument up/down not found");
 				err.status = 404;
-				next(err); //this next will call the Error handler with the err argument
-			} else if(req.user && alreadyVoted(req.answer.votedBy, req.user._id)){
+				return next(err); //this next will call the Error handler with the err argument
+			} else if(req.user && alreadyVoted(req.answer.votedBy, req.user._id)) {
 				const err = new Error('Answers can be voted only once');
 				err.status = 400;
-				return next(err)
+				return next(err);
+			} else if (req.user._id == req.answer.owner._id) {
+				const err = new Error('Voting yourself is not allowed');
+				err.status = 403;
+				return next(err);
 			} else {
 				next(); // this next will go forward to send the response
 			}
@@ -157,7 +161,7 @@ router.post(`${baseUrl}/:qId/answers/:aId/vote-:dir`, function(req,res,next){
 			const rewardOwner = (ownerId) =>
 				User.findById(ownerId)
 					.exec()
-					.then((userFound)=> {
+					.then( userFound => {
 						const points = userFound.points + (req.params.dir == 'up' ? 1 : -1);
 						User.update({_id: userFound._id},{ points, updatedAt: new Date()})
 						// i use update instead of save() model method cause it bypasses the middleware, meaning the pre-save pass rehashing

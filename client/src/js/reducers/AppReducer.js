@@ -3,7 +3,6 @@
 import * as ActionTypes from '../actiontypes/constants';
 import Auth from '../requests/auth';
 
-
 // The initial application state
 const initialState = {
 	questions : [],
@@ -29,10 +28,10 @@ export default function(state = initialState, action) {
 			};
 		
 		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that req was successful
-				return {
-					...state,
-					successMessage: action.message
-				};
+			return {
+				...state,
+				successMessage: action.message
+			};
 		case ActionTypes.SET_ERROR_MESSAGE: // add a hint that req failed
 			return {
 				...state,

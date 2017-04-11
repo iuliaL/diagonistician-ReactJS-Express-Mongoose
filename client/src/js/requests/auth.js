@@ -12,7 +12,6 @@ export default class Auth {
 		const credentials = btoa(`${user}:${pass}`);
 		return makeRequest(`${path}/login`, "POST", null, null, { Authorization: `Basic ${credentials}`})
 	}
-	
 	static register(user){
 		return makeRequest(`${path}/register`, "POST", user )
 	}
