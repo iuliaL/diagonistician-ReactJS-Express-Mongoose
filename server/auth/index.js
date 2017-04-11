@@ -21,7 +21,7 @@ router.post('/register', function(req, res, next) {
 		const newUser = {username, password};
 		User.create(newUser)
 			.then((user)=>{
-				res.status(201).json({message: 'OK. New user created'})
+				res.status(201).json({message: 'Registered successfully'})
 			})
 			.catch((err)=> {
 				if (err.code === 11000) {

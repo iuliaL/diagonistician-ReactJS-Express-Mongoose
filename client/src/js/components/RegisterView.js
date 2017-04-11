@@ -9,8 +9,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as Actions from '../actioncreators/authActions';
 
-import makeRequest from '../fetchHelper';
-
+import { Error } from './Messages';
 import LinkWrap from './LinkWrap';
 
 class RegisterForm extends Component{
@@ -52,13 +51,12 @@ class RegisterForm extends Component{
 		this.setState({ username : '', password: '', confirmPassword: ''});
 	}
 	render(){
-		const errorMessage =  this.props.errorMessage;
-		const loggedIn = this.props.loggedIn;
+		const {errorMessage, loggedIn} = this.props;
 		return (
 			<form className="question-form" onSubmit={this.onSubmit}>
 				{loggedIn && <Redirect to="/list"/>}
 				<h1>Sign up</h1>
-				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+				<Error msg= {errorMessage} />
 				
 				<div className="grid-parent">
 					<div className="grid-100">

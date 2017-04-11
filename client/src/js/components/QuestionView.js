@@ -5,6 +5,8 @@ import {bindActionCreators} from 'redux';
 import * as Actions from '../actioncreators/questionActions';
 
 import Answer from './Answer';
+import {Success, Error} from './Messages';
+
 
 class QuestionView extends Component{
 	constructor(props){
@@ -51,8 +53,8 @@ class QuestionView extends Component{
 			<div className="grid-100">
 				<h2 className="question-heading">{question.text}</h2>
 				
-				{!!successMessage && <div className="alert alert-success">{successMessage}</div>}
-				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+				<Success msg= {successMessage} />
+				<Error msg= {errorMessage} />
 				
 				<hr/>
 				{answers}

@@ -13,7 +13,7 @@ import * as Actions from '../actioncreators/authActions';
 import { Redirect } from 'react-router';
 
 import LinkWrap from './LinkWrap';
-
+import { Success, Error } from './Messages';
 
 
 class LoginForm extends Component{
@@ -39,29 +39,20 @@ class LoginForm extends Component{
 			return;
 		}
 		
-		this.login(username, password, this.props.history, this.props.location.state)
-		// redirect to /list or to back from where user arrived on this route
-		// .then(()=> {
-		// 	if()
-		// 	console.log('pathname', this.props.location.state.from,
-		// 		'state', this.props.location.state);
-		// 	this.props.history.push({
-		// 		pathname: this.props.location.state.from,
-		// 		state: this.props.location.state
-		// 	})
-		// });
+		this.login(username, password, this.props.history, this.props.location.state);
+		// redirect to /list or back from where user arrived on this route
 	};
 	render(){
-		const { errorMessage, loggedIn, location } = this.props;
+		const { successMessage, errorMessage, loggedIn } = this.props;
 
 		return (
 			<form className="question-form" onSubmit={this.onSubmit}>
 				{/*if you accidentally arrive on this route go to homepage */}
 				{loggedIn && <Redirect to="/list"/>}
 				
-				
 				<h1>Login</h1>
-				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+				<Error msg= {errorMessage} />
+				<Success msg= {successMessage} />
 				
 				<div className="grid-parent">
 					<div className="grid-100">
@@ -78,7 +69,6 @@ class LoginForm extends Component{
 							Don't have an account yet?
 							&nbsp;
 							<LinkWrap to="/register">Sign up</LinkWrap>
-
 						</span>
 					</div>
 				</div>
@@ -90,7 +80,8 @@ class LoginForm extends Component{
 function mapStateToProps(state) {
 	return {
 		loggedIn: state.loggedIn,
-		errorMessage: state.errorMessage
+		errorMessage: state.errorMessage,
+		successMessage: state.successMessage
 	};
 }
 

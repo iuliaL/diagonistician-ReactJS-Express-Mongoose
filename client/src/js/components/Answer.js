@@ -5,7 +5,7 @@ import FormattedDate from './FormattedDate';
 
 const Answer = (props) => {
 	const onVoteChange = arg => {
-		console.log("on vote ", arg);
+		//console.log("on vote ", arg);
 		props.onVoteCountChanged(arg, props.id);
 	};
 	return (

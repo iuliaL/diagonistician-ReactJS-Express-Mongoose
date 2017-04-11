@@ -13,6 +13,7 @@ import * as Actions from '../actioncreators/questionActions';
 import LinkWrap from './LinkWrap';
 import Question from './Question';
 import NewQuestionForm from './NewQuestionF';
+import {Success, Error} from './Messages';
 
 //Private route refers to /list/add
 const PrivateAddRoute = ({ component, onAdd, loggedIn ,...rest }) => {
@@ -28,7 +29,6 @@ const PrivateAddRoute = ({ component, onAdd, loggedIn ,...rest }) => {
 		}/>
 	)
 };
-
 
 class QuestionsList extends Component{
 	static propTypes = {
@@ -57,8 +57,8 @@ class QuestionsList extends Component{
 			<div className="grid-100">
 				<h1 className="name align-center">Diagnostician</h1>
 				
-				{!!successMessage && <div className="alert alert-success">{successMessage}</div>}
-				{!!errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+				<Success msg= {successMessage} />
+				<Error msg= {errorMessage} />
 				
 				{!this.checkIfHasRoute('/list/add') &&
 					<LinkWrap to="/list/add">

@@ -73,11 +73,12 @@ export function register(user, history) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
 		return Auth.register(user)
-			.then(()=> {
+			.then((res)=> {
 				dispatch(registerSuccess());
+				dispatch(setSuccessMessage(res.message));
 				forwardTo(history,'/login');
 			})
-			.catch((err)=> dispatch(setErrorMessage()));
+			.catch((err)=> dispatch(setErrorMessage(err.message)));
 	}
 }
 
