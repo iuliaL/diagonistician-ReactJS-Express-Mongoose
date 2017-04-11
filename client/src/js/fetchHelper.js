@@ -14,6 +14,7 @@ function checkStatus(res) {
 	}
 }
 
+// this fn is unused
 function handleErrors(response) {
 	if (!response.ok) {
 		throw Error(response.statusText);
@@ -27,14 +28,13 @@ const makeRequest = function(
 		payload,
 		params,
 	    headers,
-		credentials = 'include', // Don't forget to specify this if you need cookies
+		credentials = 'include', // if I need cookies
 ) {
 		const options = { method, params, headers, credentials };
 		options.headers = {...options.headers, "Content-type": "application/json"};
 	
 	// check for client token (logged in) and add it to req header
 		if(localStorage.getItem('jwt')){
-			console.log('LOCAL JWT!!',localStorage.getItem('jwt'));
 			options.headers = {
 				...options.headers,
 				"Authorization": `Bearer ${localStorage.getItem('jwt')}`

@@ -8,10 +8,6 @@ import Auth from '../requests/auth';
 const initialState = {
 	questions : [],
 	question: {},
-	loginFormState: {
-		username: '',
-		password: ''
-	},
 	loggedIn: Auth.loggedIn(),
 	user: {},
 	successMessage: '',

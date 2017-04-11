@@ -32,8 +32,8 @@ import Application from './components/Application';
 import NotFound  from './components/NotFound';
 import QuestionList  from './components/QuestionList'
 import QuestionView from './components/QuestionView';
-import RegisterForm from './components/RegisterForm';
-import LoginForm from './components/LoginForm';
+import RegisterView from './components/RegisterView';
+import LoginView from './components/LoginView';
 
 const store = createStore(AppReducer, applyMiddleware(thunk, logger));
 
@@ -75,8 +75,8 @@ render((
 					<Route path="/list" component={QuestionList}/>
 					<PrivateQuestionRoute path="/question/:qId"
 					                      component={QuestionView}/>
-					<Route path="/login"  component={LoginForm}/>
-					<Route path="/register" component={RegisterForm}/>
+					<Route path="/login"  component={LoginView}/>
+					<Route path="/register" component={RegisterView}/>
 					<Route path="*" component={NotFound}/>
 				</Switch>
 			</Application>
