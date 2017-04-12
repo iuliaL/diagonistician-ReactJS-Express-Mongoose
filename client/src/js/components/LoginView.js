@@ -77,11 +77,11 @@ class LoginForm extends Component{
 	}
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({auth}) {
 	return {
-		loggedIn: state.loggedIn,
-		errorMessage: state.errorMessage,
-		successMessage: state.successMessage
+		loggedIn: auth.loggedIn,
+		errorMessage: auth.errorMessage,
+		successMessage: auth.successMessage
 	};
 }
 

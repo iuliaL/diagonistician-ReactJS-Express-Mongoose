@@ -20,11 +20,10 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk'; // lets us dispatch() functions async
 import logger from 'redux-logger'; // nice state console.logs
 
-import AppReducer from './reducers/AppReducer';
+import AppReducer from './reducers';
 import { fetchQuestions } from './actioncreators/questionActions'
 import {requestUserDetails} from './actioncreators/authActions'
 import Auth from './requests/auth';
-
 
 
 // Components
@@ -36,10 +35,12 @@ import RegisterView from './components/RegisterView';
 import LoginView from './components/LoginView';
 
 const store = createStore(AppReducer, applyMiddleware(thunk, logger));
+console.log('STORE state',store.getState())
+
 
 store.dispatch(fetchQuestions()); // fetching questions at the highest level of the app
 
-if(store.getState().loggedIn && !store.getState().user._id){
+if(store.getState().auth.loggedIn && !store.getState().auth.user._id){
 	store.dispatch(requestUserDetails())
 }
 

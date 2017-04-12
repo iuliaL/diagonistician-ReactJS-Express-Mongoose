@@ -80,10 +80,10 @@ class QuestionsList extends Component{
 
 function mapStateToProps(state) {
 	return {
-		questions: state.questions,
-		successMessage: state.successMessage,
-		errorMessage: state.errorMessage,
-		loggedIn: state.loggedIn
+		questions: state.questions.questions,
+		successMessage: state.questions.successMessage,
+		errorMessage: state.questions.errorMessage,
+		loggedIn: state.auth.loggedIn
 	};
 }
 

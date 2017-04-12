@@ -9,7 +9,7 @@ import * as Actions from '../actioncreators/authActions';
 
 
 const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ history, children, actions, loggedIn, user})=>{
-	//console.log('APP logged in', loggedIn);
+	console.log('APP logged in', loggedIn);
 	const logout = ()=> {
 		actions.logout(history);
 	};
@@ -27,10 +27,10 @@ const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ h
 
 
 
-function mapStateToProps(state) {
+function mapStateToProps({auth}) { // extract just the auth part of the state
 	return {
-		loggedIn: state.loggedIn,
-		user: state.user
+		loggedIn: auth.loggedIn,
+		user: auth.user
 	};
 }
 

@@ -1,14 +1,10 @@
 'use strict';
 
 import * as ActionTypes from '../actiontypes/constants';
-import Auth from '../requests/auth';
 
-// The initial application state
 const initialState = {
 	questions : [],
 	question: {},
-	loggedIn: Auth.loggedIn(),
-	user: {},
 	successMessage: '',
 	errorMessage: ''
 };
@@ -36,23 +32,6 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				errorMessage: action.message
-			};
-		case ActionTypes.LOGIN_SUCCESS:
-			return {
-				...state,
-				loggedIn: action.loggedIn
-			};
-		case ActionTypes.LOGOUT_SUCCESS:
-			return {
-				...state,
-				loggedIn: action.loggedIn,
-				user: {}
-			};
-			
-		case ActionTypes.USER_DETAILS:
-			return {
-				...state,
-				user: action.details
 			};
 		default:
 			return state;

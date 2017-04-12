@@ -41,7 +41,7 @@ const makeRequest = function(
 			}
 		}
 		if(payload){ options.body = JSON.stringify( payload)}
-		console.log('fetch call options', options);
+		console.log('fetch call url, options', url, options);
 			return fetch(`${baseUrl}${url}`, options )
 				.then(checkStatus)
 				.then(result => result.json())
