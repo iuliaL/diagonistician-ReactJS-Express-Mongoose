@@ -86,10 +86,10 @@ class RegisterForm extends Component{
 	}
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({auth}) {
 	return {
-		errorMessage: state.auth.errorMessage,
-		loggedIn: state.auth.loggedIn
+		errorMessage: auth.errorMessage,
+		loggedIn: auth.loggedIn
 	};
 }
 

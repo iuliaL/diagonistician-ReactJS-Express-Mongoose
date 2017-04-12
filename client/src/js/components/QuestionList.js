@@ -78,12 +78,12 @@ class QuestionsList extends Component{
 	}
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({questions, auth, messages}) {
 	return {
-		questions: state.questions.questions,
-		successMessage: state.questions.successMessage,
-		errorMessage: state.questions.errorMessage,
-		loggedIn: state.auth.loggedIn
+		questions: questions.questions,
+		successMessage: messages.successMessage,
+		errorMessage: messages.errorMessage,
+		loggedIn: auth.loggedIn
 	};
 }
 

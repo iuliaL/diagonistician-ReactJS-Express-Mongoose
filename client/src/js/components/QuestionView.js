@@ -74,12 +74,12 @@ class QuestionView extends Component{
 	}
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({questions, auth, messages}) {
 	return {
-		question : state.questions.question,
-		successMessage: state.questions.successMessage,
-		errorMessage: state.questions.errorMessage,
-		loggedIn: state.auth.loggedIn
+		question : questions.question,
+		successMessage: messages.successMessage,
+		errorMessage: messages.errorMessage,
+		loggedIn: auth.loggedIn
 	}
 }
 function mapActionsToProps(dispatch) {

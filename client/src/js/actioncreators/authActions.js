@@ -8,9 +8,7 @@ import Auth from '../requests/auth';
 // const history = createBrowserHistory();
 
 function initRequest() {
-	return {
-		type: ActionTypes.INIT_REQUEST
-	}
+	return { type: ActionTypes.INIT_REQUEST }
 }
 
 function registerSuccess() {
@@ -25,10 +23,7 @@ function logoutSuccess(loggedIn) {
 }
 
 function getUserDetails(details) {
-	return {
-		type: ActionTypes.USER_DETAILS,
-		details
-	}
+	return { type: ActionTypes.USER_DETAILS, details }
 }
 
 export function login(username, password, history, newRoute) {
@@ -52,7 +47,7 @@ export function requestUserDetails() {
 	return function(dispatch){
 		return Auth.getUserDetails()
 			.then((user) => dispatch(getUserDetails(user)))
-			.catch((err)=>dispatch(setErrorMessage(err.message)));
+			.catch((err) => dispatch(setErrorMessage(err.message)));
 	}
 }
 

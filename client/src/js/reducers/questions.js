@@ -5,8 +5,8 @@ import * as ActionTypes from '../actiontypes/constants';
 const initialState = {
 	questions : [],
 	question: {},
-	successMessage: '',
-	errorMessage: ''
+	// successMessage: '',
+	// errorMessage: ''
 };
 
 export default function(state = initialState, action) {
@@ -17,22 +17,22 @@ export default function(state = initialState, action) {
 				...state,
 				questions: action.questions
 			};
-		case ActionTypes.FETCH_QUESTION_SUCCESS:
+		case ActionTypes.FETCH_QUESTION_SUCCESS: // (single)
 			return {
 				...state,
 				question: action.question,
 			};
 		
-		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that req was successful
-			return {
-				...state,
-				successMessage: action.message
-			};
-		case ActionTypes.SET_ERROR_MESSAGE: // add a hint that req failed
-			return {
-				...state,
-				errorMessage: action.message
-			};
+		// case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that req was successful
+		// 	return {
+		// 		...state,
+		// 		successMessage: action.message
+		// 	};
+		// case ActionTypes.SET_ERROR_MESSAGE: // add a hint that req failed
+		// 	return {
+		// 		...state,
+		// 		errorMessage: action.message
+		// 	};
 		default:
 			return state;
 	}

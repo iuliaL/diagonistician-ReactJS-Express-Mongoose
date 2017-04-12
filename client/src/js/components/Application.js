@@ -9,9 +9,8 @@ import * as Actions from '../actioncreators/authActions';
 
 
 const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ history, children, actions, loggedIn, user})=>{
-	console.log('APP logged in', loggedIn);
 	const logout = ()=> {
-		actions.logout(history);
+		actions.logout(history); // need withRouter() to access history prop
 	};
 	return (
 		<div>
@@ -23,8 +22,6 @@ const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ h
 		</div>
 	)
 }));
-
-
 
 
 function mapStateToProps({auth}) { // extract just the auth part of the state

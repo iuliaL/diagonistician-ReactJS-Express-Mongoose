@@ -35,7 +35,7 @@ import RegisterView from './components/RegisterView';
 import LoginView from './components/LoginView';
 
 const store = createStore(AppReducer, applyMiddleware(thunk, logger));
-//console.log('STORE state', store.getState());
+console.log('STORE state', store.getState());
 
 store.dispatch(fetchQuestions()); // fetching questions at the highest level of the app
 
