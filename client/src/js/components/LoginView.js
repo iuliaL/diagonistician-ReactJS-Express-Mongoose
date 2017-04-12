@@ -4,14 +4,14 @@
 'use strict';
 
 import React, { Component, PropTypes} from 'react';
+import { Redirect } from 'react-router';
 
 //redux
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as Actions from '../actioncreators/authActions';
+import { bindActionCreators } from 'redux';
+import * as authActions from '../actioncreators/authActions';
 
-import { Redirect } from 'react-router';
-
+// components
 import LinkWrap from './LinkWrap';
 import { Success, Error } from './Messages';
 
@@ -87,7 +87,7 @@ function mapStateToProps({auth}) {
 
 function mapDispatchedActionsToProps(dispatch) {
 	return {
-		actions: bindActionCreators(Actions, dispatch)
+		actions: bindActionCreators(authActions, dispatch)
 	};
 }
 

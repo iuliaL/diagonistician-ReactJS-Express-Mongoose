@@ -17,8 +17,8 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 // Redux middleware
-import thunk from 'redux-thunk'; // lets us dispatch() functions async
-import logger from 'redux-logger'; // nice state console.logs
+import thunk from 'redux-thunk'; // dispatch() functions async
+import logger from 'redux-logger'; // nice actions -> state console.logs
 
 import AppReducer from './reducers';
 import { fetchQuestions } from './actioncreators/questionActions'
@@ -35,8 +35,7 @@ import RegisterView from './components/RegisterView';
 import LoginView from './components/LoginView';
 
 const store = createStore(AppReducer, applyMiddleware(thunk, logger));
-console.log('STORE state',store.getState())
-
+//console.log('STORE state', store.getState());
 
 store.dispatch(fetchQuestions()); // fetching questions at the highest level of the app
 

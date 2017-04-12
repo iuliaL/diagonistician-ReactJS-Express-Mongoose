@@ -22,12 +22,9 @@ export const POST_ANSWER_REQUEST = 'POST_ANSWER_REQUEST';
 export const VOTE_ANSWER_REQUEST = 'VOTE_ANSWER_REQUEST';
 // vote up/down
 
-export const VOTE = 'VOTE';
 
 //auth user interactions
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const USER_DETAILS = 'USER_DETAILS';
-
-export const FORWARD_TO = "FORWARD_TO";

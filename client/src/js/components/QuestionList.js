@@ -6,7 +6,7 @@ import { Redirect} from 'react-router-dom'
 //redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as Actions from '../actioncreators/questionActions';
+import * as questionActions from '../actioncreators/questionActions';
 
 
 // components
@@ -89,7 +89,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators(Actions, dispatch)
+		actions: bindActionCreators(questionActions, dispatch)
 	};
 }
 

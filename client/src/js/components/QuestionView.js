@@ -2,7 +2,7 @@ import React,{PropTypes, Component} from 'react';
 //redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as Actions from '../actioncreators/questionActions';
+import * as questionActions from '../actioncreators/questionActions';
 
 import Answer from './Answer';
 import {Success, Error} from './Messages';
@@ -16,6 +16,9 @@ class QuestionView extends Component{
 		this.fetchOne = props.actions.fetchOne;
 		this.voteAnswer = props.actions.voteAnswer;
 	}
+	static propTypes = {
+		question: PropTypes.object.isRequired
+	};
 	componentWillMount() {
 		this.fetchOne(this.props.match.params.qId);
 	}
@@ -81,7 +84,7 @@ function mapStateToProps(state) {
 }
 function mapActionsToProps(dispatch) {
 	return {
-		actions: bindActionCreators(Actions,dispatch)
+		actions: bindActionCreators(questionActions,dispatch)
 	}
 }
 

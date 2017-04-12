@@ -2,12 +2,12 @@
  * Created by Iulia on 3/13/17.
  */
 import React, {Component, PropTypes} from 'react';
-import { withRouter, Redirect } from 'react-router';
+import { Redirect } from 'react-router';
 
 //redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as Actions from '../actioncreators/authActions';
+import * as authActions from '../actioncreators/authActions';
 
 import { Error } from './Messages';
 import LinkWrap from './LinkWrap';
@@ -41,9 +41,10 @@ class RegisterForm extends Component{
 			alert('Passwords don\'t match!');
 			return;
 		}
-		this.register({ username, password, confirmPassword }, this.props.history)// i am passing history to the action creator so i can use history with redux
+		this.register({ username, password, confirmPassword }, this.props.history)
+		// i am passing history to the action creator so i can use history with redux
 			.then(()=>{
-				console.log("need to redirect me to questions");
+				console.log("ok. redirect me to questions");
 			});
 		
 	};
@@ -94,7 +95,7 @@ function mapStateToProps(state) {
 
 function mapDispatchedActionsToProps(dispatch) {
 	return {
-		actions: bindActionCreators(Actions, dispatch)
+		actions: bindActionCreators(authActions, dispatch)
 	};
 }
 

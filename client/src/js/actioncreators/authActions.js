@@ -4,9 +4,8 @@ import * as ActionTypes from '../actiontypes/constants';
 import { setErrorMessage, setSuccessMessage } from './messageActions';
 import Auth from '../requests/auth';
 
-import createBrowserHistory from 'history/createBrowserHistory' // this works like this
-const history = createBrowserHistory();
-
+// import createBrowserHistory from 'history/createBrowserHistory' // this works like this
+// const history = createBrowserHistory();
 
 function initRequest() {
 	return {
