@@ -1,7 +1,7 @@
 ### Medical Cases - Questions & Answers app
 
 <kbd>
-  <img src="/shot.png?raw=true">
+  <img src="/ScreenShot.png?raw=true">
 </kbd>
 
 
