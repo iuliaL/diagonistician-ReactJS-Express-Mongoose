@@ -72,7 +72,7 @@ router.post(`${baseUrl}`, function(req,res,next){
 		return next(error);
 	}
 	newQuestion.validate()
-	.then(newQuestion.save())
+	.then(() => newQuestion.save())
 	.then(function(reply){ //the reply is the actual question created
 			res.status(201).json(reply.id);
 	}).catch(function(err){
@@ -105,7 +105,7 @@ router.post(`${baseUrl}/:qId/answers`,function(req, res, next){
 	}
 	questionFound.answers.push(newAnswer);
 	questionFound.validate()
-	.then(questionFound.save()) // save the parent question
+	.then(() => questionFound.save()) // save the parent question
 	.then(function(reply){
 		res.status(201).json(reply.id);
 	}).catch(function(err){
