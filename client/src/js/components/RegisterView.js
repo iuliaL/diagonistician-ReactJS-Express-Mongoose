@@ -12,6 +12,8 @@ import * as authActions from '../actioncreators/authActions';
 import { Error } from './Messages';
 import LinkWrap from './LinkWrap';
 
+import {submitBtnClasses} from '../dynamicStyles';
+
 class RegisterForm extends Component{
 	constructor(props){
 		super(props);
@@ -73,7 +75,10 @@ class RegisterForm extends Component{
 						       value={this.state.confirmPassword}
 						       name="confirmPassword" onChange={this.onInputChange}
 						/>
-						<input className="button-primary ask-question-button" type="submit" value="Sign Up"/>
+						<input className={submitBtnClasses(!this.state.username
+							|| !this.state.password
+							|| !this.state.confirmPassword)}
+						       type="submit" value="Sign Up"/>
 						<span className="pull-right" style={{marginTop: 15}}>Already have an account?
 							&nbsp;<LinkWrap to="/login">Login</LinkWrap>
 						</span>

@@ -29,3 +29,13 @@ li.user-details>.points:hover {
     color: #2690c6;
 }
 
+.disabled {
+    opacity: .7;
+}
+.disabled:hover {
+    background: #2690c6 !important;
+    cursor: default !important;
+    box-shadow: none !important;
+
+}
+

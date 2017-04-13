@@ -3,6 +3,8 @@
  */
 import React, {Component, PropTypes} from 'react';
 
+import {submitBtnClasses} from '../dynamicStyles';
+
 class NewQuestionForm extends Component{
 	state = { text : ''};
 	onQuestionChange = event => {
@@ -10,7 +12,7 @@ class NewQuestionForm extends Component{
 			text: event.target.value
 		})
 	};
-	onSubmit = (event) => {
+	onSubmit = event => {
 		event.preventDefault();
 		const questionText = this.state.text.trim();
 		if (!questionText) {
@@ -27,7 +29,7 @@ class NewQuestionForm extends Component{
 						<textarea type="text" placeholder="Tell us about your symptoms, medical history..." id="question"
 						       value={this.state.text}
 						       onChange={this.onQuestionChange}/>
-						<input className="button-primary ask-question-button" type="submit" value="Ask a doctor"/>
+						<input className={submitBtnClasses(!this.state.text)} type="submit" value="Ask a doctor"/>
 					</div>
 				</div>
 			</form>

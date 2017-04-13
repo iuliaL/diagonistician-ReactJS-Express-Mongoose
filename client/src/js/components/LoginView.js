@@ -15,6 +15,8 @@ import * as authActions from '../actioncreators/authActions';
 import LinkWrap from './LinkWrap';
 import { Success, Error } from './Messages';
 
+import {submitBtnClasses} from '../dynamicStyles';
+
 
 class LoginForm extends Component{
 	static propTypes = {
@@ -38,7 +40,6 @@ class LoginForm extends Component{
 			alert('Please type username and password!');
 			return;
 		}
-		
 		this.login(username, password, this.props.history, this.props.location.state);
 		// redirect to /list or back from where user arrived on this route
 	};
@@ -64,7 +65,7 @@ class LoginForm extends Component{
 						       value={this.state.password}
 						       name="password" onChange={this.onInputChange}
 						/>
-						<input className="button-primary ask-question-button" type="submit" value="Login"/>
+						<input className={submitBtnClasses(!this.state.username || !this.state.password)} type="submit" value="Login"/>
 						<span className="pull-right" style={{marginTop: 15}}>
 							Don't have an account yet?
 							&nbsp;
