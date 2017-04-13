@@ -18,7 +18,7 @@ const answerSchema = mongoose.Schema({
 	text: {
 		type: String,
 		required: true,
-		min: [10, 'Answer must be at least 10 characters long']
+		minlength: [100, 'Answers must be at least 100 characters long']
 	},
 	votes: { type: Number, default: 0 },
 	owner: {
@@ -49,7 +49,7 @@ const questionSchema = mongoose.Schema({
 	text: {
 		type: String,
 		required: true,
-		min: 10
+		minlength: [100, 'Questions must have at least 100 characters.']
 	},
 	answers	: [ answerSchema ],
 	owner: {

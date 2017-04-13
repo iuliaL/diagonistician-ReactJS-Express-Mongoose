@@ -76,7 +76,7 @@ app.use(function (req,res,next) {
 app.use(function(req,res,next){
 	// here i can see the req payload with every request (example of most basic middleware)
 	// and check session and cookies are being sent by the browser
-	console.log('REQ.USER',req.user); // this holds the token info for the protected routes only
+	// console.log('REQ.USER',req.user); // this holds the token info for the protected routes only
 	next();
 });
 

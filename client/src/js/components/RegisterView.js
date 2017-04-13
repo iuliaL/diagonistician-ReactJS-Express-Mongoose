@@ -9,9 +9,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as authActions from '../actioncreators/authActions';
 
+//components
 import { Error } from './Messages';
 import LinkWrap from './LinkWrap';
 
+//utils
 import {submitBtnClasses} from '../dynamicStyles';
 
 class RegisterForm extends Component{

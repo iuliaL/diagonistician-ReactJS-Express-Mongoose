@@ -71,12 +71,14 @@ router.post(`${baseUrl}`, function(req,res,next){
 		error.status = 500;
 		return next(error);
 	}
-	newQuestion.save()
+	newQuestion.validate()
+	.then(newQuestion.save())
 	.then(function(reply){ //the reply is the actual question created
-		res.status(201).json(reply.id)
-	})
-	.catch(function(err){
-		next(err);
+			res.status(201).json(reply.id);
+	}).catch(function(err){
+		//console.error('i want validation error here', err);
+		const error = new Error(String(err));
+		next(error);
 	});
 });
 
@@ -102,11 +104,13 @@ router.post(`${baseUrl}/:qId/answers`,function(req, res, next){
 		return next(error);
 	}
 	questionFound.answers.push(newAnswer);
-	questionFound.save() // save the parent question
+	questionFound.validate()
+	.then(questionFound.save()) // save the parent question
 	.then(function(reply){
 		res.status(201).json(reply.id);
 	}).catch(function(err){
-		next(err);
+		const error = new Error(String(err));
+		next(error);
 	})
 });
 
