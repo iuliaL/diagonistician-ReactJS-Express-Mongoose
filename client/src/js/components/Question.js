@@ -6,7 +6,7 @@ function Question (props) {
 	return (
 		<div className="grid-parent question">
 			<div className="grid-10">
-				<img className="avatar" src="/images/avatar.png" alt="avatar"/>
+				<img className="avatar" src="/images/case.png" alt="avatar"/>
 			</div>
 			<div className="grid-90">
 				<p>{props.text}</p>

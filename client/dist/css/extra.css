@@ -36,6 +36,12 @@ li.user-details>.points:hover {
     background: #2690c6 !important;
     cursor: default !important;
     box-shadow: none !important;
-
+}
+.avatar {
+    background: rgba(255, 255, 255, 0.87);
+    width: 48px;
+    border: 2px solid rgb(221, 221, 221);
+    border-radius: 10%;
+    box-shadow: 0 2px 2px -1px rgba(6, 90, 130, 0.88)
 }
 
