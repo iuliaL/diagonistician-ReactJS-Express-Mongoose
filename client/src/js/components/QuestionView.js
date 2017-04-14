@@ -11,7 +11,7 @@ import {Success, Error} from './Messages';
 class QuestionView extends Component{
 	constructor(props){
 		super(props);
-		this.state = { newAnswer: '' };
+		this.state = { newAnswer: '', charLeft: 140, tooLong : false };
 		this.addAnswer = props.actions.addAnswer;
 		this.fetchOne = props.actions.fetchOne;
 		this.voteAnswer = props.actions.voteAnswer;
@@ -22,7 +22,16 @@ class QuestionView extends Component{
 	componentWillMount() {
 		this.fetchOne(this.props.match.params.qId);
 	}
-	onNewAnswerInput = event => this.setState({ newAnswer : event.target.value });
+	onNewAnswerInput = event => {
+		if (event.target.value.length > 140){
+			return this.setState({ tooLong : true})
+		}
+		this.setState({
+			newAnswer : event.target.value.length > 140 ? this.state.newAnswer : event.target.value,
+			charLeft: this.state.charLeft >= -1 ? 140 - event.target.value.length : 0,
+			tooLong: false
+		});
+	};
 	onNewAnswerSubmit = event => {
 		event.preventDefault();
 		// post new answer and refresh answer list, the refresh is handled in the actionCreator
@@ -67,6 +76,10 @@ class QuestionView extends Component{
 					          value={this.state.newAnswer}
 					          onChange={this.onNewAnswerInput}>
 					</textarea>
+					{this.state.charLeft < 130 && this.state.charLeft >= 0 &&
+					<span className="chars">&nbsp;You have {this.state.charLeft} characters left</span>}
+					{this.state.tooLong && !this.state.newAnswer &&
+					<span className="chars">Too many characters. Maximum permitted is 140.</span>}
 					<input className="button-primary answer" type="submit" value="Post answer"/>
 				</form>
 			</div>

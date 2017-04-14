@@ -35,7 +35,7 @@ class NewQuestionForm extends Component{
 						       value={this.state.text}
 						       onChange={this.onQuestionChange}/>
 						{this.state.charLeft < 130 && this.state.charLeft >= 0 &&
-							<span className="chars">You have {this.state.charLeft} characters left</span>}
+							<span className="chars">&nbsp;You have {this.state.charLeft} characters left</span>}
 						{this.state.tooLong && !this.state.text &&
 							<span className="chars">Too many characters. Maximum permitted is 140.</span>}
 						<input className={submitBtnClasses(!this.state.text)} type="submit" value="Ask a doctor"/>
