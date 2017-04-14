@@ -6,11 +6,16 @@ import React, {Component, PropTypes} from 'react';
 import {submitBtnClasses} from '../dynamicStyles';
 
 class NewQuestionForm extends Component{
-	state = { text : ''};
+	state = { text : '', charLeft: 140, tooLong : false };
 	onQuestionChange = event => {
+		if (event.target.value.length > 140){
+			return this.setState({ tooLong : true})
+		}
 		this.setState({
-			text: event.target.value
-		})
+			text: event.target.value.length > 140 ? this.state.text : event.target.value,
+			charLeft: this.state.charLeft >= -1 ? 140 - event.target.value.length : 0,
+			tooLong: false
+		});
 	};
 	onSubmit = event => {
 		event.preventDefault();
@@ -29,6 +34,10 @@ class NewQuestionForm extends Component{
 						<textarea type="text" placeholder="Tell us about your symptoms, medical history..." id="question"
 						       value={this.state.text}
 						       onChange={this.onQuestionChange}/>
+						{this.state.charLeft < 130 && this.state.charLeft >= 0 &&
+							<span className="chars">You have {this.state.charLeft} characters left</span>}
+						{this.state.tooLong && !this.state.text &&
+							<span className="chars">Too many characters. Maximum permitted is 140.</span>}
 						<input className={submitBtnClasses(!this.state.text)} type="submit" value="Ask a doctor"/>
 					</div>
 				</div>

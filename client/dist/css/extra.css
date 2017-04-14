@@ -45,3 +45,11 @@ li.user-details>.points:hover {
     box-shadow: 0 2px 2px -1px rgba(6, 90, 130, 0.88)
 }
 
+.chars {
+    font-style: italic;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    float: right;
+    color: #888;
+}
+
