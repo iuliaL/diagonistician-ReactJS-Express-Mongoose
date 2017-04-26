@@ -53,3 +53,9 @@ li.user-details>.points:hover {
     color: #888;
 }
 
+.btn.active {
+    color: whitesmoke;
+    font-weight: 600;
+    box-shadow: none;
+}
+

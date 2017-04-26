@@ -6,14 +6,14 @@
  */
 
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 function Nav(props) {
 	// Render either the Login and Sign up buttons, or the Home and Logout button
 	// based on the current authentication state.
 	const navButtons = props.loggedIn ? (
 			<ul className="nav nav-pills">
-				<li><Link to="/list" className="btn">Home</Link></li>
+				<li><NavLink to="/list" activeClassName='active' className="btn">Home</NavLink></li>
 				<li><a href="#" className="btn" onClick={(ev)=>{ev.preventDefault(); props.onLogout()}}>Logout</a></li>
 				<li className="pull-right user-details">
 					<a className="btn username">
@@ -28,8 +28,8 @@ function Nav(props) {
 			</ul>
 		) : (
 			<ul  className="nav nav-pills">
-				<li><Link to="/register" className="btn">Sign up</Link></li>
-				<li><Link to="/login" className="btn">Login</Link></li>
+				<li><NavLink to="/register" className="btn">Sign up</NavLink></li>
+				<li><NavLink to="/login" className="btn">Login</NavLink></li>
 			</ul>
 		);
 	
