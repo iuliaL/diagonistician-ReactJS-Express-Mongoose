@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 // router
-import { Route, Redirect} from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 //redux
 import {connect} from 'react-redux';
@@ -33,7 +33,6 @@ class QuestionsList extends Component{
 	static propTypes = {
 		questions: PropTypes.array.isRequired,
 	};
-	checkIfHasRoute = route => this.props.location.pathname == route;
 	render () {
 		const { actions, questions, successMessage, errorMessage } = this.props;
 		const { addQuestion } = actions;
@@ -59,10 +58,11 @@ class QuestionsList extends Component{
 				<Success msg= {successMessage} />
 				<Error msg= {errorMessage} />
 				
-				{!this.checkIfHasRoute('/list/add') &&
-					<LinkWrap to="/list/add">
+				<Route exact path='/list' render={ () =>
+					<LinkWrap exact to="/list/add">
 						<button className="button-primary ask-question-button question-form">Ask a question</button>
-					</LinkWrap>}
+					</LinkWrap>
+				}/>
 					
 				{/*logged in conditional here*/}
 				<PrivateAddRoute loggedIn={this.props.loggedIn} path="/list/add" onAdd={addQuestion} component={NewQuestionForm}/>
