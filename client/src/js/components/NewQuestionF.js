@@ -31,9 +31,13 @@ class NewQuestionForm extends Component{
 			<form className="question-form" onSubmit={this.onSubmit}>
 				<div className="grid-parent">
 					<div className="grid-100">
-						<textarea type="text" placeholder="Provide a context. Describe the case here (signs and symptoms, medical history, ongoing or past medication, etc)" id="question"
-						       value={this.state.text}
-						       onChange={this.onQuestionChange}/>
+						<textarea
+							type="text"
+							placeholder="Provide a context.
+								Describe the case here (signs and symptoms, medical history, ongoing or past medication, etc)"
+							id="question"
+							value={this.state.text}
+							onChange={this.onQuestionChange}/>
 						{this.state.charLeft < 130 && this.state.charLeft >= 0 &&
 							<span className="chars">&nbsp;You have {this.state.charLeft} characters left</span>}
 						{this.state.tooLong && !this.state.text &&

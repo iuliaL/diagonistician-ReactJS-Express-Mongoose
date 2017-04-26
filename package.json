@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "client": "webpack-dev-server --port 3001 --inline --hot --progress --history-api-fallback",
+    "client": "webpack-dev-server --open --port 3001 --inline --hot --progress --history-api-fallback",
     "server": "nodemon server/app.js"
   },
   "author": "",
@@ -27,7 +27,6 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^5.0.3",
-    "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.0",

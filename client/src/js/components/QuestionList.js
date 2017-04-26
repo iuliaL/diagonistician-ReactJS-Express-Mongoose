@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 // router
-import { Route } from 'react-router'
-import { Redirect} from 'react-router-dom'
+import { Route, Redirect} from 'react-router-dom'
 
 //redux
 import {connect} from 'react-redux';

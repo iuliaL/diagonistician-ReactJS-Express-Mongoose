@@ -4,7 +4,7 @@
 'use strict';
 
 import React, { Component, PropTypes} from 'react';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 //redux
 import {connect} from 'react-redux';
@@ -59,12 +59,14 @@ class LoginForm extends Component{
 				<div className="grid-parent">
 					<div className="grid-100">
 						<input type="text" placeholder="Username"
-						       value={this.state.username} name="username"
+						       value={this.state.username}
+						       name="username"
 						       onChange={this.onInputChange}
 						/>
 						<input type="password" placeholder="Password"
 						       value={this.state.password}
-						       name="password" onChange={this.onInputChange}
+						       name="password"
+						       onChange={this.onInputChange}
 						/>
 						<input className={submitBtnClasses(!this.state.username || !this.state.password)} type="submit" value="Login"/>
 						<span className="pull-right" style={{marginTop: 15}}>
