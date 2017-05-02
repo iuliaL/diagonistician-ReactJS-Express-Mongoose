@@ -60,14 +60,17 @@ class QuestionsList extends Component{
 				<Success msg= {successMessage} />
 				<Error msg= {errorMessage} />
 				
-				<Route exact path='/list' render={ () =>
-					<LinkWrap exact to="/list/add">
+				<Route exact path='/list' render={ ({match}) =>
+					<LinkWrap exact to={match.url + "/add"}>
 						<button className="button-primary ask-question-button question-form">Ask a question</button>
 					</LinkWrap>
 				}/>
 					
 				{/*logged in conditional here*/}
-				<PrivateAddRoute loggedIn={this.props.loggedIn} path="/list/add" onAdd={addQuestion} component={NewQuestionForm}/>
+				<PrivateAddRoute loggedIn={this.props.loggedIn}
+				                 path={this.props.match.url + "/add"}
+				                 onAdd={addQuestion}
+				                 component={NewQuestionForm}/>
 
 				<h2>Questions</h2>
 				<hr/>
