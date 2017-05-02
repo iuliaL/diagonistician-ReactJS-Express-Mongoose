@@ -5,7 +5,9 @@
  * This component renders the navigation bar
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import { NavLink, Link } from 'react-router-dom';
 
 function Nav(props) {

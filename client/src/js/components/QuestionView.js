@@ -1,17 +1,18 @@
-import React,{PropTypes, Component} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 //redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as questionActions from '../actioncreators/questionActions';
 
 import Answer from './Answer';
-import {Success, Error} from './Messages';
-
+import { Success, Error } from './Messages';
+import textAreaChangeStateHandler from '../non-redux-state'
 
 class QuestionView extends Component{
 	constructor(props){
 		super(props);
-		this.state = { newAnswer: '', charLeft: 140, tooLong : false };
+		this.state = { text: '', charLeft: 140, tooLong : false };
 		this.addAnswer = props.actions.addAnswer;
 		this.fetchOne = props.actions.fetchOne;
 		this.voteAnswer = props.actions.voteAnswer;
@@ -23,22 +24,15 @@ class QuestionView extends Component{
 		this.fetchOne(this.props.match.params.qId);
 	}
 	onNewAnswerInput = event => {
-		if (event.target.value.length > 140){
-			return this.setState({ tooLong : true})
-		}
-		this.setState({
-			newAnswer : event.target.value.length > 140 ? this.state.newAnswer : event.target.value,
-			charLeft: this.state.charLeft >= -1 ? 140 - event.target.value.length : 0,
-			tooLong: false
-		});
+		this.setState(textAreaChangeStateHandler(event));
 	};
 	onNewAnswerSubmit = event => {
 		event.preventDefault();
 		// post new answer and refresh answer list, the refresh is handled in the actionCreator
 		// by fetching again the question and updating state
-		const answer = { text: this.state.newAnswer };
+		const answer = { text: this.state.text };
 		this.addAnswer(this.props.match.params.qId, answer)
-			.then(()=>this.setState( { newAnswer: '' }));
+			.then(()=>this.setState( { text: '' }));
 	};
 	refreshVoteCount = (arg, answerId) =>{
 		console.log("refreshing state?", arg, answerId);
@@ -73,12 +67,12 @@ class QuestionView extends Component{
 				<h3>Add an Answer</h3>
 				<form onSubmit={this.onNewAnswerSubmit}>
 					<textarea className="full-width" placeholder="Your answer..." id="message"
-					          value={this.state.newAnswer}
+					          value={this.state.text}
 					          onChange={this.onNewAnswerInput}>
 					</textarea>
 					{this.state.charLeft < 130 && this.state.charLeft >= 0 &&
 					<span className="chars">&nbsp;You have {this.state.charLeft} characters left</span>}
-					{this.state.tooLong && !this.state.newAnswer &&
+					{this.state.tooLong && !this.state.text &&
 					<span className="chars">Too many characters. Maximum permitted is 140.</span>}
 					<input className="button-primary answer" type="submit" value="Post answer"/>
 				</form>

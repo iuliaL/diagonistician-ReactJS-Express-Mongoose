@@ -1,4 +1,6 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 
 const Success = ({msg}) => msg ? <div className="alert alert-success">{msg}</div> : null;
 

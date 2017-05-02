@@ -1,21 +1,18 @@
 /**
  * Created by Iulia on 3/13/17.
  */
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 
 import {submitBtnClasses} from '../dynamicStyles';
+import textAreaChangeStateHandler from '../non-redux-state';
 
 class NewQuestionForm extends Component{
 	state = { text : '', charLeft: 140, tooLong : false };
 	onQuestionChange = event => {
-		if (event.target.value.length > 140){
-			return this.setState({ tooLong : true})
-		}
-		this.setState({
-			text: event.target.value.length > 140 ? this.state.text : event.target.value,
-			charLeft: this.state.charLeft >= -1 ? 140 - event.target.value.length : 0,
-			tooLong: false
-		});
+		// functional setState(fn)
+		this.setState(textAreaChangeStateHandler(event));
 	};
 	onSubmit = event => {
 		event.preventDefault();
