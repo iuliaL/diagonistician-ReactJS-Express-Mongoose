@@ -6,21 +6,24 @@ import QuestionApi from '../requests/questions';
 
 function initRequest() {
 	return {
-		type: ActionTypes.INIT_REQUEST
+		type: ActionTypes.INIT_REQUEST,
+		loading: true
 	}
 }
 
 function receivedQuestions(questions) {
 	return {
 		type: ActionTypes.FETCH_QUESTIONS_SUCCESS,
-		questions
+		questions,
+		loading: false
 	}
 }
 
 function requestFail(error) {
 	return {
 		type: ActionTypes.REQUEST_FAILURE,
-		error
+		error,
+		loading: false
 		// this function is unhandled for now
 	}
 }
@@ -30,7 +33,7 @@ export function fetchQuestions() {
 	return function (dispatch) {
 		dispatch(initRequest());
 		return QuestionApi.fetchAll()
-			.then((questions) => dispatch(receivedQuestions(questions)))
+			.then(questions => dispatch(receivedQuestions(questions)))
 			.catch((err) => dispatch(requestFail(err)))
 	}
 }

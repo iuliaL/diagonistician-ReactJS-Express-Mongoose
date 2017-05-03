@@ -15,6 +15,7 @@ import LinkWrap from './LinkWrap';
 import Question from './Question';
 import NewQuestionForm from './NewQuestionF';
 import {Success, Error} from './Messages';
+import Loader from './Loader';
 
 //Private route refers to /list/add
 const PrivateAddRoute = ({ component, onAdd, loggedIn ,...rest }) => {
@@ -36,9 +37,9 @@ class QuestionsList extends Component{
 		questions: PropTypes.array.isRequired,
 	};
 	render () {
-		const { actions, questions, successMessage, errorMessage } = this.props;
+		const { actions, questions, loading, successMessage, errorMessage } = this.props;
 		const { addQuestion } = actions;
-		
+		console.log('load', loading )
 		const singleQuestion = q =>
 			<div key={q._id}>
 				<LinkWrap to={`/question/${q._id}`}>
@@ -71,12 +72,17 @@ class QuestionsList extends Component{
 				                 path={this.props.match.url + "/add"}
 				                 onAdd={addQuestion}
 				                 component={NewQuestionForm}/>
-
-				<h2>Questions</h2>
-				<hr/>
-				<div className="questions">
-					{questionList}
-				</div>
+				
+				{ loading ?
+					<Loader text="Loading Cases"/> :
+					(<div>
+						<h2>Questions</h2>
+						<hr/>
+						<div className="questions">
+							{questionList}
+						</div>
+					</div>)
+				}
 			</div>
 		)
 	}
@@ -85,6 +91,7 @@ class QuestionsList extends Component{
 function mapStateToProps({questions, auth, messages}) {
 	return {
 		questions: questions.questions,
+		loading: questions.loading, // this loading piece of state belongs to questions reducer
 		successMessage: messages.successMessage,
 		errorMessage: messages.errorMessage,
 		loggedIn: auth.loggedIn

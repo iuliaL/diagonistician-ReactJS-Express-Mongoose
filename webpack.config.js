@@ -1,6 +1,6 @@
 const path    = require('path');
 
-module.exports = {
+const config = {
 	watch: true,
 	colors: true,
 	progress: true,
@@ -24,3 +24,5 @@ module.exports = {
 		contentBase: path.join(__dirname,"client/dist"), // serve front-end from localhost:3001/client/dist
 	}
 };
+
+module.exports = config;

@@ -2,6 +2,7 @@
 
 // fetching from API
 export const INIT_REQUEST = 'INIT_REQUEST';
+
 export const FETCH_QUESTIONS_SUCCESS = 'FETCH_QUESTIONS_SUCCESS'; // all
 export const FETCH_QUESTION_SUCCESS = 'FETCH_QUESTION_SUCCESS'; // single
 
