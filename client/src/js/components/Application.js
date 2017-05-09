@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 
 
 import Nav from './Nav';
-import * as Actions from '../actioncreators/authActions';
+import * as authActions from '../actioncreators/authActions';
 
 
 const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ history, children, actions, loggedIn, user})=>{
@@ -33,7 +33,7 @@ function mapStateToProps({auth}) { // extract just the auth part of the state
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators(Actions, dispatch)
+		actions: bindActionCreators(authActions, dispatch)
 	};
 }
 export default Application;

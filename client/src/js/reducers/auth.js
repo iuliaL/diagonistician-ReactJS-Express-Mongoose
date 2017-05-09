@@ -19,7 +19,8 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				loggedIn: action.loggedIn,
-				user: {}
+				user: {},
+				loading: false
 			};
 		case ActionTypes.USER_DETAILS:
 			return {

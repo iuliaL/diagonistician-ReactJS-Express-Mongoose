@@ -39,7 +39,6 @@ class QuestionsList extends Component{
 	render () {
 		const { actions, questions, loading, successMessage, errorMessage } = this.props;
 		const { addQuestion } = actions;
-		console.log('load', loading )
 		const singleQuestion = q =>
 			<div key={q._id}>
 				<LinkWrap to={`/question/${q._id}`}>
