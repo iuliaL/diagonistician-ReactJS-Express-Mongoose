@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // router
 import { Route, Redirect } from 'react-router-dom'
 
-//redux
+// redux
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as questionActions from '../actioncreators/questionActions';
@@ -13,12 +13,12 @@ import * as questionActions from '../actioncreators/questionActions';
 // components
 import LinkWrap from './LinkWrap';
 import Question from './Question';
-import NewQuestionForm from './NewQuestionF';
+import NewQuestionForm from './NewQuestionForm';
 import {Success, Error} from './Messages';
 import Loader from './Loader';
 
-//Private route refers to /list/add
-const PrivateAddRoute = ({ component, onAdd, loggedIn ,...rest }) => {
+// Private route refers to /list/add
+const PrivateAddRoute = ({ component, onAdd, loggedIn, ...rest }) => {
 	return (
 		<Route {...rest} render={ props =>
 			(

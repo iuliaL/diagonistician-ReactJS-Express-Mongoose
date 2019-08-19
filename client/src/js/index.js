@@ -67,7 +67,7 @@ render(
 		<Router history={history}>
 			<Application>
 				<Switch>
-					<Route exact path="/list" component={QuestionList}/>
+					<Route path="/list" component={QuestionList}/>
 					<PrivateQuestionRoute path="/question/:qId"
 					                      component={QuestionView}/>
 					<Route path="/login"  component={LoginView}/>
