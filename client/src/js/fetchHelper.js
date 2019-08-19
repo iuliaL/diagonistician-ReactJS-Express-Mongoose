@@ -1,6 +1,6 @@
 'use strict';
 
-const baseUrl = 'http://localhost:8080';
+const baseUrl = 'http://localhost:8081';
 
 /* fetch Promise checkStatus */
 
@@ -28,7 +28,7 @@ const makeRequest = function(
 		payload,
 		params,
 	    headers,
-		credentials = 'include', // if I need cookies
+		credentials = 'include'
 ) {
 		const options = { method, params, headers, credentials };
 		options.headers = {...options.headers, "Content-type": "application/json"};

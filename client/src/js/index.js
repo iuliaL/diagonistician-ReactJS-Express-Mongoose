@@ -1,23 +1,20 @@
-// Libraries imported through Webpack
 import React from 'react';
 import { render } from 'react-dom';
 import {
-	BrowserRouter as Router,
+	Router,
 	Route,
 	Switch,
-	Redirect,
-	withRouter
+	Redirect
 } from 'react-router-dom'
 
-import createBrowserHistory from 'history/createBrowserHistory' // this works like this
+import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 
-//REDUX imports
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 // Redux middleware
-import thunk from 'redux-thunk'; // dispatch() functions async
+import thunk from 'redux-thunk';
 import logger from 'redux-logger'; // nice actions -> state console.logs
 
 import AppReducer from './reducers';
@@ -35,7 +32,6 @@ import RegisterView from './components/RegisterView';
 import LoginView from './components/LoginView';
 
 const store = createStore(AppReducer, applyMiddleware(thunk, logger));
-console.log('STORE state', store.getState());
 
 store.dispatch(fetchQuestions()); // fetching questions at the highest level of the app
 
@@ -66,13 +62,12 @@ const PrivateQuestionRoute = ({component, ...rest}) => {
 	)
 };
 
-
-render((
+render(
 	<Provider store={store}>
 		<Router history={history}>
 			<Application>
 				<Switch>
-					<Route path="/list" component={QuestionList}/>
+					<Route exact path="/list" component={QuestionList}/>
 					<PrivateQuestionRoute path="/question/:qId"
 					                      component={QuestionView}/>
 					<Route path="/login"  component={LoginView}/>
@@ -82,4 +77,4 @@ render((
 			</Application>
 		</Router>
 	</Provider>
-	), document.getElementById('container'));
+	, document.getElementById('container'));

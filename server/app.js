@@ -16,7 +16,7 @@ const authRoutes = require('./auth');
 const errorHandler = require("./errorHandler").handleError;
 require("./database"); // need this line otherwise app won't know about the database module
 
-const serverPort = process.env.PORT || 8080;
+const serverPort = process.env.PORT || 8081;
 const app = express();
 
 app.use(bodyParser.json());
