@@ -39,7 +39,7 @@ export function login(username, password, history, newRoute) {
 			.then(() =>
 				newRoute ? forwardTo(history, newRoute.from) : forwardTo(history, '/list')
 			)
-			.catch((err)=>dispatch(setErrorMessage(err.message)));
+			.catch((err)=> dispatch(setErrorMessage(err.message)));
 	}
 }
 
@@ -54,12 +54,12 @@ export function requestUserDetails() {
 export function logout(history) {
 	return function (dispatch) {
 		return Auth.logout()
-			.then((res)=> {
+			.then((res) => {
 				localStorage.removeItem('jwt');
 				dispatch(logoutSuccess(Auth.loggedIn()));
 				forwardTo(history,'/list');
 				dispatch(setSuccessMessage(res.message));
-			}).catch((err)=>dispatch(setErrorMessage(err.message)));
+			}).catch((err) => dispatch(setErrorMessage(err.message)));
 	}
 }
 
