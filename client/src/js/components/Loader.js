@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class Loader extends React.Component{
-	constructor(props){
+export default class Loader extends React.Component {
+	constructor(props) {
 		super(props)
 	}
 	static propTypes = {
@@ -10,29 +10,29 @@ export default class Loader extends React.Component{
 	};
 	static defaultProps = {
 		text: "Loading",
-		styles : {
+		styles: {
 			fontSize: 25,
 			textAlign: 'center'
 		},
-		speed : 300
+		speed: 300
 	};
 	state = {
 		text: this.props.text
 	};
-	componentDidMount(){
+	componentDidMount() {
 		const stopWhenLookingLike = this.props.text + "...";  // Loading...
-		this.interval = setInterval(()=> {
-			if(this.state.text === stopWhenLookingLike){
-				this.setState(()=> ({text: this.props.text }))
+		this.interval = setInterval(() => {
+			if (this.state.text === stopWhenLookingLike) {
+				this.setState(() => ({ text: this.props.text }))
 			} else {
-				this.setState(prevState => ({text: prevState.text + '.'}))
+				this.setState(prevState => ({ text: prevState.text + '.' }))
 			}
 		}, this.props.speed)
 	}
-	componentWillUnmount(){
+	componentWillUnmount() {
 		clearInterval(this.interval);
 	}
-	render(){
+	render() {
 		return (
 			<p style={this.props.styles}>
 				{this.state.text}

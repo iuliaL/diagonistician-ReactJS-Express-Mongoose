@@ -47,8 +47,8 @@ export function fetchOne(id) {
 	return function (dispatch) {
 		dispatch(initRequest());
 		return QuestionApi.fetchOne(id)
-			.then((q)=> dispatch(receivedQuestion(q)))
-			.catch((err)=> dispatch(requestFail(err)))
+			.then((q) => dispatch(receivedQuestion(q)))
+			.catch((err) => dispatch(requestFail(err)))
 	}
 }
 
@@ -72,26 +72,28 @@ export function addQuestion(question) {
 	return function (dispatch) {
 		dispatch(requestPostQuestion()); // init request, maybe add a loader
 		return QuestionApi.postQuestion(question)
-			.then((id)=>{
+			.then((id) => {
 				console.log("posted question with id:", id);
 				dispatch(setSuccessMessage('Question was asked successfully!')); // show success hint to user
-				dispatch(fetchQuestions())}) //refresh results
-			.catch((err)=>{
-				console.log(err,'err');
+				dispatch(fetchQuestions())
+			}) //refresh results
+			.catch((err) => {
+				console.log(err, 'err');
 				dispatch(setErrorMessage(err.message))
-		}); // show err to user
+			}); // show err to user
 	}
 }
 export function addAnswer(questionId, answer) {
 	return function (dispatch) {
 		dispatch(requestPostAnswer()); // init request, maybe add a loader
 		return QuestionApi.postAnswer(questionId, answer)
-			.then((id)=>{
+			.then((id) => {
 				console.log("posted answer with id:", id);
 				dispatch(setSuccessMessage('Answer was added successfully!')); // show success hint to user
-				dispatch(fetchOne(questionId))}) //refresh question
-			.catch((err)=>{
-				console.log(err.message,'err');
+				dispatch(fetchOne(questionId))
+			}) //refresh question
+			.catch((err) => {
+				console.log(err.message, 'err');
 				dispatch(setErrorMessage(err.message))
 			}); // show err to user
 	}
@@ -101,12 +103,13 @@ export function voteAnswer(questionId, answerId, arg) {
 	return function (dispatch) {
 		dispatch(requestVoteAnswer()); // init request, maybe add a loader
 		return QuestionApi.voteAnswer(questionId, answerId, arg)
-			.then((voted)=>{
+			.then((voted) => {
 				const msgToShow = voted.voteDirection[0].toUpperCase() + voted.voteDirection.slice(1);
-				dispatch(setSuccessMessage( msgToShow + 'voted successfully!')); // show success hint to user
-				dispatch(fetchOne(questionId))}) //refresh question
-			.catch((err)=>{
-				console.log(err,'err');
+				dispatch(setSuccessMessage(msgToShow + 'voted successfully!')); // show success hint to user
+				dispatch(fetchOne(questionId))
+			}) //refresh question
+			.catch((err) => {
+				console.log(err, 'err');
 				dispatch(setErrorMessage(err.message))
 			}); // show err to user
 	}

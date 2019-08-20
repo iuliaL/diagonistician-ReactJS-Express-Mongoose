@@ -1,5 +1,3 @@
-'use strict';
-
 import * as ActionTypes from '../actiontypes/constants';
 import { setErrorMessage, setSuccessMessage } from './messageActions';
 import Auth from '../requests/auth';
@@ -29,7 +27,7 @@ function getUserDetails(details) {
 export function login(username, password, history, newRoute) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
-		return Auth.login(username,password)
+		return Auth.login(username, password)
 			.then((response) => {
 				console.log('User logged in successfully', response);
 				localStorage.setItem('jwt', response.token);
@@ -39,12 +37,12 @@ export function login(username, password, history, newRoute) {
 			.then(() =>
 				newRoute ? forwardTo(history, newRoute.from) : forwardTo(history, '/list')
 			)
-			.catch((err)=> dispatch(setErrorMessage(err.message)));
+			.catch((err) => dispatch(setErrorMessage(err.message)));
 	}
 }
 
 export function requestUserDetails() {
-	return function(dispatch){
+	return function (dispatch) {
 		return Auth.getUserDetails()
 			.then((user) => dispatch(getUserDetails(user)))
 			.catch((err) => dispatch(setErrorMessage(err.message)));
@@ -57,7 +55,7 @@ export function logout(history) {
 			.then((res) => {
 				localStorage.removeItem('jwt');
 				dispatch(logoutSuccess(Auth.loggedIn()));
-				forwardTo(history,'/list');
+				forwardTo(history, '/list');
 				dispatch(setSuccessMessage(res.message));
 			}).catch((err) => dispatch(setErrorMessage(err.message)));
 	}
@@ -67,12 +65,12 @@ export function register(user, history) {
 	return function (dispatch) {
 		dispatch(initRequest()); // show spinner or something
 		return Auth.register(user)
-			.then((res)=> {
+			.then((res) => {
 				dispatch(registerSuccess());
 				dispatch(setSuccessMessage(res.message));
-				forwardTo(history,'/login');
+				forwardTo(history, '/login');
 			})
-			.catch((err)=> dispatch(setErrorMessage(err.message)));
+			.catch((err) => dispatch(setErrorMessage(err.message)));
 	}
 }
 

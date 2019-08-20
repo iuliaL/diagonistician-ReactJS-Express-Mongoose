@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 import {submitBtnClasses} from '../dynamicStyles';
 
-export default function({ onAdd }) {
+export default function NewQuestionForm ({ onAdd }) {
 	const initialState = { text : '', charLeft: 140, tooLong : false };
 	const [state, setFormState] = useState(initialState);
 

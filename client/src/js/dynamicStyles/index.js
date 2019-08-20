@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 const submitBtnClasses = (condition) => classNames(
 	'button-primary',
-	{disabled : condition}
+	{ disabled: condition }
 );
 
 export { submitBtnClasses };

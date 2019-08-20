@@ -10,6 +10,6 @@ const baseUrl = '/users';
 router.get(`${baseUrl}/:id`, function (req, res, next) {
 	User.findById(req.params.id)
 		.exec()
-		.then((user)=>{console.log('user details', user)})
-		.catch((err)=> next(err))
+		.then((user) => { console.log('user details', user) })
+		.catch((err) => next(err))
 });

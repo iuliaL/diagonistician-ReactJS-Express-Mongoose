@@ -4,8 +4,8 @@
 
 const textAreaChangeStateHandler = (event) => {
 	event.persist();
-	if (event.target.value.length > 140){
-		return ({ tooLong : true });
+	if (event.target.value.length > 140) {
+		return ({ tooLong: true });
 	}
 	return state => ({ // new state object
 		text: event.target.value.length > 140 ? state.text : event.target.value,

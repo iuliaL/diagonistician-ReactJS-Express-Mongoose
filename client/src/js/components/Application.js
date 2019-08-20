@@ -14,7 +14,7 @@ const Application = withRouter(connect(mapStateToProps, mapDispatchToProps)(({ h
 	};
 	return (
 		<div>
-			<Nav loggedIn={loggedIn} onLogout={logout} user={user}/>
+			<Nav loggedIn={loggedIn} onLogout={logout} user={user} />
 			{/*here come the routes*/}
 			<div className="bounds">
 				{children}

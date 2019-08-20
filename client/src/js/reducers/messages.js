@@ -7,7 +7,7 @@ const initialState = {
 	errorMessage: ''
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
 	switch (action.type) {
 		case ActionTypes.SET_SUCCESS_MESSAGE: // add a hint that req was successful
 			return {
@@ -22,6 +22,6 @@ export default function(state = initialState, action) {
 		default:
 			return state;
 	}
-	
-	
+
+
 }

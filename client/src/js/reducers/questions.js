@@ -3,17 +3,17 @@
 import * as ActionTypes from '../actiontypes/constants';
 
 const initialState = {
-	questions : [],
+	questions: [],
 	question: {},
 	loading: false
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
 	// make a COPY to the actual state (immutability) and merge it with the next questions
-	switch (action.type){
+	switch (action.type) {
 		case ActionTypes.INIT_REQUEST:
 			return {
-				... state,
+				...state,
 				loading: action.loading
 			};
 		case ActionTypes.FETCH_QUESTIONS_SUCCESS:
