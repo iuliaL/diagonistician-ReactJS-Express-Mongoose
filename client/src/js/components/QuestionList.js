@@ -21,13 +21,9 @@ import Loader from './Loader';
 const PrivateAddRoute = ({ onAdd, loggedIn, ...rest }) => {
 	return (
 		<Route {...rest} render={() =>
-			(
-				loggedIn ? (
-					<NewQuestionForm onAdd={onAdd} />
-				) : (
-						<Redirect to='/login' />
-					)
-			)
+			loggedIn
+				? <NewQuestionForm onAdd={onAdd} />
+				: <Redirect to='/login' />
 		} />
 	)
 };
@@ -67,10 +63,11 @@ class QuestionsList extends Component {
 				} />
 
 				{/*logged in conditional here*/}
-				<PrivateAddRoute loggedIn={this.props.loggedIn}
+				<PrivateAddRoute
 					path={this.props.match.url + "/add"}
+					loggedIn={this.props.loggedIn}
 					onAdd={addQuestion}
-					component={NewQuestionForm} />
+				/>
 
 				{loading ?
 					<Loader text="Loading Cases" /> :
