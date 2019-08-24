@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import { NavLink, Link } from 'react-router-dom';
 
-function Nav(props) {
+export default function Nav(props) {
 	// Render either the Login and Sign up buttons, or the Home and Logout button
 	// based on the current authentication state.
 	const navButtons = props.loggedIn ? (
@@ -52,4 +52,3 @@ Nav.propTypes = {
 	onLogout: PropTypes.func.isRequired
 };
 
-export default Nav;

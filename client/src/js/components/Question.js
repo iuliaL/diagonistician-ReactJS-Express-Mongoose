@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import FormattedDate from './FormattedDate';
 
-function Question(props) {
+export default function Question(props) {
 	return (
 		<div className="grid-parent question">
 			<div className="grid-10">
@@ -27,4 +27,3 @@ Question.propTypes = {
 	createdAt: PropTypes.string
 };
 
-export default Question;
