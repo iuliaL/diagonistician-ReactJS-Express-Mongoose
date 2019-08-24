@@ -40,6 +40,7 @@ export function fetchQuestions() {
 function receivedQuestion(question) { // carry the question => reducer
 	return {
 		type: ActionTypes.FETCH_QUESTION_SUCCESS,
+		loading: false,
 		question
 	}
 }

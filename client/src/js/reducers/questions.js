@@ -9,7 +9,6 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-	// make a COPY to the actual state (immutability) and merge it with the next questions
 	switch (action.type) {
 		case ActionTypes.INIT_REQUEST:
 			return {
@@ -26,6 +25,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				question: action.question,
+				loading: action.loading
 			};
 
 		default:

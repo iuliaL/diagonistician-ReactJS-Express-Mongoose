@@ -833,7 +833,7 @@ th {
     @media screen and (max-width: 640px) {
       .question img {
         margin: 0 auto 2rem; } }
-  .question-form {
+  .form {
     margin-bottom: 6rem; }
   .question:first-of-type {
     padding-top: 1.75rem; }

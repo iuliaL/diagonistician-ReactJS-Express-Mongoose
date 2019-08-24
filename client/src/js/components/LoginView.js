@@ -24,7 +24,8 @@ import { submitBtnClasses } from '../dynamicStyles';
 class LoginForm extends Component {
 	static propTypes = {
 		loggedIn: PropTypes.bool,
-		errorMessage: PropTypes.string
+		errorMessage: PropTypes.string,
+		successMessage: PropTypes.string
 	};
 	state = { username: '', password: '' };
 	login = this.props.actions.login;
@@ -50,7 +51,7 @@ class LoginForm extends Component {
 		const { successMessage, errorMessage, loggedIn } = this.props;
 
 		return (
-			<form className="question-form" onSubmit={this.onSubmit}>
+			<form className="form" onSubmit={this.onSubmit}>
 				{/*if you accidentally arrive on this route go to homepage */}
 				{loggedIn && <Redirect to="/list" />}
 

@@ -12,7 +12,7 @@ import * as questionActions from '../actioncreators/questionActions';
 // components
 import LinkWrap from './LinkWrap';
 import Question from './Question';
-import NewQuestionForm from './NewQuestionForm';
+import TextareaForm from './TextareaForm';
 import { Success, Error } from './Messages';
 import Loader from './Loader';
 
@@ -21,7 +21,10 @@ const PrivateAddRoute = ({ onAdd, loggedIn, ...rest }) => {
 	return (
 		<Route {...rest} render={() =>
 			loggedIn
-				? <NewQuestionForm onAdd={onAdd} />
+				? <TextareaForm submitBtnValue="Ask a doctor"
+					placeholder="Provide a context. Describe the case here (signs and symptoms, medical history, ongoing or past medication, etc)"
+					next={onAdd}
+				/>
 				: <Redirect to='/login' />
 		} />
 	)
@@ -51,7 +54,7 @@ function QuestionsList({ actions, questions, loggedIn, loading, successMessage, 
 
 			<Route exact path='/list' render={({ match }) =>
 				<LinkWrap exact to={match.url + "/add"}>
-					<button className="button-primary ask-question-button question-form">Ask a question</button>
+					<button className="button-primary ask-question-button form">Ask a question</button>
 				</LinkWrap>
 			} />
 
@@ -71,8 +74,8 @@ function QuestionsList({ actions, questions, loggedIn, loading, successMessage, 
 						<div className="questions">
 							{
 								questionList.length > 0
-								? questionList
-								: <p>Nothing was asked yet.</p>
+									? questionList
+									: <p>Nothing was asked yet.</p>
 							}
 						</div>
 					</div>)

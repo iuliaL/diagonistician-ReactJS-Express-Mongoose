@@ -62,7 +62,7 @@ class RegisterForm extends Component {
 	render() {
 		const { errorMessage, loggedIn } = this.props;
 		return (
-			<form className="question-form" onSubmit={this.onSubmit}>
+			<form className="form" onSubmit={this.onSubmit}>
 				{loggedIn && <Redirect to="/list" />}
 				<h1>Sign up</h1>
 				<Error msg={errorMessage} />
