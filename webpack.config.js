@@ -20,6 +20,7 @@ const config = {
 			}
 		]
 	},
+	devtool: 'source-map',
 	devServer: {
 		contentBase: path.join(__dirname,"client/dist"), // serve front-end from localhost:3001/client/dist
 	}
