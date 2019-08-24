@@ -821,7 +821,9 @@ th {
   padding: 3.5rem 0 3rem;
   border-bottom: 1px solid #E1E1E1; }
   .question p {
-    margin-bottom: 0.85rem; }
+    margin-bottom: 0.85rem;
+    word-break: break-word;
+   }
   .question a {
     text-decoration: none; }
   .question small {
