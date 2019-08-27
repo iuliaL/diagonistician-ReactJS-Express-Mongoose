@@ -4,7 +4,7 @@ import * as ActionTypes from '../actiontypes/constants';
 
 const initialState = {
 	questions: [],
-	question: {},
+	question: null,
 	loading: false
 };
 
@@ -27,6 +27,12 @@ export default function (state = initialState, action) {
 				question: action.question,
 				loading: action.loading
 			};
+		case ActionTypes.REQUEST_FAILURE:
+			return {
+				...state,
+				loading: action.loading,
+				error: action.error
+			}
 
 		default:
 			return state;

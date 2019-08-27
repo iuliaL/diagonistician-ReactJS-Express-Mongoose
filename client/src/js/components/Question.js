@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 
 import FormattedDate from './FormattedDate';
 
-export default function Question(props) {
+export default function Question({ owner, text, createdAt, updatedAt}) {
 	return (
 		<div className="grid-parent question">
 			<div className="grid-10">
 				<img className="avatar" src="/images/case.png" alt="avatar" />
 			</div>
 			<div className="grid-90">
-				<p>{props.text}</p>
+				<p>{text}</p>
 				<div className="align-right">
-					<small>Asked by <strong>{props.owner}</strong></small><br />
-					<small>on <FormattedDate date={props.createdAt} /> | </small>
-					<small>Modified <FormattedDate date={props.updatedAt} /></small>
+					<small>Asked by <strong>{owner}</strong></small><br />
+					<small>on <FormattedDate date={createdAt} /> | </small>
+					<small>Modified <FormattedDate date={updatedAt} /></small>
 				</div>
 			</div>
 		</div>
@@ -22,8 +22,9 @@ export default function Question(props) {
 }
 
 Question.propTypes = {
-	id: PropTypes.string.isRequired,
+	owner: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
-	createdAt: PropTypes.string
+	createdAt: PropTypes.string.isRequired,
+	updatedAt: PropTypes.string.isRequired
 };
 

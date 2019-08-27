@@ -24,7 +24,6 @@ function requestFail(error) {
 		type: ActionTypes.REQUEST_FAILURE,
 		error,
 		loading: false
-		// this function is unhandled for now
 	}
 }
 
@@ -89,7 +88,6 @@ export function addAnswer(questionId, answer) {
 		dispatch(requestPostAnswer()); // init request, maybe add a loader
 		return QuestionApi.postAnswer(questionId, answer)
 			.then((id) => {
-				console.log("posted answer with id:", id);
 				dispatch(setSuccessMessage('Answer was added successfully!')); // show success hint to user
 				dispatch(fetchOne(questionId))
 			}) //refresh question
@@ -107,8 +105,8 @@ export function voteAnswer(questionId, answerId, arg) {
 			.then((voted) => {
 				const msgToShow = voted.voteDirection[0].toUpperCase() + voted.voteDirection.slice(1);
 				dispatch(setSuccessMessage(msgToShow + 'voted successfully!')); // show success hint to user
-				dispatch(fetchOne(questionId))
-			}) //refresh question
+				dispatch(fetchOne(questionId))  //refresh question
+			})
 			.catch((err) => {
 				console.log(err, 'err');
 				dispatch(setErrorMessage(err.message))
