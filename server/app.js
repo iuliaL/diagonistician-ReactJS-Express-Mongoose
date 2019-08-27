@@ -12,7 +12,7 @@ const expressJWT = require('express-jwt');
 const secret = require('./secrets');
 const questionRoutes = require('./api/questions');
 const authRoutes = require('./auth');
-const errorHandler = require("./errorHandler").handleError;
+const handleError = require("./errorHandler").handleError;
 require("./database"); // need this line otherwise app won't know about the database module
 
 const serverPort = process.env.PORT || 8081;
@@ -91,7 +91,7 @@ app.use(function (req, res, next) {
 	next(err);
 });
 
-app.use(errorHandler);
+app.use(handleError);
 
 // // but I use webpack dev server
 // app.get('/*', (req,res) => {

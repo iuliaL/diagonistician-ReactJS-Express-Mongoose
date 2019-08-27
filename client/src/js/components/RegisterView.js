@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../actioncreators/authActions';
 
 // components
-import { Error } from './Messages';
+import { Error, Success } from './Messages';
 import LinkWrap from './LinkWrap';
 
 // utils
@@ -49,23 +49,20 @@ class RegisterForm extends Component {
 			alert('Passwords don\'t match!');
 			return;
 		}
-		this.register({ username, password, confirmPassword }, this.props.history)
-			// i am passing history to the action creator so i can use history with redux
-			.then(() => {
-				console.log("ok. redirect me to questions");
-			});
-
+		this.register({ username, password, confirmPassword }, this.props.history);
 	};
 	componentWillUnmount() {
 		this.setState({ username: '', password: '', confirmPassword: '' });
 	}
 	render() {
-		const { errorMessage, loggedIn } = this.props;
+		const { errorMessage, successMessage, loggedIn } = this.props;
 		return (
 			<form className="form" onSubmit={this.onSubmit}>
 				{loggedIn && <Redirect to="/list" />}
+
 				<h1>Sign up</h1>
 				<Error msg={errorMessage} />
+				<Success msg={successMessage} />
 
 				<div className="grid-parent">
 					<div className="grid-100">
@@ -97,9 +94,10 @@ class RegisterForm extends Component {
 	}
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ messages, auth }) {
 	return {
-		errorMessage: auth.errorMessage,
+		errorMessage: messages.errorMessage,
+		successMessage: messages.successMessage,
 		loggedIn: auth.loggedIn
 	};
 }

@@ -23,13 +23,13 @@ router.post('/register', function (req, res, next) {
 			.then(() => {
 				res.status(201).json({ message: 'Registered successfully' })
 			})
-			.catch((err) => {
-				if (err.code === 11000) {
+			.catch((error) => {
+				if (error.code === 11000) {
 					const err = new Error('This user exists already');
 					err.status = 409; // Conflict
 					return next(err);
 				}
-				next(err); // for other err status codes
+				next(error); // for other err status codes
 			});
 	} else {
 		const err = new Error('All fields are required!');
