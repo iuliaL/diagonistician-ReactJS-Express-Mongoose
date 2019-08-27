@@ -68,6 +68,7 @@ render(
 		<Router history={history}>
 			<Application>
 				<Switch>
+					<Redirect exact from='/' to='/list' />
 					<Route path="/list" component={QuestionList} />
 					<PrivateQuestionRoute path="/question/:qId"
 						component={QuestionView} />
