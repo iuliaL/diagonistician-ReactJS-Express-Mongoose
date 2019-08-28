@@ -3,85 +3,76 @@
  */
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Redirect } from 'react-router-dom';
 
-//redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../actioncreators/authActions';
 
-// components
 import LinkWrap from './LinkWrap';
 import { Success, Error } from './Messages';
 
-// utils
+// Utils
+import useInput from '../hooks/useInput';
 import { submitBtnClasses } from '../dynamicStyles';
 
+Login.propTypes = {
+	loggedIn: PropTypes.bool,
+	errorMessage: PropTypes.string,
+	successMessage: PropTypes.string
+};
 
-class LoginForm extends Component {
-	static propTypes = {
-		loggedIn: PropTypes.bool,
-		errorMessage: PropTypes.string,
-		successMessage: PropTypes.string
-	};
-	state = { username: '', password: '' };
-	login = this.props.actions.login;
+function Login({ history, location, successMessage, errorMessage, loggedIn, actions: { login } }) {
+	const { value: username, onChange: onUsernameChange } = useInput('');
+	const { value: password, onChange: onPasswordChange } = useInput('');
 
-	onInputChange = (event) => {
-		const what = event.target.name;
-		this.setState({
-			[what]: event.target.value
-		})
-	};
-	onSubmit = (event) => {
+	const onSubmit = (event) => {
 		event.preventDefault();
-		const username = this.state.username.trim();
-		const password = this.state.password;
-		if (!username || !password) {
+		const trimmedUsername = username.trim();
+		if (!trimmedUsername || !password) {
 			alert('Please type username and password!');
 			return;
 		}
-		this.login(username, password, this.props.history, this.props.location.state);
+		login(username, password, history, location.state);
 		// redirect to /list or back from where user arrived on this route
 	};
-	render() {
-		const { successMessage, errorMessage, loggedIn } = this.props;
 
-		return (
-			<form className="form" onSubmit={this.onSubmit}>
-				{/*if you accidentally arrive on this route go to homepage */}
-				{loggedIn && <Redirect to="/list" />}
 
-				<h1>Login</h1>
-				<Error msg={errorMessage} />
-				<Success msg={successMessage} />
+	return (
+		<form className="form" onSubmit={onSubmit}>
+			{/*if you accidentally arrive on this route go to homepage */}
+			{loggedIn && <Redirect to="/list" />}
 
-				<div className="grid-parent">
-					<div className="grid-100">
-						<input type="text" placeholder="Username"
-							value={this.state.username}
-							name="username"
-							onChange={this.onInputChange}
-						/>
-						<input type="password" placeholder="Password"
-							value={this.state.password}
-							name="password"
-							onChange={this.onInputChange}
-						/>
-						<input className={submitBtnClasses(!this.state.username || !this.state.password)} type="submit" value="Login" />
-						<span className="pull-right" style={{ marginTop: 15 }}>
-							Don't have an account yet?
-							&nbsp;
+			<h1>Login</h1>
+			<Error msg={errorMessage} />
+			<Success msg={successMessage} />
+
+			<div className="grid-parent">
+				<div className="grid-100">
+					<input type="text" placeholder="Username"
+						value={username}
+						name="username"
+						onChange={onUsernameChange}
+					/>
+					<input type="password" placeholder="Password"
+						value={password}
+						name="password"
+						onChange={onPasswordChange}
+					/>
+					<input className={submitBtnClasses(!username || !password)} type="submit" value="Login" />
+					<span className="pull-right" style={{ marginTop: 15 }}>
+						Don't have an account yet?
+						&nbsp;
 							<LinkWrap to="/register">Sign up</LinkWrap>
-						</span>
-					</div>
+					</span>
 				</div>
-			</form>
-		)
-	}
+			</div>
+		</form>
+	)
+
 }
 
 function mapStateToProps({ auth, messages }) {
@@ -98,4 +89,4 @@ function mapDispatchedActionsToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchedActionsToProps)(LoginForm)
+export default connect(mapStateToProps, mapDispatchedActionsToProps)(Login)
