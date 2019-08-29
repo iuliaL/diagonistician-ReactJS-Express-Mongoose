@@ -13,7 +13,7 @@ QuestionView.propTypes = {
 	question: PropTypes.oneOfType([
 		() => null,
 		PropTypes.object
-	  ]),
+	]),
 	actions: PropTypes.object.isRequired,
 	match: PropTypes.object,
 	successMessage: PropTypes.string,
@@ -21,9 +21,11 @@ QuestionView.propTypes = {
 };
 
 function QuestionView({ match, question, successMessage, errorMessage, actions: { fetchOne, addAnswer, voteAnswer } }) {
+	const questionId = match.params.qId;
+
 	useEffect(() => {
-		fetchOne(match.params.qId); // => void here!
-	}, []); // this [] is the way to avoid calling the effect on every render
+		fetchOne(questionId); // => void here! this is an (side) effect
+	}, [questionId]);
 
 	const refreshVoteCount = (arg, answerId) => {
 		voteAnswer(match.params.qId, answerId, arg);
@@ -53,7 +55,7 @@ function QuestionView({ match, question, successMessage, errorMessage, actions: 
 		<TextareForm
 			submitBtnValue="Post answer"
 			placeholder="Your answer..."
-			next={answer => addAnswer(match.params.qId, answer)} />
+			next={answer => addAnswer(questionId, answer)} />
 	</div>;
 
 }
